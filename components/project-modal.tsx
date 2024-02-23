@@ -1,15 +1,15 @@
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
 
 export default function ProjectModal({
-  showProjectModal,
-  setSetshowProjectModal,
+  showModal,
+  setShowModal,
   title,
   description,
   setProjectDetails,
   onClickCreate,
 }: {
-  showProjectModal: boolean;
-  setSetshowProjectModal: (value: boolean) => void;
+  showModal: boolean;
+  setShowModal: (value: boolean) => void;
   title: string;
   description: string;
   setProjectDetails: (value: object) => void;
@@ -17,9 +17,9 @@ export default function ProjectModal({
 }) {
   return (
     <Modal
-      show={showProjectModal}
+      show={showModal}
       size="md"
-      onClose={() => setSetshowProjectModal(false)}
+      onClose={() => setShowModal(false)}
       popup
     >
       <Modal.Header />

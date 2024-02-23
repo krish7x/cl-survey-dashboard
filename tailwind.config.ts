@@ -34,10 +34,29 @@ const config: Config = {
         surveyIcon2: "#9062A2",
         surveyIcon3: "#12161C",
         hoverBg: "#E1EBED",
+        modalBorder: "#EDEDED",
       },
       width: {
         skeleton: "272px",
+        templateLeft: "470px",
       },
+      display: ["group-hover"],
+      height: {
+        templateModal: "80vh",
+      },
+      margin: {
+        modalHeader: "25vw",
+      },
+      keyframes: {
+        wave: {
+          to: {
+            "margin-left": "-51%",
+          },
+        },
+      },
+    },
+    animation: {
+      wave: "wave 1.5s ease-in-out infinite",
     },
   },
   plugins: [require("flowbite/plugin")],

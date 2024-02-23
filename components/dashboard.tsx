@@ -6,6 +6,7 @@ import { IProject } from "@/types";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/store/atom";
 import MainPanel from "./main-panel";
+import TemplateModal from "./template-modal";
 
 interface IProjectDetails {
   title: string;
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const user = useAtomValue(userAtom);
 
   const [showProjectModal, setSetshowProjectModal] = useState<boolean>(false);
+  const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [projectDetails, setProjectDetails] = useReducer(
     (state: IProjectDetails, diff: Partial<IProjectDetails>) => ({
       ...state,
@@ -56,14 +58,18 @@ export default function Dashboard() {
         setCurrentProject={setCurrentProject}
       />
       <ProjectModal
-        showProjectModal={showProjectModal}
-        setSetshowProjectModal={setSetshowProjectModal}
+        showModal={showProjectModal}
+        setShowModal={setSetshowProjectModal}
         title={projectDetails.title}
         description={projectDetails.description}
         setProjectDetails={setProjectDetails}
         onClickCreate={onClickProjectCreate}
       />
-      <MainPanel />
+      <TemplateModal
+        showModal={showTemplateModal}
+        setShowModal={setShowTemplateModal}
+      />
+      <MainPanel setShowTemplateModal={setShowTemplateModal} />
     </div>
   );
 }
