@@ -1,11 +1,11 @@
 import { getUserSession } from "@/lib/session";
-import type { Metadata } from "next";
 import { Source_Sans_3 } from "next/font/google";
-import Header from "@/components/header";
 import { redirect } from "next/navigation";
-import "./globals.css";
 import { Provider } from "jotai";
 import { ReactNode } from "react";
+import type { Metadata } from "next";
+import Header from "@/components/header";
+import "./globals.css";
 
 const inter = Source_Sans_3({ subsets: ["cyrillic"] });
 

@@ -2,8 +2,15 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
 
-export default function StarRating({ starCount = 5 }: { starCount: number }) {
-  const [rating, setRating] = useState(0);
+export default function StarRating({
+  starCount = 5,
+  rating,
+  onChange,
+}: {
+  starCount: number;
+  rating: number;
+  onChange: (value: number) => void;
+}) {
   return (
     <div className="flex gap-2">
       {new Array(starCount).fill(null).map((val, inx) => (
@@ -11,7 +18,7 @@ export default function StarRating({ starCount = 5 }: { starCount: number }) {
           key={"star-" + inx}
           size={72}
           cursor="pointer"
-          stroke="rgb(63, 63, 63)"
+          stroke="#7E3AF2"
           strokeWidth={1.2}
           className={`opacity-60 hover:stroke-starStroke hover:opacity-100 hover:ease-in hover:scale-125
           ${
@@ -21,7 +28,7 @@ export default function StarRating({ starCount = 5 }: { starCount: number }) {
           }
 
           `}
-          onClick={() => setRating(inx + 1)}
+          onClick={() => onChange(inx + 1)}
         />
       ))}
     </div>

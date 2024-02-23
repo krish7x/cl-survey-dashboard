@@ -35,7 +35,7 @@ const config: Config = {
         surveyIcon3: "#12161C",
         hoverBg: "#E1EBED",
         modalBorder: "#EDEDED",
-        starStroke: "#3F3F3F",
+        starStroke: "#7E3AF2",
       },
       width: {
         skeleton: "272px",
