@@ -1,12 +1,13 @@
 "use client";
 
-import { ClipboardPen } from "lucide-react";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import { axiosInstance } from "@/utils/axios";
 import { userAtom, userLocalStorageAtom } from "@/store/atom";
 import { IGoogleUser } from "@/types";
 import Avatar from "./avatar";
+import Image from "next/image";
+import src from "../public/logo.png";
 
 export default function Header({ user }: { user: IGoogleUser }) {
   const setUser = useSetAtom(userAtom);
@@ -26,9 +27,12 @@ export default function Header({ user }: { user: IGoogleUser }) {
 
   return (
     <div className="px-4 md:px-10 py-3 md:py-4 border-b border-b-navBorder flex items-center justify-between w-full">
-      <div className="flex gap-3 items-center">
-        <ClipboardPen />
-        <h1 className="text-txtBlack font-semibold">Hi, {user.name} 👋</h1>
+      <div className="flex gap-1 items-center">
+        <Image src={src} alt="survey" width={32} height={32} className="mb-1" />
+        <div className="flex  gap-1 justify-center items-center">
+          <h1 className="text-txtBlack font-semibold">Hi, {user.name} </h1>
+          <div className="animate-wave">👋</div>
+        </div>
       </div>
       <Avatar {...user} />
     </div>
