@@ -27,7 +27,9 @@ const config: Config = {
         txtPurple: "#63686F",
         txtBlack: "#25292D",
         navBorder: "rgba(174,203,203,0.25)",
-        sidebarText: "#63686F"
+        sidebarText: "#63686F",
+        navLeftBorder: "#4A9CA6",
+        navBg: "rgba(174,203,203,0.25)",
       },
     },
   },

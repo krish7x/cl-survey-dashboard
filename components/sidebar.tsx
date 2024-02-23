@@ -3,7 +3,8 @@ import { IProject } from "@/types";
 import { Sidebar, Tooltip } from "flowbite-react";
 import { useAtomValue } from "jotai";
 import { PlusCircle } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import ListSkeleton from "./list-skeleton";
 
 export default function SidebarComponent({
   setShowModal,
@@ -13,6 +14,7 @@ export default function SidebarComponent({
   projects: IProject[];
 }) {
   const user = useAtomValue(userAtom);
+  const [selectedProject, setSelectedProject] = useState(projects[0]?.id || 1);
   const isAdmin = useMemo(() => user && user.role === "admin", [user]);
   return (
     <Sidebar
@@ -32,17 +34,29 @@ export default function SidebarComponent({
           )}
         </Tooltip>
       </div>
-      {projects?.length
-        ? projects.map(({ id, projectName }) => (
+      <div className="flex flex-col gap-1">
+        {projects?.length ? (
+          projects.map(({ id, projectName }) => (
             <Sidebar.Items key={"Project-" + id}>
-              <Sidebar.ItemGroup>
-                <Sidebar.Item href="#" className="text-sidebarText text-sm">
+              <Sidebar.ItemGroup className="relative">
+                <Sidebar.Item
+                  href="#"
+                  className={`text-sidebarText text-sm ${
+                    selectedProject === id
+                      ? "bg-navBg before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-navLeftBorder"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedProject(id)}
+                >
                   {projectName}
                 </Sidebar.Item>
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           ))
-        : null}
+        ) : (
+          <ListSkeleton />
+        )}
+      </div>
     </Sidebar>
   );
 }
