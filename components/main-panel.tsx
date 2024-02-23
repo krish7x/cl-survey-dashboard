@@ -110,9 +110,9 @@ export default function MainPanel({
         )}
       </div>
 
-      {SURVEYS.map(({ projectId, name, project, lastModified }) => (
+      {SURVEYS.map(({ projectId, name, project, lastModified }, inx) => (
         <div
-          key={name}
+          key={name + inx}
           className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
         >
           <div className="flex w-full justify-between px-2" items-center>
