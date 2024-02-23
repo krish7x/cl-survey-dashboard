@@ -35,6 +35,7 @@ const config: Config = {
         surveyIcon3: "#12161C",
         hoverBg: "#E1EBED",
         modalBorder: "#EDEDED",
+        starStroke: "#3F3F3F",
       },
       width: {
         skeleton: "272px",
@@ -55,8 +56,8 @@ const config: Config = {
         },
       },
     },
-    animation: {
-      wave: "wave 1.5s ease-in-out infinite",
+    transitionDuration: {
+      "900": "900ms",
     },
   },
   plugins: [require("flowbite/plugin")],
