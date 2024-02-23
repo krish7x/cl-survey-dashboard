@@ -1,16 +1,17 @@
-import { User, getServerSession } from 'next-auth'
+import { IGoogleUser } from "@/types";
+import { User, getServerSession } from "next-auth";
 
 export const session = async ({ session, token }: any) => {
-  session.user.id = token.id
-  return session
-}
+  session.user.id = token.id;
+  return session;
+};
 
-export const getUserSession = async (): Promise<User> => {
+export const getUserSession = async (): Promise<IGoogleUser> => {
   const authUserSession = await getServerSession({
     callbacks: {
       session,
     },
-  })
+  });
   // if (!authUserSession) throw new Error('unauthorized')
-  return authUserSession?.user
-}
+  return authUserSession?.user;
+};

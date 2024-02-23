@@ -5,6 +5,7 @@ import Header from "@/components/header";
 import { redirect } from "next/navigation";
 import "./globals.css";
 import { Provider } from "jotai";
+import { ReactNode } from "react";
 
 const inter = Source_Sans_3({ subsets: ["cyrillic"] });
 
@@ -13,7 +14,11 @@ export const metadata: Metadata = {
   description: "Caratlane Survey Application",
 };
 
-export default async function RootLayout({ children }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const user = await getUserSession();
 
   if (!user) {
@@ -22,11 +27,13 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className} bg-lightBlue-50 border-b border-border`}
+        className={`${inter.className} bg-lightBlue-50 border-b border-border h-screen w-full`}
       >
         <Provider>
-          <Header user={user} />
-          {children}
+          <div className="p-0 m-0 flex flex-col w-full h-full">
+            <Header user={user} />
+            {children}
+          </div>
         </Provider>
       </body>
     </html>

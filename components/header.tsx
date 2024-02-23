@@ -25,10 +25,10 @@ export default function Header({ user }: { user: IGoogleUser }) {
   }, [user, setUser, setLocalUser]);
 
   return (
-    <div className="px-4 md:px-10 py-3 md:py-4 flex items-center justify-between w-full">
+    <div className="px-4 md:px-10 py-3 md:py-4 border-b border-b-navBorder flex items-center justify-between w-full">
       <div className="flex gap-3 items-center">
         <ClipboardPen />
-        <h1 className="text-txtBlack font-semibold ">Hi, {user.name} 👋</h1>
+        <h1 className="text-txtBlack font-semibold">Hi, {user.name} 👋</h1>
       </div>
       <Avatar {...user} />
     </div>

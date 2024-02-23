@@ -30,6 +30,13 @@ const config: Config = {
         sidebarText: "#63686F",
         navLeftBorder: "#4A9CA6",
         navBg: "rgba(174,203,203,0.25)",
+        surveyIcon1: "#BFBFBF",
+        surveyIcon2: "#9062A2",
+        surveyIcon3: "#12161C",
+        hoverBg: "#E1EBED",
+      },
+      width: {
+        skeleton: "272px",
       },
     },
   },

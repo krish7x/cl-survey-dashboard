@@ -2,7 +2,7 @@ export default function ListSkeleton() {
   return (
     <div
       role="status"
-      className="max-w-md p-4 space-y-4 divide-gray-200 rounded animate-pulse dark:divide-gray-700 md:p-6 "
+      className="w-12 p-4  space-y-4 divide-gray-200 rounded animate-pulse dark:divide-gray-700 md:p-6 "
     >
       <div className="flex items-center justify-between">
         <div>

@@ -3,25 +3,26 @@ import { IProject } from "@/types";
 import { Sidebar, Tooltip } from "flowbite-react";
 import { useAtomValue } from "jotai";
 import { PlusCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ListSkeleton from "./list-skeleton";
 
 export default function SidebarComponent({
   setShowModal,
   projects,
+  currentProject,
+  setCurrentProject,
 }: {
   setShowModal: (flag: boolean) => void;
   projects: IProject[];
+  currentProject: IProject | null;
+  setCurrentProject: (data: IProject) => void;
 }) {
   const user = useAtomValue(userAtom);
-  const [selectedProject, setSelectedProject] = useState(projects[0]?.id || 1);
   const isAdmin = useMemo(() => user && user.role === "admin", [user]);
+
   return (
-    <Sidebar
-      aria-label="Default sidebar example"
-      className="h-[calc(100vh-90px)]"
-    >
-      <div className="flex justify-between items-center px-5 mb-2">
+    <Sidebar aria-label="Default sidebar example">
+      <div className="flex justify-between items-center px-5 mb-4">
         <h1 className="text-txtPurple text-md font-medium">Projects</h1>
         <Tooltip content="Create Project" placement="top" className="w-28">
           {isAdmin && (
@@ -36,19 +37,18 @@ export default function SidebarComponent({
       </div>
       <div className="flex flex-col gap-1">
         {projects?.length ? (
-          projects.map(({ id, projectName }) => (
-            <Sidebar.Items key={"Project-" + id}>
+          projects.map((data) => (
+            <Sidebar.Items key={"Project-" + data.id}>
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
-                  href="#"
-                  className={`text-sidebarText text-sm ${
-                    selectedProject === id
+                  className={`text-sidebarText text-sm  cursor-pointer font-medium -mr-3 rounded-none ${
+                    currentProject?.id === data.id
                       ? "bg-navBg before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-navLeftBorder"
                       : ""
                   }`}
-                  onClick={() => setSelectedProject(id)}
+                  onClick={() => setCurrentProject(data)}
                 >
-                  {projectName}
+                  {data.projectName}
                 </Sidebar.Item>
               </Sidebar.ItemGroup>
             </Sidebar.Items>
