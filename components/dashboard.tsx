@@ -8,6 +8,7 @@ import { userAtom } from "@/store/atom";
 import MainPanel from "./main-panel";
 import TemplateModal from "./template-modal";
 import { AxiosError } from "axios";
+import NpsSurvey from "./nps-survey";
 
 interface IProjectDetails {
   title: string;
@@ -80,13 +81,13 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="flex w-full h-full overflow-hidden">
-      <Sidebar
+    <div className="flex w-full h-full">
+      {/* <Sidebar
         setShowModal={setSetshowProjectModal}
         projects={projects}
         currentProject={currentProject}
         setCurrentProject={setCurrentProject}
-      />
+      /> */}
       <ProjectModal
         showModal={showProjectModal}
         setShowModal={setSetshowProjectModal}
@@ -99,11 +100,12 @@ export default function Dashboard() {
         showModal={showTemplateModal}
         setShowModal={setShowTemplateModal}
       />
-      <MainPanel
+      <NpsSurvey />
+      {/* <MainPanel
         surveys={surveys}
         onClickDeleteSurvey={onClickDeleteSurvey}
         setShowTemplateModal={setShowTemplateModal}
-      />
+      /> */}
     </div>
   );
 }
