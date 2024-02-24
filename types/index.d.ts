@@ -10,6 +10,7 @@ export interface IGoogleUser {
   name: string;
   email: string;
   image: string;
+  expires: string;
 }
 
 export interface IProject {

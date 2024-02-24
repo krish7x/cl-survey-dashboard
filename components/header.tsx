@@ -1,30 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSetAtom } from "jotai";
-import { axiosInstance } from "@/utils/axios";
-import { userAtom, userLocalStorageAtom } from "@/store/atom";
-import { IGoogleUser } from "@/types";
+import { useAtomValue, useSetAtom } from "jotai";
+import { googleUserAtom } from "@/store/atom";
 import Avatar from "./avatar";
 import Image from "next/image";
 import src from "../public/logo.png";
 
-export default function Header({ user }: { user: IGoogleUser }) {
-  const setUser = useSetAtom(userAtom);
-  const setLocalUser = useSetAtom(userLocalStorageAtom);
-
-  useEffect(() => {
-    const userStr = localStorage.getItem("user");
-    if (!userStr) {
-      axiosInstance.get(`/users/get?email=${user?.email}`).then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data[0]));
-        setUser(res.data[0]);
-      });
-    } else {
-      setUser(JSON.parse(userStr));
-    }
-  }, [user, setUser, setLocalUser]);
-
+export default function Header() {
+  const user = useAtomValue(googleUserAtom);
   return (
     <div className="px-4 md:pl-6 md:pr-10 py-3 md:py-4 border-b border-b-navBorder flex items-center justify-between w-full">
       <div className="flex gap-1 items-center">

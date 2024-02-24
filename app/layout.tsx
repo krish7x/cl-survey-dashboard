@@ -1,11 +1,10 @@
 import { getUserSession } from "@/lib/session";
 import { Source_Sans_3 } from "next/font/google";
-import { redirect } from "next/navigation";
 import { Provider } from "jotai";
 import { ReactNode } from "react";
 import type { Metadata } from "next";
-import Header from "@/components/header";
 import "./globals.css";
+import GoogleUserSetup from "@/components/google-user";
 
 const inter = Source_Sans_3({ subsets: ["cyrillic"] });
 
@@ -20,7 +19,6 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const user = await getUserSession();
-
   return (
     <html lang="en">
       <body
@@ -28,7 +26,7 @@ export default async function RootLayout({
       >
         <Provider>
           <div className="p-0 m-0 flex flex-col w-full h-full">
-            <Header user={user} />
+            <GoogleUserSetup user={user} />
             {children}
           </div>
         </Provider>

@@ -25,10 +25,11 @@ export default function ProjectModal({
           </h3>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="projectTitle" value="Project title" />
+              <Label htmlFor="title" value="Project title" />
             </div>
             <TextInput
-              id="projectTitle"
+              id="title"
+              type="text"
               placeholder="title.."
               value={title}
               onChange={(event) =>
@@ -41,10 +42,10 @@ export default function ProjectModal({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="projectDescription" value="Description" />
+              <Label htmlFor="description" value="Description" />
             </div>
             <Textarea
-              id="projectDescription"
+              id="description"
               placeholder="description.."
               value={description}
               onChange={(event) =>
