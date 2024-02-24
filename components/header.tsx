@@ -16,7 +16,7 @@ export default function Header({ user }: { user: IGoogleUser }) {
   useEffect(() => {
     const userStr = localStorage.getItem("user");
     if (!userStr) {
-      axiosInstance.get(`/users/get?email=${user.email}`).then((res) => {
+      axiosInstance.get(`/users/get?email=${user?.email}`).then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data[0]));
         setUser(res.data[0]);
       });
@@ -30,7 +30,7 @@ export default function Header({ user }: { user: IGoogleUser }) {
       <div className="flex gap-1 items-center">
         <Image src={src} alt="survey" width={32} height={32} className="mb-1" />
         <div className="flex  gap-1 justify-center items-center">
-          <h1 className="text-txtBlack font-semibold">Hi, {user.name} </h1>
+          <h1 className="text-txtBlack font-semibold">Hi, {user?.name} </h1>
           <div className="animate-wave">👋</div>
         </div>
       </div>

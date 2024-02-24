@@ -3,7 +3,7 @@ import { IProject } from "@/types";
 import { Sidebar, Tooltip } from "flowbite-react";
 import { useAtomValue } from "jotai";
 import { PlusCircle } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import ListSkeleton from "./list-skeleton";
 
 export default function SidebarComponent({
@@ -41,9 +41,9 @@ export default function SidebarComponent({
             <Sidebar.Items key={"Project-" + data.id}>
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
-                  className={`text-sidebarText text-sm  cursor-pointer font-medium -mr-3 rounded-none ${
+                  className={`text-sidebarText text-sm  cursor-pointer font-medium -mr-3  rounded-none ${
                     currentProject?.id === data.id
-                      ? "bg-navBg before:content-[''] before:absolute before:top-0 before:left-0 before:w-1 before:h-full before:bg-navLeftBorder"
+                      ? "bg-navBg before:content-[''] before:absolute before:top-0 before:-left-2 before:w-1 before:h-full before:bg-navLeftBorder"
                       : ""
                   }`}
                   onClick={() => setCurrentProject(data)}

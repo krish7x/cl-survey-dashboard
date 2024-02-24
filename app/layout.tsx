@@ -21,9 +21,6 @@ export default async function RootLayout({
 }) {
   const user = await getUserSession();
 
-  if (!user) {
-    redirect("/api/auth/signin");
-  }
   return (
     <html lang="en">
       <body

@@ -23,20 +23,24 @@ export default function Avatarr({
       arrowIcon={false}
       inline
     >
-      <Dropdown.Header>
-        <span className="block text-sm">{name}</span>
-        <span className="block truncate text-sm font-medium">{email}</span>
-      </Dropdown.Header>
-      <Dropdown.Item>View Profile</Dropdown.Item>
-      <Dropdown.Divider />
-      <Dropdown.Item
-        onClick={() => {
-          signOut();
-          localStorage.removeItem("user");
-        }}
-      >
-        Sign out
-      </Dropdown.Item>
+      {email ? (
+        <>
+          <Dropdown.Header>
+            <span className="block text-sm">{name}</span>
+            <span className="block truncate text-sm font-medium">{email}</span>
+          </Dropdown.Header>
+          <Dropdown.Item>View Profile</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={() => {
+              signOut();
+              localStorage.removeItem("user");
+            }}
+          >
+            Sign out
+          </Dropdown.Item>
+        </>
+      ) : null}
     </Dropdown>
   );
 }
