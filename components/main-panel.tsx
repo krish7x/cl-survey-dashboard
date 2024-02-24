@@ -46,35 +46,38 @@ export default function MainPanel({
       </div>
 
       {surveys.length ? (
-        surveys.map(({ id, surveyName, updatedAt }) => (
-          <div
-            key={"survey-" + id}
-            className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
-          >
-            <div className="flex w-full justify-between px-2" items-center>
-              <div className="flex gap-2 group">
-                <SurevyIcon />
-                <div className="flex flex-col gap-1 py-2">
-                  <h3 className="text-txtBlack text-sm font-medium">
-                    {surveyName}
-                  </h3>
-                  {/* TODO */}
-                  <p className="text-xs text-txtPurple">
-                    Linked to Project . Last modified: {updatedAt}
-                  </p>
+        surveys.map(
+          ({ id, surveyName, project: { projectName }, lastModifiedDate }) => (
+            <div
+              key={"survey-" + id}
+              className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
+            >
+              <div className="flex w-full justify-between px-2" items-center>
+                <div className="flex gap-2 group">
+                  <SurevyIcon />
+                  <div className="flex flex-col gap-1 py-2">
+                    <h3 className="text-txtBlack text-sm font-medium">
+                      {surveyName}
+                    </h3>
+                    {/* TODO */}
+                    <p className="text-xs text-txtPurple">
+                      Linked to <strong>{projectName}</strong> . Last modified:{" "}
+                      <strong>{lastModifiedDate}</strong>
+                    </p>
+                  </div>
                 </div>
+                <Trash2
+                  color="#25292D"
+                  className="mt-3"
+                  onClick={() => {
+                    setOpenModal(true);
+                    setSurveyId(id);
+                  }}
+                />
               </div>
-              <Trash2
-                color="#25292D"
-                className="mt-3"
-                onClick={() => {
-                  setOpenModal(true);
-                  setSurveyId(id);
-                }}
-              />
             </div>
-          </div>
-        ))
+          )
+        )
       ) : (
         <div className="flex flex-col justify-center items-center flex-1 gap-2">
           <Image

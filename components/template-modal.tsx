@@ -215,11 +215,11 @@ export default memo(function TemplateModal({
   );
 
   const addQuestionValidation = useMemo(() => {
-    if (!templateQuestion.length) return true;
+    if (!templateQuestion.length && !createClicked) return true;
     return (
       templateQuestion.length && templateQuestion.every((val) => val.title)
     );
-  }, [templateQuestion]);
+  }, [createClicked, templateQuestion]);
 
   const onClickDeleteTemplateQuestion = useCallback(
     (inx: number) => {
@@ -232,7 +232,7 @@ export default memo(function TemplateModal({
   );
 
   const validateCreateTemplate = useMemo(() => {
-    if (templateQuestion.length < 2) return false;
+    if (templateQuestion.length < 2) return true;
     return !addQuestionValidation;
   }, [addQuestionValidation, templateQuestion]);
 

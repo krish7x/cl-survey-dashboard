@@ -26,10 +26,6 @@ export interface IOptions {
   name: string;
 }
 
-interface SurveyJsonData {
-  [key: string]: string;
-}
-
 export interface ISurvey {
   id: number;
   projectId: number;
@@ -37,7 +33,23 @@ export interface ISurvey {
   description: string;
   userId: number;
   templateId: number;
-  surveyJsonData: object | null;
+  surveyJsonData: SurveyJsonData;
+  createdAt: string;
+  updatedAt: string;
+  project: Project;
+  template?: null;
+  lastModifiedDate: string;
+  lastModifiedHours: string;
+}
+export interface SurveyJsonData {
+  key15: string;
+  key16: string;
+}
+export interface Project {
+  id: number;
+  projectName: string;
+  userId: number;
+  description: string;
   createdAt: string;
   updatedAt: string;
 }
