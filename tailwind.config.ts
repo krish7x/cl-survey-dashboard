@@ -37,7 +37,7 @@ const config: Config = {
         modalBorder: "#EDEDED",
         starStroke: "#7E3AF2",
         surveyGreen: "#008000",
-        surveyYellow: "#ffff00",
+        surveyYellow: " #cccc00",
         surveyRed: "#ff0000"
       },
       width: {
