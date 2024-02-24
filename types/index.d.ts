@@ -41,3 +41,8 @@ export interface ISurvey {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ITemplate {
+  id: number,
+  name: string
+}
