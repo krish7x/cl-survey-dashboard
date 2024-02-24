@@ -9,6 +9,7 @@ import MainPanel from "./main-panel";
 import TemplateModal from "./template-modal";
 import { AxiosError } from "axios";
 import NpsSurvey from "./nps-survey";
+import MultiSelectQuestion from "./multi-select-question";
 
 interface IProjectDetails {
   title: string;
@@ -100,7 +101,8 @@ export default function Dashboard() {
         showModal={showTemplateModal}
         setShowModal={setShowTemplateModal}
       />
-      <NpsSurvey />
+      <MultiSelectQuestion />
+      {/* <NpsSurvey /> */}
       {/* <MainPanel
         surveys={surveys}
         onClickDeleteSurvey={onClickDeleteSurvey}
