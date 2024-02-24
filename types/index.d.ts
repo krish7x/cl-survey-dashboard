@@ -41,3 +41,24 @@ export interface ISurvey {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IOptionJson {
+  optionPosition: string;
+  options: IOptions[];
+}
+
+export interface ITemplateQuestion {
+  title: string;
+  description: string;
+  optionTypeId: number | string;
+  optionTypeName?: string;
+  optionsJson?: IOptionJson;
+  isAdded?: boolean;
+}
+
+export interface ITemplateRequest {
+  projectId?: number;
+  templateName?: string;
+  description?: string;
+  templateJsonData?: Record<string, any>;
+}

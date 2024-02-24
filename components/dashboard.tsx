@@ -2,25 +2,27 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import Sidebar from "./sidebar";
 import ProjectModal from "./project-modal";
 import { axiosInstance } from "@/utils/axios";
-import { IProject, ISurvey } from "@/types";
-import { useAtomValue } from "jotai";
-import { userAtom } from "@/store/atom";
+import { IProject, ISurvey, ITemplateRequest } from "@/types";
+import { useAtom, useAtomValue } from "jotai";
+import { templateQuestionsAtom, userAtom } from "@/store/atom";
 import MainPanel from "./main-panel";
 import TemplateModal from "./template-modal";
 import { AxiosError } from "axios";
+import TemplateCreateModal from "./template-create-modal";
 
-interface IProjectDetails {
+interface ICreateModalDetails {
   title: string;
   description: string;
 }
 
 export default function Dashboard() {
   const user = useAtomValue(userAtom);
-
+  const [template, setTemplate] = useAtom(templateQuestionsAtom);
   const [showProjectModal, setSetshowProjectModal] = useState<boolean>(false);
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
+  const [showTemplateCreateModal, setShowTemplateCreateModal] = useState(false);
   const [projectDetails, setProjectDetails] = useReducer(
-    (state: IProjectDetails, diff: Partial<IProjectDetails>) => ({
+    (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
       ...state,
       ...diff,
     }),
@@ -29,8 +31,19 @@ export default function Dashboard() {
       description: "",
     }
   );
+  const [templateDetails, setTemplateDetails] = useReducer(
+    (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
+      ...state,
+      ...diff,
+    }),
+    {
+      title: "",
+      description: "",
+    }
+  );
+
   const [projects, setProjects] = useState<IProject[]>([]);
-  const [currentProject, setCurrentProject] = useState<IProject | null>(null);
+  const [currentProject, setCurrentProject] = useState<IProject>();
   const [surveys, setSurveys] = useState<ISurvey[]>([]);
 
   useEffect(() => {
@@ -79,6 +92,21 @@ export default function Dashboard() {
     [surveys]
   );
 
+  const onClickTemplateCreate = useCallback(() => {
+    const reqObj: ITemplateRequest = {
+      projectId: currentProject?.id,
+      templateName: templateDetails?.title,
+      description: templateDetails?.description,
+      templateJsonData: template,
+    };
+    axiosInstance.post("/templates/create", reqObj).then(() => {
+      setTemplate([]);
+      setTemplateDetails({ title: "", description: "" });
+      setShowTemplateCreateModal(false);
+      setShowTemplateModal(false);
+    });
+  }, [currentProject?.id, templateDetails?.title, templateDetails?.description, template, setTemplate]);
+
   return (
     <div className="flex w-full h-full overflow-hidden">
       <Sidebar
@@ -98,6 +126,15 @@ export default function Dashboard() {
       <TemplateModal
         showModal={showTemplateModal}
         setShowModal={setShowTemplateModal}
+        setShowCreateModal={setShowTemplateCreateModal}
+      />
+      <TemplateCreateModal
+        showModal={showTemplateCreateModal}
+        setShowModal={setShowTemplateCreateModal}
+        title={templateDetails.title}
+        description={templateDetails.description}
+        setTemplateDetails={setTemplateDetails}
+        onClickCreate={onClickTemplateCreate}
       />
       <MainPanel
         surveys={surveys}

@@ -36,14 +36,19 @@ const config: Config = {
         hoverBg: "#E1EBED",
         modalBorder: "#EDEDED",
         starStroke: "#7E3AF2",
+        radio: "#62686f",
+        modalBtnGreen: "#5dd55d",
       },
       width: {
         skeleton: "272px",
         templateLeft: "470px",
+        modalLeftPanel: "30%",
+        modalRightPanel: "70%",
       },
       display: ["group-hover"],
       height: {
         templateModal: "80vh",
+        footer: "82px"
       },
       margin: {
         modalHeader: "25vw",

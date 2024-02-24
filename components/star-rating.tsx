@@ -1,6 +1,5 @@
 "use client";
 import { Star } from "lucide-react";
-import { useState } from "react";
 
 export default function StarRating({
   starCount = 5,

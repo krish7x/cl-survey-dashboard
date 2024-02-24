@@ -5,6 +5,8 @@ import { AlertOctagon, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { ISurvey } from "@/types";
 import SurevyIcon from "./survey-icon";
+import Image from "next/image";
+import src from "../public/not-found.png";
 
 export default function MainPanel({
   surveys,
@@ -21,7 +23,7 @@ export default function MainPanel({
   const [surveyId, setSurveyId] = useState<number>(0);
 
   return (
-    <div className="px-10 flex flex-col gap-5 py-6 w-full h-full overflow-scroll">
+    <div className="px-10 bg-white flex flex-col gap-5 py-6 w-full h-full overflow-scroll">
       <div className="flex justify-between items-center">
         <h1 className="text-txtBlack font-semibold">Surveys</h1>
         {isAdmin && (
@@ -43,37 +45,50 @@ export default function MainPanel({
         )}
       </div>
 
-      {surveys.length
-        ? surveys.map(({ id, surveyName, updatedAt }) => (
-            <div
-              key={"survey-" + id}
-              className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
-            >
-              <div className="flex w-full justify-between px-2" items-center>
-                <div className="flex gap-2 group">
-                  <SurevyIcon />
-                  <div className="flex flex-col gap-1 py-2">
-                    <h3 className="text-txtBlack text-sm font-medium">
-                      {surveyName}
-                    </h3>
-                    {/* TODO */}
-                    <p className="text-xs text-txtPurple">
-                      Linked to Project . Last modified: {updatedAt}
-                    </p>
-                  </div>
+      {surveys.length ? (
+        surveys.map(({ id, surveyName, updatedAt }) => (
+          <div
+            key={"survey-" + id}
+            className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
+          >
+            <div className="flex w-full justify-between px-2" items-center>
+              <div className="flex gap-2 group">
+                <SurevyIcon />
+                <div className="flex flex-col gap-1 py-2">
+                  <h3 className="text-txtBlack text-sm font-medium">
+                    {surveyName}
+                  </h3>
+                  {/* TODO */}
+                  <p className="text-xs text-txtPurple">
+                    Linked to Project . Last modified: {updatedAt}
+                  </p>
                 </div>
-                <Trash2
-                  color="#25292D"
-                  className="mt-3"
-                  onClick={() => {
-                    setOpenModal(true);
-                    setSurveyId(id);
-                  }}
-                />
               </div>
+              <Trash2
+                color="#25292D"
+                className="mt-3"
+                onClick={() => {
+                  setOpenModal(true);
+                  setSurveyId(id);
+                }}
+              />
             </div>
-          ))
-        : null}
+          </div>
+        ))
+      ) : (
+        <div className="flex flex-col justify-center items-center flex-1 gap-2">
+          <Image
+            src={src}
+            alt="survey"
+            width={72}
+            height={72}
+            className="mb-1"
+          />
+          <h1 className="text-txtBlack font-semibold text-2xl">
+            No Surveys found for this project!
+          </h1>
+        </div>
+      )}
 
       <Modal
         show={openModal}

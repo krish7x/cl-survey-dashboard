@@ -1,18 +1,18 @@
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
 
-export default function ProjectModal({
+export default function TemplateCreateModal({
   showModal,
   setShowModal,
   title,
   description,
-  setProjectDetails,
+  setTemplateDetails,
   onClickCreate,
 }: {
   showModal: boolean;
   setShowModal: (value: boolean) => void;
   title: string;
   description: string;
-  setProjectDetails: (value: object) => void;
+  setTemplateDetails: (value: object) => void;
   onClickCreate: () => void;
 }) {
   return (
@@ -21,18 +21,18 @@ export default function ProjectModal({
       <Modal.Body>
         <div className="space-y-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Create New Project
+            Create New Template
           </h3>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="projectTitle" value="Project title" />
+              <Label htmlFor="templateTitle" value="Template title" />
             </div>
             <TextInput
-              id="projectTitle"
+              id="templateTitle"
               placeholder="title.."
               value={title}
               onChange={(event) =>
-                setProjectDetails({
+                setTemplateDetails({
                   title: event.target.value,
                 })
               }
@@ -48,7 +48,7 @@ export default function ProjectModal({
               placeholder="description.."
               value={description}
               onChange={(event) =>
-                setProjectDetails({
+                setTemplateDetails({
                   description: event.target.value,
                 })
               }

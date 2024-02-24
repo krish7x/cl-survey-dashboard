@@ -4,13 +4,19 @@ export default function Radio({
   options,
   onChange,
   checkedId,
+  stacked = true,
 }: {
   options: IOptions[];
   onChange: (id: string | number) => void;
   checkedId?: string | number;
+  stacked?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className={`flex ${
+        stacked ? "flex-col" : "flex-wrap gap-x-6 gap-y-2"
+      } gap-2`}
+    >
       {options.map(({ id, name }, inx) => (
         <div className="flex items-center mb-4" key={"radio-button-" + inx}>
           <input
@@ -24,7 +30,7 @@ export default function Radio({
           />
           <label
             htmlFor={`${id}`}
-            className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className="ms-2 text-sm font-normal text-radio select-none"
           >
             {name}
           </label>

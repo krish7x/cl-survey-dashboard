@@ -14,7 +14,7 @@ export default function SidebarComponent({
 }: {
   setShowModal: (flag: boolean) => void;
   projects: IProject[];
-  currentProject: IProject | null;
+  currentProject?: IProject;
   setCurrentProject: (data: IProject) => void;
 }) {
   const user = useAtomValue(userAtom);
