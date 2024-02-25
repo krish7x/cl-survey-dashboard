@@ -12,17 +12,15 @@ export default memo(function GoogleUserSetup({ user }: { user: IGoogleUser }) {
     const userStr = localStorage.getItem("user");
     if (!userStr) {
       axiosInstance.get(`/users/get?email=${user?.email}`).then((res) => {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...res.data[0],
-            googleUserName: user.name,
-            googleUserEmail: user.email,
-            googleUserImage: user.image,
-            googleUserExpiry: user.expires,
-          })
-        );
-        setUser(res.data[0]);
+        const data = {
+          ...res.data[0],
+          googleUserName: user.name,
+          googleUserEmail: user.email,
+          googleUserImage: user.image,
+          googleUserExpiry: user.expires,
+        };
+        localStorage.setItem("user", JSON.stringify(data));
+        setUser(data);
       });
     } else {
       setUser(JSON.parse(userStr));
