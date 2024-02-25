@@ -19,10 +19,10 @@ export default function Select({
       {options.map(({ id, name }, inx) => (
         <Button
           key={"button-" + inx}
-          outline={!selectedOptions.includes(id)}
+          outline={!selectedOptions?.includes(id)}
           size={"lg"}
           className={`items-start hover:opacity-70 ${
-            selectedOptions.includes(inx) ? "bg-starStroke" : ""
+            selectedOptions?.includes(inx) ? "bg-starStroke" : ""
           }`}
           gradientDuoTone="purpleToBlue"
           onClick={() => onChange(id, maxSelect)}

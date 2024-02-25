@@ -40,6 +40,9 @@ const config: Config = {
         starStroke: "#7E3AF2",
         radio: "#62686f",
         modalBtnGreen: "#5dd55d",
+        surveyGreen: "#008000",
+        surveyYellow: " #cccc00",
+        surveyRed: "#ff0000"
       },
       width: {
         skeleton: "272px",
