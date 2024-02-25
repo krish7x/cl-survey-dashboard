@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
 const config: Config = {
-  darkMode: ['selector', '[data-mode="light"]'],
+  darkMode: ["selector", '[data-mode="light"]'],
   content: [
     "./node_modules/flowbite/**/*.js",
     "./node_modules/flowbite-react/lib/**/*.js",

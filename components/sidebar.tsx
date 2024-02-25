@@ -21,7 +21,10 @@ export default function SidebarComponent({
   const isAdmin = useMemo(() => user && user.role === "admin", [user]);
 
   return (
-    <Sidebar aria-label="Default sidebar example">
+    <Sidebar
+      aria-label="Default sidebar example"
+      className="overflow-y-scroll scrollbar-hide"
+    >
       <div className="flex justify-between items-center px-5 mb-4">
         <h1 className="text-txtPurple text-md font-medium">Projects</h1>
         <Tooltip content="Create Project" placement="top" className="w-28">
@@ -35,7 +38,7 @@ export default function SidebarComponent({
           )}
         </Tooltip>
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 ">
         {projects?.length ? (
           projects.map((data) => (
             <Sidebar.Items key={"Project-" + data.id}>

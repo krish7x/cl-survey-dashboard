@@ -1,43 +1,32 @@
 "use client";
 
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { axiosInstance } from "@/utils/axios";
-import { IOptions } from "@/types";
+import { IOptions, IProject, ISurveyModalDetails } from "@/types";
+import { useMemo } from "react";
 
 export default function SurveyModal({
   showSurveyModal,
   setshowSurveyModal,
+  surveyDetails,
+  projects,
+  templates,
+  currentProject,
   onClickCreate,
+  setSurveyDetails,
 }: {
   showSurveyModal: boolean;
   setshowSurveyModal: any;
+  surveyDetails: ISurveyModalDetails;
+  projects: IOptions[];
+  templates: IOptions[];
+  currentProject?: IProject;
   onClickCreate: () => void;
+  setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
 }) {
-  const [surveyData, setSurveyData] = useState({
-    title: "",
-    description: "",
-    project: {},
-    template: {},
-  });
-
-  const [projects, setProjects] = useState<IOptions[]>([]);
-  const [templates, setTemplates] = useState<IOptions[]>([]);
-
-  useEffect(() => {
-    axiosInstance.get("/projects/get").then((res) => {
-      setProjects(res.data);
-    });
-    setTemplates([
-      { id: 1, name: "temp1" },
-      { id: 2, name: "temp2" },
-    ]);
-  }, []);
-
-  const handleChangeText = (key: any, val: any) => {
-    setSurveyData((state) => ({ ...state, [key]: val }));
-  };
-
+  const validation = useMemo(() => {
+    const { title, description, projectId, templateId } = surveyDetails;
+    return title && description && projectId && templateId;
+  }, [surveyDetails]);
   return (
     <Modal
       show={showSurveyModal}
@@ -47,7 +36,7 @@ export default function SurveyModal({
     >
       <Modal.Header />
       <Modal.Body>
-        <div className="space-y-6">
+        <div className="space-y-4">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
             Create New Survey
           </h3>
@@ -59,9 +48,13 @@ export default function SurveyModal({
               id="title"
               type="text"
               placeholder="title.."
-              value={surveyData.title}
+              value={surveyDetails.title}
               required
-              onChange={(e) => handleChangeText("title", e.target.value)}
+              onChange={(e) =>
+                setSurveyDetails({
+                  title: e.target.value,
+                })
+              }
             />
           </div>
           <div>
@@ -71,8 +64,13 @@ export default function SurveyModal({
             <Textarea
               id="description"
               placeholder="description.."
-              value={surveyData.description}
-              onChange={(e) => handleChangeText("description", e.target.value)}
+              value={surveyDetails.description}
+              onChange={(e) =>
+                setSurveyDetails({
+                  description: e.target.value,
+                })
+              }
+              className="h-16 p-3"
               required
             />
           </div>
@@ -83,13 +81,24 @@ export default function SurveyModal({
             </div>
             <select
               id="small"
-              className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(e) =>
+                setSurveyDetails({
+                  projectId: +e.target.value,
+                })
+              }
             >
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              {projects.length
+                ? projects.map(({ id, name }) => (
+                    <option
+                      key={"project-" + id}
+                      selected={id === currentProject?.id}
+                      value={id}
+                    >
+                      {name}
+                    </option>
+                  ))
+                : null}
             </select>
           </div>
 
@@ -99,18 +108,26 @@ export default function SurveyModal({
             </div>
             <select
               id="small"
-              className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(e) =>
+                setSurveyDetails({
+                  templateId: +e.target.value,
+                })
+              }
             >
-              <option selected>Choose a country</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option value={0}>Select Template</option>
+              {templates.length
+                ? templates.map(({ id, name }) => (
+                    <option key={"project-" + id} value={id}>
+                      {name}
+                    </option>
+                  ))
+                : null}
             </select>
           </div>
 
           <div className="w-full">
-            <Button style={{}} onClick={onClickCreate}>
+            <Button disabled={Boolean(!validation)} onClick={onClickCreate}>
               Create
             </Button>
           </div>

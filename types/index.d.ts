@@ -38,7 +38,7 @@ export interface ISurvey {
   description: string;
   userId: number;
   templateId: number;
-  surveyJsonData: SurveyJsonData;
+  surveyJsonData?: SurveyJsonData;
   createdAt: string;
   updatedAt: string;
   project: Project;
@@ -47,14 +47,23 @@ export interface ISurvey {
   lastModifiedHours: string;
 }
 export interface SurveyJsonData {
-  key15: string;
-  key16: string;
+  [key: string]: string | number | object;
 }
 export interface Project {
   id: number;
   projectName: string;
   userId: number;
   description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ITemplate {
+  id: number;
+  projectId: number;
+  templateName: string;
+  description: string;
+  templateJsonData?: IOptionJson | IOptionJson[];
   createdAt: string;
   updatedAt: string;
 }
@@ -78,4 +87,25 @@ export interface ITemplateRequest {
   templateName?: string;
   description?: string;
   templateJsonData?: Record<string, any>;
+}
+
+export interface ICreateModalDetails {
+  title: string;
+  description: string;
+}
+
+export interface ISurveyModalDetails {
+  title: string;
+  description: string;
+  projectId: number | null;
+  templateId?: number;
+}
+
+export interface ISurveyRequest {
+  projectId?: number;
+  surveyName: string;
+  description: string;
+  userId?: number;
+  templateId?: number;
+  surveyJsonData: SurveyJsonData;
 }

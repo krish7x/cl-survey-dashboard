@@ -19,7 +19,7 @@ export default function ProjectModal({
     <Modal show={showModal} size="md" onClose={() => setShowModal(false)} popup>
       <Modal.Header />
       <Modal.Body>
-        <div className="space-y-6">
+        <div className="space-y-4">
           <h3 className="text-lg font-medium text-gray-900">
             Create New Project
           </h3>
@@ -31,6 +31,7 @@ export default function ProjectModal({
               id="title"
               type="text"
               placeholder="title.."
+              className="focus:border-none focus:outline-none"
               value={title}
               onChange={(event) =>
                 setProjectDetails({
@@ -53,6 +54,7 @@ export default function ProjectModal({
                   description: event.target.value,
                 })
               }
+              className="h-16 p-3"
               required
             />
           </div>

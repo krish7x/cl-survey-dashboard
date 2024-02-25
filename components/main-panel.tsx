@@ -12,9 +12,11 @@ export default function MainPanel({
   surveys,
   setShowTemplateModal,
   onClickDeleteSurvey,
+  setShowSurveyModal,
 }: {
   surveys: ISurvey[];
   setShowTemplateModal: (value: boolean) => void;
+  setShowSurveyModal: (value: boolean) => void;
   onClickDeleteSurvey: (id: number) => void;
 }) {
   const user = useAtomValue(userAtom);
@@ -23,7 +25,7 @@ export default function MainPanel({
   const [surveyId, setSurveyId] = useState<number>(0);
 
   return (
-    <div className="px-10 bg-white flex flex-col py-6 w-full h-full overflow-scrol  scrollbar-hide">
+    <div className="px-10 bg-white flex flex-col py-6 w-full h-full overflow-y-scroll scrollbar-hide">
       <div className="flex justify-between items-center">
         <h1 className="text-txtBlack font-semibold">Surveys</h1>
         {isAdmin && (
@@ -36,7 +38,10 @@ export default function MainPanel({
                 Create Template <Plus size={16} color="#fff" />
               </div>
             </Button>
-            <Button gradientDuoTone="purpleToBlue">
+            <Button
+              gradientDuoTone="purpleToBlue"
+              onClick={() => setShowSurveyModal(true)}
+            >
               <div className="flex gap-1 items-center">
                 Create Survey <Plus size={16} color="#fff" />
               </div>
