@@ -1,7 +1,7 @@
 import { IOptions, ITemplateQuestion } from "@/types";
 import { Button, FloatingLabel, Modal } from "flowbite-react";
 import { File, Plus, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState, memo } from "react";
+import { useCallback, useEffect, useMemo, useState, memo, useRef } from "react";
 import { useAtom } from "jotai";
 import { templateQuestionsAtom } from "@/store/atom";
 import Radio from "./radio";
@@ -236,6 +236,17 @@ export default memo(function TemplateModal({
     return !addQuestionValidation;
   }, [addQuestionValidation, templateQuestion]);
 
+  const dragQuestion = useRef<number>(0);
+  const draggedOverQuestion = useRef<number>(0);
+
+  const handleSort = useCallback(() => {
+    const clone = [...templateQuestion];
+    const tempQuestion = clone[dragQuestion.current];
+    clone[dragQuestion.current] = clone[draggedOverQuestion.current];
+    clone[draggedOverQuestion.current] = tempQuestion;
+    setTemplateQuestion(clone);
+  }, [setTemplateQuestion, templateQuestion]);
+
   return (
     <Modal
       show={showModal}
@@ -254,9 +265,14 @@ export default memo(function TemplateModal({
             {templateQuestion?.map(({ title }, inx) => {
               return (
                 <div
-                  className="flex flex-col"
+                  className="flex flex-col cursor-grab"
                   key={"question-" + inx}
                   onClick={() => handleSelectQuestion(inx)}
+                  draggable
+                  onDragStart={() => (dragQuestion.current = inx)}
+                  onDragEnter={() => (draggedOverQuestion.current = inx)}
+                  onDragEnd={handleSort}
+                  onDragOver={(e) => e.preventDefault()}
                 >
                   <div
                     className={`flex w-full border px-3 py-2 rounded-md cursor-pointer border-l-4 hover:bg-green-100 border-l-navLeftBorder
@@ -277,7 +293,7 @@ export default memo(function TemplateModal({
                         {!title && <File className="stroke-gray-300 ml-2" />}
                       </div>
                       <Trash2
-                        className="stroke-txtBlack ml-2 opacity-80"
+                        className="stroke-txtPurple ml-2 opacity-80"
                         onClick={() => onClickDeleteTemplateQuestion(inx)}
                       />
                     </div>
@@ -295,7 +311,7 @@ export default memo(function TemplateModal({
               </div>
             </Button>
           </div>
-          {createClicked && (
+          {createClicked ? (
             <div className="flex flex-col pt-8 pb-16 px-6 gap-6 w-modalRightPanel overflow-y-scroll scrollbar-hide">
               <div className="flex gap-2 w-full ">
                 <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2 w-full">
@@ -392,7 +408,7 @@ export default memo(function TemplateModal({
                             options.length > 1
                               ? "cursor-pointer"
                               : "cursor-not-allowed"
-                          } stroke-neutral-500`}
+                          } stroke-txtPurple`}
                           onClick={() => onClickDeleteOption(id)}
                         />
                       </div>
@@ -421,6 +437,12 @@ export default memo(function TemplateModal({
                   question
                 </Button>
               ) : null}
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center m-auto">
+              <h1 className="text-sidebarText font-medium text-xl">
+                Click on add a question to continue...
+              </h1>
             </div>
           )}
         </div>
