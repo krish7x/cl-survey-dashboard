@@ -20,7 +20,7 @@ export default function TemplateCreateModal({
       <Modal.Header />
       <Modal.Body>
         <div className="space-y-6">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+          <h3 className="text-lg font-medium text-gray-900">
             Create New Template
           </h3>
           <div>

@@ -23,7 +23,7 @@ export default function MainPanel({
   const [surveyId, setSurveyId] = useState<number>(0);
 
   return (
-    <div className="px-10 bg-white flex flex-col py-6 w-full h-full overflow-scroll">
+    <div className="px-10 bg-white flex flex-col py-6 w-full h-full overflow-scrol  scrollbar-hide">
       <div className="flex justify-between items-center">
         <h1 className="text-txtBlack font-semibold">Surveys</h1>
         {isAdmin && (
@@ -109,8 +109,8 @@ export default function MainPanel({
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
-            <AlertOctagon className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <AlertOctagon className="mx-auto mb-4 h-14 w-14 text-gray-400" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
               Are you sure you want to delete this survey?
             </h3>
             <div className="flex justify-center gap-4">

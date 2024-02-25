@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
+  darkMode: ['variant', '&:(.light *)'],
   content: [
     "./node_modules/flowbite/**/*.js",
     "./node_modules/flowbite-react/lib/**/*.js",
@@ -48,7 +50,7 @@ const config: Config = {
       display: ["group-hover"],
       height: {
         templateModal: "80vh",
-        footer: "82px"
+        footer: "82px",
       },
       margin: {
         modalHeader: "25vw",
@@ -73,6 +75,23 @@ const config: Config = {
       "900": "900ms",
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".scrollbar-hide": {
+          /* IE and Edge */
+          "-ms-overflow-style": "none",
+
+          /* Firefox */
+          "scrollbar-width": "none",
+
+          /* Safari and Chrome */
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        },
+      });
+    }),
+  ],
 };
 export default config;

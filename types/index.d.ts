@@ -4,6 +4,10 @@ export interface IUser {
   email: string;
   role: string;
   isAdmin: boolean;
+  googleUserName: string;
+  googleUserEmail: string;
+  googleUserImage: string;
+  googleUserExpiry: string;
 }
 
 export interface IGoogleUser {

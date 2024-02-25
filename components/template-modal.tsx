@@ -250,7 +250,7 @@ export default memo(function TemplateModal({
           </span>
         </Modal.Header>
         <div className="p-0 flex h-templateModal w-full ">
-          <div className="flex gap-4 flex-col w-modalLeftPanel border-r border-modalBorder p-6 overflow-y-scroll pb-16">
+          <div className="flex gap-4 flex-col w-modalLeftPanel border-r border-modalBorder p-6 overflow-y-scroll scrollbar-hide pb-16">
             {templateQuestion?.map(({ title }, inx) => {
               return (
                 <div
@@ -296,7 +296,7 @@ export default memo(function TemplateModal({
             </Button>
           </div>
           {createClicked && (
-            <div className="flex flex-col pt-8 pb-16 px-6 gap-6 w-modalRightPanel overflow-y-scroll">
+            <div className="flex flex-col pt-8 pb-16 px-6 gap-6 w-modalRightPanel overflow-y-scroll scrollbar-hide">
               <div className="flex gap-2 w-full ">
                 <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2 w-full">
                   Type question title & description

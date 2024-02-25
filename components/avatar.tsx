@@ -7,9 +7,9 @@ export default function Avatarr({
   email,
   image,
 }: {
-  name: string;
-  email: string;
-  image: string;
+  name?: string;
+  email?: string;
+  image?: string;
 }) {
   return (
     <Dropdown
