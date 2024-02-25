@@ -45,7 +45,7 @@ export default function MainPanel({
         )}
       </div>
 
-      <div className="flex flex-col pt-5">
+      <div className="flex flex-col pt-5 h-full">
         {surveys.length ? (
           surveys.map(
             ({
@@ -74,7 +74,7 @@ export default function MainPanel({
                   </div>
                   <Trash2
                     color="#25292D"
-                    className="mt-3"
+                    className="mt-4"
                     onClick={() => {
                       setOpenModal(true);
                       setSurveyId(id);
@@ -85,15 +85,15 @@ export default function MainPanel({
             )
           )
         ) : (
-          <div className="flex flex-col justify-center items-center flex-1 gap-2">
+          <div className="flex flex-col justify-center items-center flex-1 gap-2 mb-20">
             <Image
               src={src}
               alt="survey"
               width={72}
               height={72}
-              className="mb-1"
+              className="mb-1 stroke-sidebarText opacity-60"
             />
-            <h1 className="text-txtBlack font-semibold text-2xl">
+            <h1 className="text-sidebarText font-medium text-3xl">
               No Surveys found for this project!
             </h1>
           </div>
