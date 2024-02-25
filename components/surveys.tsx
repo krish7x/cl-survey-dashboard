@@ -36,8 +36,7 @@ export default function Surveys({
                   </div>
                 </div>
                 <Trash2
-                  color="#25292D"
-                  className="mt-4"
+                  className="mt-4 stroke-txtPurple"
                   onClick={() => {
                     setOpenModal(true);
                     setSurveyId(id);

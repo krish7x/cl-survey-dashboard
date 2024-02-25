@@ -1,8 +1,8 @@
 import { Trash2 } from "lucide-react";
-import SurevyIcon from "./survey-icon";
 import Image from "next/image";
 import { ITemplate } from "@/types";
 import src from "../public/not-found.png";
+import TemplateIcon from "./template-icon";
 
 export default function Templates({
   templates,
@@ -24,7 +24,7 @@ export default function Templates({
             >
               <div className="flex w-full justify-between px-2" items-center>
                 <div className="flex gap-4 group">
-                  <SurevyIcon />
+                  <TemplateIcon />
                   <div className="flex flex-col gap-1 py-2">
                     <h3 className="text-txtBlack text-sm font-medium">
                       {templateName}
@@ -41,8 +41,7 @@ export default function Templates({
                   </div>
                 </div>
                 <Trash2
-                  color="#25292D"
-                  className="mt-4"
+                  className="mt-4 stroke-txtPurple"
                   onClick={() => {
                     setOpenModal(true);
                     setTemplateId(id);
