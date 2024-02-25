@@ -158,9 +158,14 @@ export default function Dashboard() {
         const index = arr.findIndex((val) => val.id === id);
         arr.splice(index, 1);
         setTemplates(arr);
+
+        const arr2 = [...currentTemplates];
+        const index2 = arr2.findIndex((val) => val.id === id);
+        arr2.splice(index2, 1);
+        setCurrentTemplates(arr2);
       });
     },
-    [templates]
+    [currentTemplates, templates]
   );
 
   const onClickDeleteProject = useCallback(

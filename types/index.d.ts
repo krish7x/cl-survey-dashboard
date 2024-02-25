@@ -63,9 +63,13 @@ export interface ITemplate {
   projectId: number;
   templateName: string;
   description: string;
-  templateJsonData?: IOptionJson | IOptionJson[];
+  templateJsonData?: IOptionJson[];
   createdAt: string;
   updatedAt: string;
+  surveys?: ISurvey[];
+  project?: IProject;
+  lastModifiedDate: string;
+  lastModifiedHours: string;
 }
 
 export interface IOptionJson {
