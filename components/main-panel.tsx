@@ -1,15 +1,18 @@
 import { tabsAtom, userAtom } from "@/store/atom";
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import { useAtomValue } from "jotai";
 import { AlertOctagon, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { ISurvey, ITemplate } from "@/types";
 import Surveys from "./surveys";
 import Templates from "./templates";
+import MainPanelSkeleton from "./main-panel-skeleton";
 
 export default function MainPanel({
   surveys,
   templates,
+  isSurveyLoaded,
+  isTemplateLoaded,
   setShowTemplateModal,
   onClickDeleteSurvey,
   onClickDeleteTemplate,
@@ -17,6 +20,8 @@ export default function MainPanel({
 }: {
   surveys: ISurvey[];
   templates: ITemplate[];
+  isSurveyLoaded: boolean;
+  isTemplateLoaded: boolean;
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
   onClickDeleteSurvey: (id: number) => void;
@@ -56,18 +61,28 @@ export default function MainPanel({
       </div>
 
       {tab.id === 1 ? (
-        <Surveys
-          surveys={surveys}
-          setOpenModal={setOpenModal}
-          setSurveyId={setSurveyId}
-        />
-      ) : (
-        <Templates
-          templates={templates}
-          setOpenModal={setOpenModal}
-          setTemplateId={setTemplateId}
-        />
-      )}
+        isSurveyLoaded ? (
+          <Surveys
+            surveys={surveys}
+            setOpenModal={setOpenModal}
+            setSurveyId={setSurveyId}
+          />
+        ) : (
+          <MainPanelSkeleton />
+        )
+      ) : null}
+
+      {tab.id === 2 ? (
+        isTemplateLoaded ? (
+          <Templates
+            templates={templates}
+            setOpenModal={setOpenModal}
+            setTemplateId={setTemplateId}
+          />
+        ) : (
+          <MainPanelSkeleton />
+        )
+      ) : null}
 
       <Modal
         show={openModal}

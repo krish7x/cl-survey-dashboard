@@ -65,6 +65,8 @@ export default function Dashboard() {
   const [surveys, setSurveys] = useState<ISurvey[]>([]);
   const [templates, setTemplates] = useState<ITemplate[]>([]);
   const [currentTemplates, setCurrentTemplates] = useState<ITemplate[]>([]);
+  const [isSurveyLoaded, setIsSurveyLoaded] = useState(false);
+  const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
 
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
@@ -79,6 +81,7 @@ export default function Dashboard() {
       setSurveyDetails({
         projectId: currentProject?.id,
       });
+      setIsTemplateLoaded(true);
     });
   }, [currentProject?.id]);
 
@@ -88,6 +91,7 @@ export default function Dashboard() {
         .get(`/surveys/get?project.id=${currentProject?.id}`)
         .then((res) => {
           setSurveys([]);
+          setIsSurveyLoaded(true);
           setSurveys(res.data);
         })
         .catch((err: AxiosError) => {
@@ -267,6 +271,8 @@ export default function Dashboard() {
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateModal}
         setShowSurveyModal={setShowSurveyModal}
+        isSurveyLoaded={isSurveyLoaded}
+        isTemplateLoaded={isTemplateLoaded}
       />
     </div>
   );
