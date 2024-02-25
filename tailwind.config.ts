@@ -42,7 +42,7 @@ const config: Config = {
         modalBtnGreen: "#5dd55d",
         surveyGreen: "#008000",
         surveyYellow: " #cccc00",
-        surveyRed: "#ff0000"
+        surveyRed: "#ff0000",
       },
       width: {
         skeleton: "272px",

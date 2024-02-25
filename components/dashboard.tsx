@@ -76,13 +76,20 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    axiosInstance.get(`/templates/get`).then((res) => {
-      setTemplates(res.data);
-      setSurveyDetails({
-        projectId: currentProject?.id,
+    axiosInstance
+      .get(`/templates/get`)
+      .then((res) => {
+        setTemplates(res.data);
+        setSurveyDetails({
+          projectId: currentProject?.id,
+        });
+        setIsTemplateLoaded(true);
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 404) {
+          setIsTemplateLoaded(true);
+        }
       });
-      setIsTemplateLoaded(true);
-    });
   }, [currentProject?.id]);
 
   useEffect(() => {
@@ -96,6 +103,7 @@ export default function Dashboard() {
         })
         .catch((err: AxiosError) => {
           if (err.response?.status === 404) {
+            setIsSurveyLoaded(true);
             setSurveys([]);
           }
         });
@@ -126,8 +134,10 @@ export default function Dashboard() {
     };
     axiosInstance.post("/projects/create", reqBody).then((res) => {
       setShowProjectModal(false);
+      setProjects([res.data, ...projects]);
+      setCurrentProject(res.data);
     });
-  }, [projectDetails.description, projectDetails.title, user?.id]);
+  }, [projectDetails.description, projectDetails.title, projects, user?.id]);
 
   const onClickDeleteSurvey = useCallback(
     (id: number) => {
@@ -151,6 +161,19 @@ export default function Dashboard() {
       });
     },
     [templates]
+  );
+
+  const onClickDeleteProject = useCallback(
+    (id: number) => {
+      axiosInstance.delete(`/projects/delete/${id}`).then(() => {
+        const arr = [...projects];
+        const index = arr.findIndex((val) => val.id === id);
+        arr.splice(index, 1);
+        setProjects(arr);
+        setCurrentProject(arr[0]);
+      });
+    },
+    [projects]
   );
 
   const onClickTemplateCreate = useCallback(() => {
@@ -226,7 +249,20 @@ export default function Dashboard() {
         projects={projects}
         currentProject={currentProject}
         setCurrentProject={setCurrentProject}
+        onDeleteProject={onClickDeleteProject}
       />
+      <MainPanel
+        surveys={surveys}
+        templates={currentTemplates}
+        onClickDeleteSurvey={onClickDeleteSurvey}
+        onClickDeleteTemplate={onClickDeleteTemplate}
+        setShowTemplateModal={setShowTemplateModal}
+        setShowSurveyModal={setShowSurveyModal}
+        isSurveyLoaded={isSurveyLoaded}
+        isTemplateLoaded={isTemplateLoaded}
+      />
+
+      {/* modals goes here */}
       <ProjectModal
         showModal={showProjectModal}
         setShowModal={setShowProjectModal}
@@ -263,16 +299,6 @@ export default function Dashboard() {
         description={templateDetails.description}
         setTemplateDetails={setTemplateDetails}
         onClickCreate={onClickTemplateCreate}
-      />
-      <MainPanel
-        surveys={surveys}
-        templates={currentTemplates}
-        onClickDeleteSurvey={onClickDeleteSurvey}
-        onClickDeleteTemplate={onClickDeleteTemplate}
-        setShowTemplateModal={setShowTemplateModal}
-        setShowSurveyModal={setShowSurveyModal}
-        isSurveyLoaded={isSurveyLoaded}
-        isTemplateLoaded={isTemplateLoaded}
       />
     </div>
   );
