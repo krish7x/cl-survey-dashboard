@@ -83,7 +83,9 @@ export interface ITemplateQuestion {
 }
 
 export interface ITemplateRequest {
-  projectId?: number;
+  project: {
+    id?: number;
+  };
   templateName?: string;
   description?: string;
   templateJsonData?: Record<string, any>;
@@ -102,7 +104,9 @@ export interface ISurveyModalDetails {
 }
 
 export interface ISurveyRequest {
-  projectId?: number;
+  project: {
+    id?: number;
+  };
   surveyName: string;
   description: string;
   userId?: number;

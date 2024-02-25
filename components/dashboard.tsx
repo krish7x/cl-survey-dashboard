@@ -71,7 +71,7 @@ export default function Dashboard() {
       setProjects(res.data);
       setCurrentProject(res.data[0]);
     });
-  }, [showProjectModal]);
+  }, []);
 
   useEffect(() => {
     axiosInstance.get(`/templates/get`).then((res) => {
@@ -80,12 +80,12 @@ export default function Dashboard() {
         projectId: currentProject?.id,
       });
     });
-  }, [currentProject?.id, showSurveyModal]);
+  }, [currentProject?.id]);
 
   useEffect(() => {
     if (currentProject?.id && tabs.id === 1) {
       axiosInstance
-        .get(`/surveys/get?projectId=${currentProject?.id}`)
+        .get(`/surveys/get?project.id=${currentProject?.id}`)
         .then((res) => {
           setSurveys([]);
           setSurveys(res.data);
@@ -101,7 +101,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (currentProject?.id && tabs.id === 2) {
       axiosInstance
-        .get(`/templates/get?projectId=${currentProject?.id}`)
+        .get(`/templates/get?project.id=${currentProject?.id}`)
         .then((res) => {
           setCurrentTemplates([]);
           setCurrentTemplates(res.data);
@@ -151,7 +151,9 @@ export default function Dashboard() {
 
   const onClickTemplateCreate = useCallback(() => {
     const reqObj: ITemplateRequest = {
-      projectId: currentProject?.id,
+      project: {
+        id: currentProject?.id,
+      },
       templateName: templateDetails?.title,
       description: templateDetails?.description,
       templateJsonData: template,
@@ -176,7 +178,9 @@ export default function Dashboard() {
 
   const onClickSurveyCreate = useCallback(() => {
     const reqObj: ISurveyRequest = {
-      projectId: currentProject?.id,
+      project: {
+        id: currentProject?.id,
+      },
       surveyName: surveyDetails?.title,
       description: surveyDetails?.description,
       userId: user?.id,
