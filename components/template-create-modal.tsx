@@ -30,6 +30,7 @@ export default function TemplateCreateModal({
             <TextInput
               id="templateTitle"
               placeholder="title.."
+              className="focus:border-none focus:outline-none"
               value={title}
               onChange={(event) =>
                 setTemplateDetails({
@@ -44,7 +45,7 @@ export default function TemplateCreateModal({
               <Label htmlFor="projectDescription" value="Description" />
             </div>
             <Textarea
-              id="projectDescription"
+              id="description"
               placeholder="description.."
               value={description}
               onChange={(event) =>
@@ -52,6 +53,7 @@ export default function TemplateCreateModal({
                   description: event.target.value,
                 })
               }
+              className="h-16 p-3"
               required
             />
           </div>

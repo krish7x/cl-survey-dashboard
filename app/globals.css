@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+textarea:focus,
+input:focus {
+  outline-width: 1;
+  outline-color: #7e3af2;
+}
+*:focus {
+  outline-width: 1;
+  outline-color: #7e3af2;
+}
