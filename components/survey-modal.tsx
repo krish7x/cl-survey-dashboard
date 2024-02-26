@@ -34,7 +34,7 @@ export default function SurveyModal({
 
   const templates: IOptions[] | undefined = useMemo(
     () =>
-      currentProject?.templates.map((val) => ({
+      currentProject?.templates?.map((val) => ({
         id: val.id,
         name: val.templateName,
       })),

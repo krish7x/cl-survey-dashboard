@@ -1,7 +1,6 @@
 "use client";
 import { IOptions } from "@/types";
 import { Button } from "flowbite-react";
-import { useCallback, useState } from "react";
 
 export default function Select({
   options,

@@ -77,7 +77,7 @@ export default function SurveyModal({
               isProcessing={isProcessing}
               onClick={onSendSurvey}
             >
-              Create
+              Send survey
             </Button>
           </div>
         </div>
