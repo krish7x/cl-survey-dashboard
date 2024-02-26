@@ -117,3 +117,50 @@ export interface ISurveyRequest {
   templateId?: number;
   surveyJsonData: SurveyJsonData;
 }
+
+
+export interface ISurveyPage {
+  id: number;
+  contactId: number;
+  contactEmailId: string;
+  surveyUrl: string;
+  uuid: string;
+  metaData: string;
+  isEmailSent: boolean;
+  createdAt: string;
+  updatedAt: string;
+  survey: Survey;
+}
+export interface Survey {
+  id: number;
+  surveyName: string;
+  description: string;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  project: Project;
+  template: Template;
+}
+export interface Project {
+  id: number;
+  projectName: string;
+  userId: number;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface Template {
+  id: number;
+  templateName: string;
+  description: string;
+  templateJsonData?: (TemplateJsonDataEntity)[] | null;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface TemplateJsonDataEntity {
+  title: string;
+  isAdded: boolean;
+  description: string;
+  optionTypeId: number;
+  optionTypeName: string;
+}
