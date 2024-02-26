@@ -59,10 +59,10 @@ export default function OtherQuestionPage(props: {
       case "Star Rating": {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/2"
+            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/3"
             key={val}
           >
-            <h1>{`${val}) ${item.title}`}</h1>
+            <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
             <StarRating
               starCount={5}
               rating={item.answer ? item.answer : 0}
@@ -74,10 +74,10 @@ export default function OtherQuestionPage(props: {
       case "Multiple choice - Single Select": {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/2"
+            className="flex flex-col  gap-4 md:gap-6 w-full md:w-1/3"
             key={val}
           >
-            <h1>{`${val}) ${item.title}`}</h1>
+            <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
             <Select
               options={item?.optionsJson?.options}
               selectedOptions={item.answer ? item.answer : null}
@@ -93,10 +93,10 @@ export default function OtherQuestionPage(props: {
       case "Multiple choice - multi select": {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/2"
+            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/3"
             key={val}
           >
-            <h1>{`${val}) ${item.title}`}</h1>
+            <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
             <Select
               options={item?.optionsJson?.options}
               maxSelect={2}
@@ -112,10 +112,10 @@ export default function OtherQuestionPage(props: {
       case "Radio button": {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/2"
+            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/3"
             key={val}
           >
-            <h1>{`${val}) ${item.title}`}</h1>
+            <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
             <Radio
               options={item?.optionsJson?.options}
               onChange={(radioId) => onRadioChange(radioId, item.id)}
@@ -130,7 +130,7 @@ export default function OtherQuestionPage(props: {
 
   return (
     <div className="flex flex-col items-center pt-20 md:pt-28 pb-8 px-6 w-full h-full gap-6">
-      <div className="flex flex-col items-center w-full gap-6">
+      <div className="flex flex-col items-center w-full gap-7 md:gap-10">
         {questions.map((item: any, key: any) => renderQuestion(item, key + 1))}
       </div>
       <Button color="blue" size={"xl"} pill onClick={onSubmit}>

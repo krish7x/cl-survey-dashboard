@@ -281,7 +281,7 @@ export default memo(function TemplateModal({
       <Modal.Body className="p-0 overflow-hidden">
         <Modal.Header className="border-b border-b-modalBorder relative">
           <span className="absolute left-[calc(50%-96px)]">
-            Build your template
+            {disableCreateButton ? "Template details" : "Build your template"}
           </span>
         </Modal.Header>
         <div className="p-0 flex h-templateModal w-full ">

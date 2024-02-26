@@ -43,6 +43,7 @@ const config: Config = {
         surveyGreen: "#008000",
         surveyYellow: " #cccc00",
         surveyRed: "#ff0000",
+        radioText: "#111827",
       },
       width: {
         skeleton: "272px",

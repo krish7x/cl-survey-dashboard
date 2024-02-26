@@ -65,7 +65,7 @@ export default function SurveyModal({
       <Modal.Body>
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Create New Survey
+            {disableCreateButton ? "Survey details" : "Create New Survey"}
           </h3>
           <div>
             <div className="mb-2 block">
