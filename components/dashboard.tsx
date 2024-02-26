@@ -5,6 +5,7 @@ import { axiosInstance } from "@/utils/axios";
 import {
   ICreateModalDetails,
   IProject,
+  ISendSurveyDetails,
   ISurvey,
   ISurveyModalDetails,
   ISurveyRequest,
@@ -19,6 +20,8 @@ import TemplateModal from "./template-modal";
 import { AxiosError } from "axios";
 import TemplateCreateModal from "./template-create-modal";
 import SurveyModal from "./survey-modal";
+import SendSurveyModal from "./send-survey-modal";
+import SurveyDataTable from "./survey-data-table";
 
 export default function Dashboard() {
   const user = useAtomValue(userAtom);
@@ -28,6 +31,7 @@ export default function Dashboard() {
   const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [showTemplateCreateModal, setShowTemplateCreateModal] = useState(false);
+  const [showSurveyContacts, setShowSurveyContacts] = useState(false);
   const [projectDetails, setProjectDetails] = useReducer(
     (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
       ...state,
@@ -61,6 +65,21 @@ export default function Dashboard() {
     }
   );
 
+  const [sendSurveyDetails, setSendSurveyDetails] = useReducer(
+    (state: ISendSurveyDetails, diff: Partial<ISendSurveyDetails>) => ({
+      ...state,
+      ...diff,
+    }),
+    {
+      contactName: "",
+      contactEmailId: "",
+      survey: {
+        id: 0,
+      },
+      metaData: "",
+    }
+  );
+
   const [projects, setProjects] = useState<IProject[]>([]);
   const [currentProject, setCurrentProject] = useState<IProject>();
   const [surveys, setSurveys] = useState<ISurvey[]>([]);
@@ -70,11 +89,14 @@ export default function Dashboard() {
   const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
   const [createProjectLoading, setCreateProjectLoading] = useState(false);
   const [createSurveyLoading, setCreateSurveyLoading] = useState(false);
+  const [createSendSurveyLoading, setCreateSendSurveyLoading] = useState(false);
   const [disableSurveyCreateButton, setDisableSurveyCreateButton] =
     useState(false);
   const [disableTemplateCreateButton, setDisableTemplateCreateButton] =
     useState(false);
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
+  const [showSendSurveyModal, setShowSendSurveyModal] = useState(false);
+  const [sendSurveyId, setSendSurveyId] = useState<number>(0);
 
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
@@ -257,7 +279,7 @@ export default function Dashboard() {
       description: surveyDetails?.description,
       userId: user?.id,
       template: {
-        id: surveyDetails?.templateId
+        id: surveyDetails?.templateId,
       },
       surveyJsonData: {},
     };
@@ -269,13 +291,14 @@ export default function Dashboard() {
         templateId: 0,
       });
       const arr = [...surveys];
-      arr.push({
+      arr.unshift({
         ...res.data,
         project: {
           id: currentProject?.id,
           projectName: currentProject?.projectName || "",
         },
       });
+      setSurveys(arr);
       setShowSurveyModal(false);
       setCreateSurveyLoading(false);
     });
@@ -288,6 +311,47 @@ export default function Dashboard() {
     surveys,
     user?.id,
   ]);
+
+  const onClickSendSurvey = useCallback((id: number) => {
+    setShowSendSurveyModal(true);
+    setSendSurveyId(id);
+  }, []);
+
+  const onClickShowSurveyContacts = (id: number) => {
+    setShowSurveyContacts(true);
+    console.log('Survey id', id)
+  }
+
+  const onSendSurvey = useCallback(() => {
+    setCreateSendSurveyLoading(true);
+    const reqObj: ISendSurveyDetails = {
+      ...sendSurveyDetails,
+      metaData: new Date().toLocaleString(),
+      survey: {
+        id: sendSurveyId,
+      },
+    };
+    axiosInstance
+      .post("/surveys/send", reqObj)
+      .then((res) => {
+        if (res.data) {
+          setSendSurveyDetails({
+            contactName: "",
+            contactEmailId: "",
+            survey: {
+              id: 0,
+            },
+            metaData: "",
+          });
+          setShowSendSurveyModal(false);
+          setCreateSendSurveyLoading(false);
+        }
+      })
+      .catch(() => {
+        setShowSendSurveyModal(false);
+        setCreateSendSurveyLoading(false);
+      });
+  }, [sendSurveyDetails, sendSurveyId]);
 
   const resetForCreateSurvey = useCallback(() => {
     setSurveyDetails({
@@ -321,7 +385,9 @@ export default function Dashboard() {
         onClickViewTemplate={onClickViewTemplate}
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateModal}
+        onClickSendSurvey={onClickSendSurvey}
         setShowSurveyModal={setShowSurveyModal}
+        onClickShowSurveyContacts={onClickShowSurveyContacts}
         isSurveyLoaded={isSurveyLoaded}
         isTemplateLoaded={isTemplateLoaded}
         resetForCreateSurvey={resetForCreateSurvey}
@@ -338,13 +404,6 @@ export default function Dashboard() {
         setProjectDetails={setProjectDetails}
         onClickCreate={onClickProjectCreate}
       />
-      <TemplateModal
-        showModal={showTemplateModal}
-        setShowModal={setShowTemplateModal}
-        setShowCreateModal={setShowTemplateCreateModal}
-        disableCreateButton={disableTemplateCreateButton}
-        resetForCreateTemplate={resetForCreateTemplate}
-      />
       <SurveyModal
         showSurveyModal={showSurveyModal}
         setshowSurveyModal={setShowSurveyModal}
@@ -360,6 +419,21 @@ export default function Dashboard() {
         disableCreateButton={disableSurveyCreateButton}
         resetForCreateSurvey={resetForCreateSurvey}
       />
+      <SendSurveyModal
+        showSendSurveyModal={showSendSurveyModal}
+        setShowSendSurveyModal={setShowSendSurveyModal}
+        sendSurveyDetails={sendSurveyDetails}
+        setSendSurveyDetails={setSendSurveyDetails}
+        onSendSurvey={onSendSurvey}
+        isProcessing={createSendSurveyLoading}
+      />
+      <TemplateModal
+        showModal={showTemplateModal}
+        setShowModal={setShowTemplateModal}
+        setShowCreateModal={setShowTemplateCreateModal}
+        disableCreateButton={disableTemplateCreateButton}
+        resetForCreateTemplate={resetForCreateTemplate}
+      />
       <TemplateCreateModal
         showModal={showTemplateCreateModal}
         setShowModal={setShowTemplateCreateModal}
@@ -370,6 +444,8 @@ export default function Dashboard() {
         createTemplateLoading={createTemplateLoading}
         disableCreateButton={disableTemplateCreateButton}
       />
+      <SurveyDataTable showModal = {showSurveyContacts}
+          setShowModal={() => setShowSurveyContacts(false)} />
     </div>
   );
 }

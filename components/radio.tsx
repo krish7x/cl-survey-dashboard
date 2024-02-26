@@ -35,7 +35,7 @@ export default function Radio({
           />
           <label
             htmlFor={`${id}`}
-            className="ms-2 text-sm font-normal text-radio select-none"
+            className="ms-2 text-sm font-normal text-radioText select-none"
           >
             {name}
           </label>

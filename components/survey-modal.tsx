@@ -29,13 +29,12 @@ export default function SurveyModal({
 }) {
   const validation = useMemo(() => {
     const { title, description, projectId, templateId } = surveyDetails;
-    console.log({ title, description, projectId, templateId });
     return title && description && projectId && templateId;
   }, [surveyDetails]);
 
   const templates: IOptions[] | undefined = useMemo(
     () =>
-      currentProject?.templates.map((val) => ({
+      currentProject?.templates?.map((val) => ({
         id: val.id,
         name: val.templateName,
       })),
@@ -52,7 +51,6 @@ export default function SurveyModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSurveyModal, currentProject?.id, setSurveyDetails]);
 
-
   return (
     <Modal
       show={showSurveyModal}
@@ -67,7 +65,7 @@ export default function SurveyModal({
       <Modal.Body>
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Create New Survey
+            {disableCreateButton ? "Survey details" : "Create New Survey"}
           </h3>
           <div>
             <div className="mb-2 block">

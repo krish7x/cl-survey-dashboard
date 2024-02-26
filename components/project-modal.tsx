@@ -22,9 +22,7 @@ export default function ProjectModal({
       <Modal.Header />
       <Modal.Body>
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-gray-900">
-            Create New Project
-          </h3>
+          <h3 className="text-lg font-medium text-gray-900"></h3>
           <div>
             <div className="mb-2 block">
               <Label htmlFor="title" value="Project title" />

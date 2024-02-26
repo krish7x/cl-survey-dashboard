@@ -1,19 +1,24 @@
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Send, Trash, Trash2, Users } from "lucide-react";
 import SurevyIcon from "./survey-icon";
 import Image from "next/image";
 import { ISurvey } from "@/types";
 import src from "../public/not-found.png";
+import { Tooltip } from "flowbite-react";
 
 export default function Surveys({
   surveys,
   setOpenModal,
   setSurveyId,
   onClickViewSurvey,
+  onClickSendSurvey,
+  onClickShowSurveyContacts,
 }: {
   surveys: ISurvey[];
   setOpenModal: (value: boolean) => void;
   setSurveyId: (value: number) => void;
   onClickViewSurvey: (id: number) => void;
+  onClickSendSurvey: (id: number) => void;
+  onClickShowSurveyContacts: (id: number) => void;
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -37,18 +42,35 @@ export default function Surveys({
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <Eye
-                    className="mt-4 stroke-txtPurple"
-                    onClick={() => onClickViewSurvey(id)}
-                  />
-                  <Trash2
-                    className="mt-4 stroke-txtPurple"
+                <div className="flex gap-3 items-center">
+                  <Tooltip content="View Survey Contacts">
+                    <Users
+                      className="mt-4 mx-2 stroke-txtPurple"
+                      onClick={() => onClickShowSurveyContacts(id)}
+                    />
+                  </Tooltip>
+                  <Tooltip content="Trigger Survey">
+                    <Send
+                      className="mt-4 mx-2 stroke-txtPurple"
+                      onClick={() => onClickSendSurvey(id)}
+                    />
+                  </Tooltip>
+                  <Tooltip content="Survey Details">
+                    <Eye
+                      className="mt-4 mx-2 stroke-txtPurple"
+                      onClick={() => onClickViewSurvey(id)}
+                    />
+                  </Tooltip>
+                  <Tooltip content="Delete Survey">
+                  <Trash
+                    className="mt-4 mx-2 stroke-txtPurple"
                     onClick={() => {
                       setOpenModal(true);
                       setSurveyId(id);
                     }}
                   />
+                  </Tooltip>
+                
                 </div>
               </div>
             </div>

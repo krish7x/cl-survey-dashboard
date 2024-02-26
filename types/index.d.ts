@@ -159,3 +159,13 @@ export interface Template {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ISendSurveyDetails {
+  contactName: string;
+  contactEmailId: string;
+  phone?: number;
+  survey: {
+    id: number;
+  };
+  metaData: string;
+}

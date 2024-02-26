@@ -108,7 +108,7 @@ export default memo(function TemplateModal({
   }, [options]);
 
   const validation = useMemo(() => {
-    if (!templateQuestion.length) {
+    if (templateQuestion.length === 1) {
       if (questionTitle && questionDescription) return true;
     }
     if (!questionTitle || !questionDescription) return false;
@@ -146,8 +146,8 @@ export default memo(function TemplateModal({
     const tempQuestion: ITemplateQuestion = {
       title: "",
       description: "",
-      optionTypeId: "",
-      optionTypeName: "",
+      optionTypeId: 1,
+      optionTypeName: "NPS Rating",
     };
     resetAll();
     setCreateClicked(true);
@@ -268,7 +268,6 @@ export default memo(function TemplateModal({
     setTemplateQuestion(clone);
   }, [setTemplateQuestion, templateQuestion]);
 
-  console.log({ disableCreateButton });
   return (
     <Modal
       show={showModal}
@@ -282,7 +281,7 @@ export default memo(function TemplateModal({
       <Modal.Body className="p-0 overflow-hidden">
         <Modal.Header className="border-b border-b-modalBorder relative">
           <span className="absolute left-[calc(50%-96px)]">
-            Build your template
+            {disableCreateButton ? "Template details" : "Build your template"}
           </span>
         </Modal.Header>
         <div className="p-0 flex h-templateModal w-full ">
@@ -383,8 +382,8 @@ export default memo(function TemplateModal({
                 <Radio
                   options={questionTypeOptions}
                   stacked={false}
-                  checked={!templateQuestion.length}
-                  checkOption={!templateQuestion.length ? 0 : null}
+                  checked={templateQuestion.length === 1}
+                  checkOption={templateQuestion.length === 1 ? 0 : null}
                   onChange={(id) => {
                     setSelectQuestionType(id);
                     if (id === 1 || id === 2) resetOptionValues();
@@ -481,7 +480,7 @@ export default memo(function TemplateModal({
         </div>
       </Modal.Body>
       <Modal.Footer className="border-t h-footer flex justify-between items-center border-t-modalBorder relative">
-        {!templateQuestion.length ? (
+        {templateQuestion.length === 1 ? (
           <div
             className="flex items-center p-4 mb-4 mt-2 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
             role="alert"

@@ -25,7 +25,9 @@ export default function TemplateCreateModal({
       <Modal.Body>
         <div className="space-y-6">
           <h3 className="text-lg font-medium text-gray-900">
-            Create New Template
+            {disableCreateButton
+              ? "View template details"
+              : "Create new template"}
           </h3>
           <div>
             <div className="mb-2 block">
