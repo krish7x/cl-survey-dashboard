@@ -291,10 +291,6 @@ export default function Dashboard() {
           id: val.id,
           name: val.projectName,
         }))}
-        templates={templates.map((val) => ({
-          id: val.id,
-          name: val.templateName,
-        }))}
         currentProject={currentProject}
       />
       <TemplateCreateModal

@@ -1,15 +1,16 @@
 "use client";
 
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
-import { IOptions, IProject, ISurveyModalDetails } from "@/types";
-import { useMemo } from "react";
+import { IOptions, IProject, ISurveyModalDetails, ITemplate } from "@/types";
+import { useEffect, useMemo, useState } from "react";
+import { axiosInstance } from "@/utils/axios";
+import { AxiosError } from "axios";
 
 export default function SurveyModal({
   showSurveyModal,
   setshowSurveyModal,
   surveyDetails,
   projects,
-  templates,
   currentProject,
   onClickCreate,
   setSurveyDetails,
@@ -18,15 +19,34 @@ export default function SurveyModal({
   setshowSurveyModal: any;
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
-  templates: IOptions[];
   currentProject?: IProject;
   onClickCreate: () => void;
   setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
 }) {
+  const [templates, setTemplates] = useState<IOptions[]>([]);
   const validation = useMemo(() => {
     const { title, description, projectId, templateId } = surveyDetails;
     return title && description && projectId && templateId;
   }, [surveyDetails]);
+
+  useEffect(() => {
+    console.log({ currentProject });
+    axiosInstance
+      .get(`/templates/get?project.id=${surveyDetails?.projectId}`)
+      .then((res) => {
+        const data = (res.data || []).map((val: ITemplate) => ({
+          id: val.id,
+          name: val.templateName,
+        }));
+        setTemplates(data);
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status === 404) {
+          setTemplates([]);
+        }
+      });
+  }, [currentProject, surveyDetails]);
+  console.log({ templates });
   return (
     <Modal
       show={showSurveyModal}
