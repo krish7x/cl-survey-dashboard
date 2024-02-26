@@ -11,10 +11,10 @@ export default function Survey() {
   const path = usePathname();
 
   useEffect(() => {
-    const surveyId = path.split("/")[2];
-    if (surveyId) {
+    const uuid = path.split("/")[2];
+    if (uuid) {
       axiosInstance
-        .get(`/surveys/fetch/${surveyId}`)
+        .get(`/surveys/fetch/${uuid}`)
         .then((res) => {
           if (res.data) {
             setIsAuthorized(true);
