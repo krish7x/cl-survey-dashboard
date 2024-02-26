@@ -24,12 +24,16 @@ export default function CustomerSurvey() {
     const otherQuestionList = survey?.template?.templateJsonData?.filter(
       (item: any) => item.optionTypeName !== "NPS Rating"
     );
-    if (npsQuestionList?.length >= 1) {
-      setCurrentPage("NPS");
-      setNpsQuestions(npsQuestionList[0]);
-    }
-    if (otherQuestionList?.length >= 1) {
-      setOtherQuestions(otherQuestionList.map((item: any, key: any) => ({id: key+1, ...item})));
+    if(survey?.isSurveyCompleted){
+      setCurrentPage("THANKS_COMPLETED")
+    }else {
+      if (npsQuestionList?.length >= 1) {
+        setCurrentPage("NPS");
+        setNpsQuestions(npsQuestionList[0]);
+      }
+      if (otherQuestionList?.length >= 1) {
+        setOtherQuestions(otherQuestionList.map((item: any, key: any) => ({id: key+1, ...item})));
+      }
     }
   }, [survey]);
 
@@ -40,10 +44,14 @@ export default function CustomerSurvey() {
         .get(`/surveys/fetch/${surveyId}`)
         .then((res) => {
           if (res.data) {
+            if(res.data?.isSurveyCompleted){
+              
+            }
             setIsAuthorized(true);
             setSurvey({
               contactId: res.data?.contactId,
               uuid: res.data?.uuid,
+              isSurveyCompleted: res.data?.isSurveyCompleted,
               ...res.data?.survey});
           }
         })
@@ -111,8 +119,9 @@ export default function CustomerSurvey() {
         />
       )}
       {currentPage==="THANKS" && (
-        <ThanksScreen />
+        <ThanksScreen flag="SURVEY_COMPLETED"/>
       )}
-    </div>
+      {currentPage === "THANKS_COMPLETED" && <ThanksScreen flag="SURVEY_ALREADY_COMPLETED" />}
+    </div >
   );
 }
