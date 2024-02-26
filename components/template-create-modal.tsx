@@ -2,6 +2,7 @@ import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
 
 export default function TemplateCreateModal({
   showModal,
+  createTemplateLoading,
   setShowModal,
   title,
   description,
@@ -9,6 +10,7 @@ export default function TemplateCreateModal({
   onClickCreate,
 }: {
   showModal: boolean;
+  createTemplateLoading: boolean;
   setShowModal: (value: boolean) => void;
   title: string;
   description: string;
@@ -59,7 +61,11 @@ export default function TemplateCreateModal({
           </div>
 
           <div className="w-full">
-            <Button onClick={onClickCreate} disabled={!title || !description}>
+            <Button
+              isProcessing={createTemplateLoading}
+              onClick={onClickCreate}
+              disabled={!title || !description}
+            >
               Create
             </Button>
           </div>

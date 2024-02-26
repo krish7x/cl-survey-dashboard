@@ -67,6 +67,9 @@ export default function Dashboard() {
   const [currentTemplates, setCurrentTemplates] = useState<ITemplate[]>([]);
   const [isSurveyLoaded, setIsSurveyLoaded] = useState(false);
   const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
+  const [createProjectLoading, setCreateProjectLoading] = useState(false);
+  const [createSurveyLoading, setCreateSurveyLoading] = useState(false);
+  const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
 
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
@@ -127,6 +130,7 @@ export default function Dashboard() {
   }, [currentProject, tabs.id]);
 
   const onClickProjectCreate = useCallback(() => {
+    setCreateProjectLoading(true);
     const reqBody = {
       projectName: projectDetails.title,
       description: projectDetails.description,
@@ -136,6 +140,7 @@ export default function Dashboard() {
       setShowProjectModal(false);
       setProjects([res.data, ...projects]);
       setCurrentProject(res.data);
+      setCreateProjectLoading(false);
     });
   }, [projectDetails.description, projectDetails.title, projects, user?.id]);
 
@@ -182,6 +187,7 @@ export default function Dashboard() {
   );
 
   const onClickTemplateCreate = useCallback(() => {
+    setCreateSurveyLoading(true);
     const reqObj: ITemplateRequest = {
       project: {
         id: currentProject?.id,
@@ -190,6 +196,7 @@ export default function Dashboard() {
       description: templateDetails?.description,
       templateJsonData: template,
     };
+    setCreateTemplateLoading(true);
     axiosInstance.post("/templates/create", reqObj).then((res) => {
       setTemplates([...templates, res.data]);
       setCurrentTemplates([...currentTemplates, res.data]);
@@ -197,6 +204,8 @@ export default function Dashboard() {
       setTemplateDetails({ title: "", description: "" });
       setShowTemplateCreateModal(false);
       setShowTemplateModal(false);
+      setCreateTemplateLoading(false);
+      setCreateSurveyLoading(true);
     });
   }, [
     currentProject?.id,
@@ -269,6 +278,7 @@ export default function Dashboard() {
 
       {/* modals goes here */}
       <ProjectModal
+        createProjectLoading={createProjectLoading}
         showModal={showProjectModal}
         setShowModal={setShowProjectModal}
         title={projectDetails.title}
@@ -292,6 +302,7 @@ export default function Dashboard() {
           name: val.projectName,
         }))}
         currentProject={currentProject}
+        createSurveyLoading={createSurveyLoading}
       />
       <TemplateCreateModal
         showModal={showTemplateCreateModal}
@@ -300,6 +311,7 @@ export default function Dashboard() {
         description={templateDetails.description}
         setTemplateDetails={setTemplateDetails}
         onClickCreate={onClickTemplateCreate}
+        createTemplateLoading={createTemplateLoading}
       />
     </div>
   );

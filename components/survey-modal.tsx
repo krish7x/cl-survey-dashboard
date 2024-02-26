@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 
 export default function SurveyModal({
   showSurveyModal,
+  createSurveyLoading,
   setshowSurveyModal,
   surveyDetails,
   projects,
@@ -16,6 +17,7 @@ export default function SurveyModal({
   setSurveyDetails,
 }: {
   showSurveyModal: boolean;
+  createSurveyLoading: boolean;
   setshowSurveyModal: any;
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
@@ -147,7 +149,11 @@ export default function SurveyModal({
           </div>
 
           <div className="w-full">
-            <Button disabled={Boolean(!validation)} onClick={onClickCreate}>
+            <Button
+              isProcessing={createSurveyLoading}
+              disabled={Boolean(!validation)}
+              onClick={onClickCreate}
+            >
               Create
             </Button>
           </div>
