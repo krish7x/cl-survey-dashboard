@@ -3,8 +3,6 @@
 import { useAtom, useAtomValue } from "jotai";
 import { tabsAtom, userAtom } from "@/store/atom";
 import Avatar from "./avatar";
-import Image from "next/image";
-import src from "../public/logo.png";
 import HeaderSkeleton from "./header-skeleton";
 import { useMemo } from "react";
 
@@ -30,15 +28,8 @@ export default function Header() {
     <div className="px-4 md:pl-6 md:pr-10 pt-3 border-b border-b-navBorder flex items-center justify-between w-full ">
       {user?.googleUserEmail ? (
         <div className="flex gap-1 items-center">
-          <Image
-            src={src}
-            alt="survey"
-            width={32}
-            height={32}
-            className="mb-1"
-          />
           <div className="flex relative gap-1 justify-center items-center">
-            <h1 className="text-txtBlack font-semibold">
+            <h1 className="text-txtBlack font-semibold ml-2">
               Hi, {user?.googleUserName}{" "}
             </h1>
             <div className="animate-wave">👋</div>
