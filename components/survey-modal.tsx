@@ -13,11 +13,13 @@ export default function SurveyModal({
   surveyDetails,
   projects,
   currentProject,
+  disableCreateButton,
   onClickCreate,
   setSurveyDetails,
 }: {
   showSurveyModal: boolean;
   createSurveyLoading: boolean;
+  disableCreateButton: boolean;
   setshowSurveyModal: any;
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
@@ -32,7 +34,6 @@ export default function SurveyModal({
   }, [surveyDetails]);
 
   useEffect(() => {
-    console.log({ currentProject });
     axiosInstance
       .get(`/templates/get?project.id=${surveyDetails?.projectId}`)
       .then((res) => {
@@ -48,7 +49,7 @@ export default function SurveyModal({
         }
       });
   }, [currentProject, surveyDetails]);
-  console.log({ templates });
+
   return (
     <Modal
       show={showSurveyModal}
@@ -140,23 +141,28 @@ export default function SurveyModal({
               <option value={0}>Select Template</option>
               {templates.length
                 ? templates.map(({ id, name }) => (
-                    <option key={"project-" + id} value={id}>
+                    <option
+                      key={"project-" + id}
+                      value={id}
+                      selected={id === surveyDetails?.templateId}
+                    >
                       {name}
                     </option>
                   ))
                 : null}
             </select>
           </div>
-
-          <div className="w-full">
-            <Button
-              isProcessing={createSurveyLoading}
-              disabled={Boolean(!validation)}
-              onClick={onClickCreate}
-            >
-              Create
-            </Button>
-          </div>
+          {!disableCreateButton ? (
+            <div className="w-full">
+              <Button
+                isProcessing={createSurveyLoading}
+                disabled={disableCreateButton || Boolean(!validation)}
+                onClick={onClickCreate}
+              >
+                Create
+              </Button>
+            </div>
+          ) : null}
         </div>
       </Modal.Body>
     </Modal>

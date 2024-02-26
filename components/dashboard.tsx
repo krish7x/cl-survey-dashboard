@@ -9,6 +9,7 @@ import {
   ISurveyModalDetails,
   ISurveyRequest,
   ITemplate,
+  ITemplateQuestion,
   ITemplateRequest,
 } from "@/types";
 import { useAtom, useAtomValue } from "jotai";
@@ -69,6 +70,10 @@ export default function Dashboard() {
   const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
   const [createProjectLoading, setCreateProjectLoading] = useState(false);
   const [createSurveyLoading, setCreateSurveyLoading] = useState(false);
+  const [disableSurveyCreateButton, setDisableSurveyCreateButton] =
+    useState(false);
+  const [disableTemplateCreateButton, setDisableTemplateCreateButton] =
+    useState(false);
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
 
   useEffect(() => {
@@ -154,6 +159,31 @@ export default function Dashboard() {
       });
     },
     [surveys]
+  );
+
+  const onClickViewSurvey = useCallback(
+    (id: number) => {
+      const survey = surveys.find((val) => val.id === id);
+      setDisableSurveyCreateButton(true);
+      setSurveyDetails({
+        title: survey?.surveyName,
+        description: survey?.description,
+        projectId: survey?.project?.id,
+        templateId: survey?.template.id,
+      });
+      setShowSurveyModal(true);
+    },
+    [surveys]
+  );
+
+  const onClickViewTemplate = useCallback(
+    (id: number) => {
+      const template = templates.find((val) => val.id === id);
+      setDisableTemplateCreateButton(true);
+      setTemplate(template?.templateJsonData as ITemplateQuestion[]);
+      setShowTemplateModal(true);
+    },
+    [setTemplate, templates]
   );
 
   const onClickDeleteTemplate = useCallback(
@@ -269,6 +299,8 @@ export default function Dashboard() {
         surveys={surveys}
         templates={currentTemplates}
         onClickDeleteSurvey={onClickDeleteSurvey}
+        onClickViewSurvey={onClickViewSurvey}
+        onClickViewTemplate={onClickViewTemplate}
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateModal}
         setShowSurveyModal={setShowSurveyModal}
@@ -290,6 +322,7 @@ export default function Dashboard() {
         showModal={showTemplateModal}
         setShowModal={setShowTemplateModal}
         setShowCreateModal={setShowTemplateCreateModal}
+        disableCreateButton={disableTemplateCreateButton}
       />
       <SurveyModal
         showSurveyModal={showSurveyModal}
@@ -303,6 +336,7 @@ export default function Dashboard() {
         }))}
         currentProject={currentProject}
         createSurveyLoading={createSurveyLoading}
+        disableCreateButton={disableSurveyCreateButton}
       />
       <TemplateCreateModal
         showModal={showTemplateCreateModal}
@@ -312,6 +346,7 @@ export default function Dashboard() {
         setTemplateDetails={setTemplateDetails}
         onClickCreate={onClickTemplateCreate}
         createTemplateLoading={createTemplateLoading}
+        disableCreateButton={disableTemplateCreateButton}
       />
     </div>
   );

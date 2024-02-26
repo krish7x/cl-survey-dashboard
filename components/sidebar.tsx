@@ -46,7 +46,7 @@ export default function SidebarComponent({
       <div className="flex flex-col gap-1 ">
         {projects?.length ? (
           projects.map((data) => (
-            <Sidebar.Items key={"Project-" + data.id}>
+            <Sidebar.Items key={"Project-" + data.id} className="select-none">
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
                   className={`text-sidebarText text-sm py-3 flex cursor-pointer font-medium -mr-3 rounded-none ${

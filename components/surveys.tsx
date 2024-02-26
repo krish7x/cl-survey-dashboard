@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import SurevyIcon from "./survey-icon";
 import Image from "next/image";
 import { ISurvey } from "@/types";
@@ -8,10 +8,12 @@ export default function Surveys({
   surveys,
   setOpenModal,
   setSurveyId,
+  onClickViewSurvey,
 }: {
   surveys: ISurvey[];
   setOpenModal: (value: boolean) => void;
   setSurveyId: (value: number) => void;
+  onClickViewSurvey: (id: number) => void;
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -22,7 +24,7 @@ export default function Surveys({
               key={"survey-" + id}
               className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
             >
-              <div className="flex w-full justify-between px-2" items-center>
+              <div className="flex w-full justify-between px-2 items-center">
                 <div className="flex gap-4 group">
                   <SurevyIcon />
                   <div className="flex flex-col gap-1 py-2">
@@ -35,13 +37,19 @@ export default function Surveys({
                     </p>
                   </div>
                 </div>
-                <Trash2
-                  className="mt-4 stroke-txtPurple"
-                  onClick={() => {
-                    setOpenModal(true);
-                    setSurveyId(id);
-                  }}
-                />
+                <div className="flex gap-2 items-center">
+                  <Eye
+                    className="mt-4 stroke-txtPurple"
+                    onClick={() => onClickViewSurvey(id)}
+                  />
+                  <Trash2
+                    className="mt-4 stroke-txtPurple"
+                    onClick={() => {
+                      setOpenModal(true);
+                      setSurveyId(id);
+                    }}
+                  />
+                </div>
               </div>
             </div>
           )

@@ -37,7 +37,7 @@ export interface ISurvey {
   surveyName: string;
   description: string;
   userId: number;
-  templateId: number;
+  template: ITemplate,
   surveyJsonData?: SurveyJsonData;
   createdAt: string;
   updatedAt: string;
@@ -63,7 +63,7 @@ export interface ITemplate {
   projectId: number;
   templateName: string;
   description: string;
-  templateJsonData?: IOptionJson[];
+  templateJsonData?: ITemplateQuestion[];
   createdAt: string;
   updatedAt: string;
   surveys?: ISurvey[];
@@ -118,7 +118,6 @@ export interface ISurveyRequest {
   surveyJsonData: SurveyJsonData;
 }
 
-
 export interface ISurveyPage {
   id: number;
   contactId: number;
@@ -153,14 +152,7 @@ export interface Template {
   id: number;
   templateName: string;
   description: string;
-  templateJsonData?: (TemplateJsonDataEntity)[] | null;
+  templateJsonData?: ITemplateQuestion[];
   createdAt: string;
   updatedAt: string;
-}
-export interface TemplateJsonDataEntity {
-  title: string;
-  isAdded: boolean;
-  description: string;
-  optionTypeId: number;
-  optionTypeName: string;
 }

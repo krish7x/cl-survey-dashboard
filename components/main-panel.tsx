@@ -14,6 +14,8 @@ export default function MainPanel({
   isSurveyLoaded,
   isTemplateLoaded,
   setShowTemplateModal,
+  onClickViewSurvey,
+  onClickViewTemplate,
   onClickDeleteSurvey,
   onClickDeleteTemplate,
   setShowSurveyModal,
@@ -24,6 +26,8 @@ export default function MainPanel({
   isTemplateLoaded: boolean;
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
+  onClickViewSurvey: (id: number) => void;
+  onClickViewTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;
   onClickDeleteTemplate: (id: number) => void;
 }) {
@@ -66,6 +70,7 @@ export default function MainPanel({
             surveys={surveys}
             setOpenModal={setOpenModal}
             setSurveyId={setSurveyId}
+            onClickViewSurvey={onClickViewSurvey}
           />
         ) : (
           <MainPanelSkeleton />
@@ -75,6 +80,7 @@ export default function MainPanel({
       {tab.id === 2 ? (
         isTemplateLoaded ? (
           <Templates
+            onClickViewTemplate={onClickViewTemplate}
             templates={templates}
             setOpenModal={setOpenModal}
             setTemplateId={setTemplateId}
