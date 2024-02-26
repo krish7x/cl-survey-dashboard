@@ -34,15 +34,17 @@ export default function Templates({
                     <p className="text-xs text-txtPurple">
                       {(templateJsonData || [])?.length
                         ? `No of question: `
-                        : ""}{" "}
+                        : ""}
+                      {"     "}
                       {templateJsonData?.length ? (
                         <strong>{templateJsonData?.length}</strong>
                       ) : null}
-                      {"  "}Last modified: <strong>{lastModifiedDate}</strong>
+                      <span>{"  "}</span>Last modified:{" "}
+                      <strong>{lastModifiedDate}</strong>
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-3 items-center">
                   <Eye
                     className="mt-4 stroke-txtPurple"
                     onClick={() => onClickViewTemplate(id)}

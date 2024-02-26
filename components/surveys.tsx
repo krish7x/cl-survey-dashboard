@@ -1,4 +1,4 @@
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Send, Trash2 } from "lucide-react";
 import SurevyIcon from "./survey-icon";
 import Image from "next/image";
 import { ISurvey } from "@/types";
@@ -9,11 +9,13 @@ export default function Surveys({
   setOpenModal,
   setSurveyId,
   onClickViewSurvey,
+  onClickSendSurvey,
 }: {
   surveys: ISurvey[];
   setOpenModal: (value: boolean) => void;
   setSurveyId: (value: number) => void;
   onClickViewSurvey: (id: number) => void;
+  onClickSendSurvey: (id: number) => void;
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -37,7 +39,11 @@ export default function Surveys({
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-3 items-center">
+                  <Send
+                    className="mt-4 stroke-txtPurple"
+                    onClick={() => onClickSendSurvey(id)}
+                  />
                   <Eye
                     className="mt-4 stroke-txtPurple"
                     onClick={() => onClickViewSurvey(id)}
