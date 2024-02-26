@@ -257,7 +257,7 @@ export default function Dashboard() {
       description: surveyDetails?.description,
       userId: user?.id,
       template: {
-        id: surveyDetails?.templateId
+        id: surveyDetails?.templateId,
       },
       surveyJsonData: {},
     };
@@ -269,13 +269,14 @@ export default function Dashboard() {
         templateId: 0,
       });
       const arr = [...surveys];
-      arr.push({
+      arr.unshift({
         ...res.data,
         project: {
           id: currentProject?.id,
           projectName: currentProject?.projectName || "",
         },
       });
+      setSurveys(arr);
       setShowSurveyModal(false);
       setCreateSurveyLoading(false);
     });

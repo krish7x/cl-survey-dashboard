@@ -29,7 +29,6 @@ export default function SurveyModal({
 }) {
   const validation = useMemo(() => {
     const { title, description, projectId, templateId } = surveyDetails;
-    console.log({ title, description, projectId, templateId });
     return title && description && projectId && templateId;
   }, [surveyDetails]);
 
@@ -51,7 +50,6 @@ export default function SurveyModal({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSurveyModal, currentProject?.id, setSurveyDetails]);
-
 
   return (
     <Modal
