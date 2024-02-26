@@ -36,7 +36,7 @@ export default function SurveyDataTable(props: {
             <Table.Body className="divide-y">
               {surveyContactsData.map((item, val) => {
                 return (
-                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <Table.Row key={val} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {item.contactName}
                     </Table.Cell>
