@@ -14,9 +14,13 @@ export default function MainPanel({
   isSurveyLoaded,
   isTemplateLoaded,
   setShowTemplateModal,
+  onClickViewSurvey,
+  onClickViewTemplate,
   onClickDeleteSurvey,
   onClickDeleteTemplate,
   setShowSurveyModal,
+  resetForCreateSurvey,
+  resetForCreateTemplate,
 }: {
   surveys: ISurvey[];
   templates: ITemplate[];
@@ -24,8 +28,12 @@ export default function MainPanel({
   isTemplateLoaded: boolean;
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
+  onClickViewSurvey: (id: number) => void;
+  onClickViewTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;
   onClickDeleteTemplate: (id: number) => void;
+  resetForCreateSurvey: () => void;
+  resetForCreateTemplate: () => void;
 }) {
   const user = useAtomValue(userAtom);
   const tab = useAtomValue(tabsAtom);
@@ -42,7 +50,10 @@ export default function MainPanel({
           <div className="flex gap-2">
             <Button
               gradientDuoTone="purpleToBlue"
-              onClick={() => setShowTemplateModal(true)}
+              onClick={() => {
+                resetForCreateSurvey();
+                setShowTemplateModal(true);
+              }}
             >
               <div className="flex gap-1 items-center">
                 Create Template <Plus size={16} color="#fff" />
@@ -50,7 +61,10 @@ export default function MainPanel({
             </Button>
             <Button
               gradientDuoTone="purpleToBlue"
-              onClick={() => setShowSurveyModal(true)}
+              onClick={() => {
+                setShowSurveyModal(true);
+                resetForCreateTemplate();
+              }}
             >
               <div className="flex gap-1 items-center">
                 Create Survey <Plus size={16} color="#fff" />
@@ -66,6 +80,7 @@ export default function MainPanel({
             surveys={surveys}
             setOpenModal={setOpenModal}
             setSurveyId={setSurveyId}
+            onClickViewSurvey={onClickViewSurvey}
           />
         ) : (
           <MainPanelSkeleton />
@@ -75,6 +90,7 @@ export default function MainPanel({
       {tab.id === 2 ? (
         isTemplateLoaded ? (
           <Templates
+            onClickViewTemplate={onClickViewTemplate}
             templates={templates}
             setOpenModal={setOpenModal}
             setTemplateId={setTemplateId}

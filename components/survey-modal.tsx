@@ -1,37 +1,66 @@
 "use client";
 
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
-import { IOptions, IProject, ISurveyModalDetails } from "@/types";
-import { useMemo } from "react";
+import { IOptions, IProject, ISurveyModalDetails, ITemplate } from "@/types";
+import { useEffect, useMemo } from "react";
 
 export default function SurveyModal({
   showSurveyModal,
+  createSurveyLoading,
   setshowSurveyModal,
   surveyDetails,
   projects,
-  templates,
   currentProject,
+  disableCreateButton,
   onClickCreate,
   setSurveyDetails,
+  resetForCreateSurvey,
 }: {
   showSurveyModal: boolean;
+  createSurveyLoading: boolean;
+  disableCreateButton: boolean;
   setshowSurveyModal: any;
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
-  templates: IOptions[];
   currentProject?: IProject;
   onClickCreate: () => void;
   setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
+  resetForCreateSurvey: () => void;
 }) {
   const validation = useMemo(() => {
     const { title, description, projectId, templateId } = surveyDetails;
+    console.log({ title, description, projectId, templateId });
     return title && description && projectId && templateId;
   }, [surveyDetails]);
+
+  const templates: IOptions[] | undefined = useMemo(
+    () =>
+      currentProject?.templates.map((val) => ({
+        id: val.id,
+        name: val.templateName,
+      })),
+    [currentProject]
+  );
+
+  useEffect(() => {
+    if (showSurveyModal) {
+      setSurveyDetails({
+        ...surveyDetails,
+        projectId: currentProject?.id,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showSurveyModal, currentProject?.id, setSurveyDetails]);
+
+
   return (
     <Modal
       show={showSurveyModal}
       size="lg"
-      onClose={() => setshowSurveyModal(false)}
+      onClose={() => {
+        setshowSurveyModal(false);
+        resetForCreateSurvey();
+      }}
       popup
     >
       <Modal.Header />
@@ -116,21 +145,30 @@ export default function SurveyModal({
               }
             >
               <option value={0}>Select Template</option>
-              {templates.length
+              {templates?.length
                 ? templates.map(({ id, name }) => (
-                    <option key={"project-" + id} value={id}>
+                    <option
+                      key={"project-" + id}
+                      value={id}
+                      selected={id === surveyDetails?.templateId}
+                    >
                       {name}
                     </option>
                   ))
                 : null}
             </select>
           </div>
-
-          <div className="w-full">
-            <Button disabled={Boolean(!validation)} onClick={onClickCreate}>
-              Create
-            </Button>
-          </div>
+          {!disableCreateButton ? (
+            <div className="w-full">
+              <Button
+                isProcessing={createSurveyLoading}
+                disabled={disableCreateButton || Boolean(!validation)}
+                onClick={onClickCreate}
+              >
+                Create
+              </Button>
+            </div>
+          ) : null}
         </div>
       </Modal.Body>
     </Modal>

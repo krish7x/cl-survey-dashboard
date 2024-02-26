@@ -30,7 +30,7 @@ export default function SidebarComponent({
       aria-label="Default sidebar example"
       className="overflow-y-scroll scrollbar-hide w-72"
     >
-      <div className="flex justify-between items-center pl-5 pr-2 mb-4">
+      <div className="flex justify-between items-center pl-5 pr-2 mb-4 scrollbar-hide">
         <h1 className="text-txtPurple text-md font-medium">Projects</h1>
         <Tooltip content="Create Project" placement="top" className="w-28">
           {isAdmin && (
@@ -46,7 +46,7 @@ export default function SidebarComponent({
       <div className="flex flex-col gap-1 ">
         {projects?.length ? (
           projects.map((data) => (
-            <Sidebar.Items key={"Project-" + data.id}>
+            <Sidebar.Items key={"Project-" + data.id} className="select-none">
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
                   className={`text-sidebarText text-sm py-3 flex cursor-pointer font-medium -mr-3 rounded-none ${

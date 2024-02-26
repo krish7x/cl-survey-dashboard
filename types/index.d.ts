@@ -21,6 +21,7 @@ export interface IProject {
   id: number;
   projectName: string;
   userId: number;
+  templates: ITemplate[];
   description: string;
   createdAt: string;
   updatedAt: string;
@@ -37,7 +38,7 @@ export interface ISurvey {
   surveyName: string;
   description: string;
   userId: number;
-  templateId: number;
+  template: ITemplate;
   surveyJsonData?: SurveyJsonData;
   createdAt: string;
   updatedAt: string;
@@ -63,7 +64,7 @@ export interface ITemplate {
   projectId: number;
   templateName: string;
   description: string;
-  templateJsonData?: IOptionJson[];
+  templateJsonData?: ITemplateQuestion[];
   createdAt: string;
   updatedAt: string;
   surveys?: ISurvey[];
@@ -114,6 +115,47 @@ export interface ISurveyRequest {
   surveyName: string;
   description: string;
   userId?: number;
-  templateId?: number;
+  template: {
+    id?: number;
+  };
   surveyJsonData: SurveyJsonData;
+}
+
+export interface ISurveyPage {
+  id: number;
+  contactId: number;
+  contactEmailId: string;
+  surveyUrl: string;
+  uuid: string;
+  metaData: string;
+  isEmailSent: boolean;
+  createdAt: string;
+  updatedAt: string;
+  survey: Survey;
+}
+export interface Survey {
+  id: number;
+  surveyName: string;
+  description: string;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  project: Project;
+  template: Template;
+}
+export interface Project {
+  id: number;
+  projectName: string;
+  userId: number;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface Template {
+  id: number;
+  templateName: string;
+  description: string;
+  templateJsonData?: ITemplateQuestion[];
+  createdAt: string;
+  updatedAt: string;
 }

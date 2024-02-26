@@ -9,6 +9,7 @@ import {
   ISurveyModalDetails,
   ISurveyRequest,
   ITemplate,
+  ITemplateQuestion,
   ITemplateRequest,
 } from "@/types";
 import { useAtom, useAtomValue } from "jotai";
@@ -67,6 +68,13 @@ export default function Dashboard() {
   const [currentTemplates, setCurrentTemplates] = useState<ITemplate[]>([]);
   const [isSurveyLoaded, setIsSurveyLoaded] = useState(false);
   const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
+  const [createProjectLoading, setCreateProjectLoading] = useState(false);
+  const [createSurveyLoading, setCreateSurveyLoading] = useState(false);
+  const [disableSurveyCreateButton, setDisableSurveyCreateButton] =
+    useState(false);
+  const [disableTemplateCreateButton, setDisableTemplateCreateButton] =
+    useState(false);
+  const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
 
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
@@ -76,20 +84,22 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    axiosInstance
-      .get(`/templates/get`)
-      .then((res) => {
-        setTemplates(res.data);
-        setSurveyDetails({
-          projectId: currentProject?.id,
-        });
-        setIsTemplateLoaded(true);
-      })
-      .catch((err: AxiosError) => {
-        if (err.response?.status === 404) {
+    if (currentProject?.id) {
+      axiosInstance
+        .get(`/templates/get`)
+        .then((res) => {
+          setTemplates(res.data);
+          setSurveyDetails({
+            projectId: currentProject?.id,
+          });
           setIsTemplateLoaded(true);
-        }
-      });
+        })
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 404) {
+            setIsTemplateLoaded(true);
+          }
+        });
+    }
   }, [currentProject?.id]);
 
   useEffect(() => {
@@ -127,6 +137,7 @@ export default function Dashboard() {
   }, [currentProject, tabs.id]);
 
   const onClickProjectCreate = useCallback(() => {
+    setCreateProjectLoading(true);
     const reqBody = {
       projectName: projectDetails.title,
       description: projectDetails.description,
@@ -136,6 +147,7 @@ export default function Dashboard() {
       setShowProjectModal(false);
       setProjects([res.data, ...projects]);
       setCurrentProject(res.data);
+      setCreateProjectLoading(false);
     });
   }, [projectDetails.description, projectDetails.title, projects, user?.id]);
 
@@ -149,6 +161,31 @@ export default function Dashboard() {
       });
     },
     [surveys]
+  );
+
+  const onClickViewSurvey = useCallback(
+    (id: number) => {
+      const survey = surveys.find((val) => val.id === id);
+      setDisableSurveyCreateButton(true);
+      setSurveyDetails({
+        title: survey?.surveyName,
+        description: survey?.description,
+        projectId: survey?.project?.id,
+        templateId: survey?.template?.id,
+      });
+      setShowSurveyModal(true);
+    },
+    [surveys]
+  );
+
+  const onClickViewTemplate = useCallback(
+    (id: number) => {
+      const template = templates.find((val) => val.id === id);
+      setDisableTemplateCreateButton(true);
+      setTemplate(template?.templateJsonData as ITemplateQuestion[]);
+      setShowTemplateModal(true);
+    },
+    [setTemplate, templates]
   );
 
   const onClickDeleteTemplate = useCallback(
@@ -182,6 +219,7 @@ export default function Dashboard() {
   );
 
   const onClickTemplateCreate = useCallback(() => {
+    setCreateTemplateLoading(true);
     const reqObj: ITemplateRequest = {
       project: {
         id: currentProject?.id,
@@ -197,6 +235,7 @@ export default function Dashboard() {
       setTemplateDetails({ title: "", description: "" });
       setShowTemplateCreateModal(false);
       setShowTemplateModal(false);
+      setCreateTemplateLoading(false);
     });
   }, [
     currentProject?.id,
@@ -209,6 +248,7 @@ export default function Dashboard() {
   ]);
 
   const onClickSurveyCreate = useCallback(() => {
+    setCreateSurveyLoading(true);
     const reqObj: ISurveyRequest = {
       project: {
         id: currentProject?.id,
@@ -216,7 +256,9 @@ export default function Dashboard() {
       surveyName: surveyDetails?.title,
       description: surveyDetails?.description,
       userId: user?.id,
-      templateId: surveyDetails?.templateId,
+      template: {
+        id: surveyDetails?.templateId
+      },
       surveyJsonData: {},
     };
     axiosInstance.post("/surveys/create", reqObj).then((res) => {
@@ -234,8 +276,8 @@ export default function Dashboard() {
           projectName: currentProject?.projectName || "",
         },
       });
-      setSurveys(arr);
       setShowSurveyModal(false);
+      setCreateSurveyLoading(false);
     });
   }, [
     currentProject?.id,
@@ -246,6 +288,21 @@ export default function Dashboard() {
     surveys,
     user?.id,
   ]);
+
+  const resetForCreateSurvey = useCallback(() => {
+    setSurveyDetails({
+      title: "",
+      description: "",
+      projectId: null,
+      templateId: 0,
+    });
+    setDisableSurveyCreateButton(false);
+  }, [setSurveyDetails]);
+
+  const resetForCreateTemplate = useCallback(() => {
+    setTemplate([]);
+    setDisableTemplateCreateButton(false);
+  }, [setTemplate]);
 
   return (
     <div className="flex w-full h-full overflow-hidden">
@@ -260,15 +317,20 @@ export default function Dashboard() {
         surveys={surveys}
         templates={currentTemplates}
         onClickDeleteSurvey={onClickDeleteSurvey}
+        onClickViewSurvey={onClickViewSurvey}
+        onClickViewTemplate={onClickViewTemplate}
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateModal}
         setShowSurveyModal={setShowSurveyModal}
         isSurveyLoaded={isSurveyLoaded}
         isTemplateLoaded={isTemplateLoaded}
+        resetForCreateSurvey={resetForCreateSurvey}
+        resetForCreateTemplate={resetForCreateTemplate}
       />
 
       {/* modals goes here */}
       <ProjectModal
+        createProjectLoading={createProjectLoading}
         showModal={showProjectModal}
         setShowModal={setShowProjectModal}
         title={projectDetails.title}
@@ -280,6 +342,8 @@ export default function Dashboard() {
         showModal={showTemplateModal}
         setShowModal={setShowTemplateModal}
         setShowCreateModal={setShowTemplateCreateModal}
+        disableCreateButton={disableTemplateCreateButton}
+        resetForCreateTemplate={resetForCreateTemplate}
       />
       <SurveyModal
         showSurveyModal={showSurveyModal}
@@ -291,11 +355,10 @@ export default function Dashboard() {
           id: val.id,
           name: val.projectName,
         }))}
-        templates={templates.map((val) => ({
-          id: val.id,
-          name: val.templateName,
-        }))}
         currentProject={currentProject}
+        createSurveyLoading={createSurveyLoading}
+        disableCreateButton={disableSurveyCreateButton}
+        resetForCreateSurvey={resetForCreateSurvey}
       />
       <TemplateCreateModal
         showModal={showTemplateCreateModal}
@@ -304,6 +367,8 @@ export default function Dashboard() {
         description={templateDetails.description}
         setTemplateDetails={setTemplateDetails}
         onClickCreate={onClickTemplateCreate}
+        createTemplateLoading={createTemplateLoading}
+        disableCreateButton={disableTemplateCreateButton}
       />
     </div>
   );
