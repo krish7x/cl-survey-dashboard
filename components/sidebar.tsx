@@ -30,7 +30,7 @@ export default function SidebarComponent({
       aria-label="Default sidebar example"
       className="overflow-y-scroll scrollbar-hide w-72"
     >
-      <div className="flex justify-between items-center pl-5 pr-2 mb-4">
+      <div className="flex justify-between items-center pl-5 pr-2 mb-4 scrollbar-hide">
         <h1 className="text-txtPurple text-md font-medium">Projects</h1>
         <Tooltip content="Create Project" placement="top" className="w-28">
           {isAdmin && (
