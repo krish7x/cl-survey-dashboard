@@ -46,11 +46,15 @@ export default function Survey() {
         .then((res) => {
           if (res.data) {
             setIsAuthorized(true);
-            setSurvey({
-              contactId: res.data?.contactId,
-              uuid: res.data?.uuid,
-              ...res.data?.survey,
-            });
+            if (res.data?.isSurveyCompleted) {
+              setCurrentPage("THANKS");
+            } else {
+              setSurvey({
+                contactId: res.data?.contactId,
+                uuid: res.data?.uuid,
+                ...res.data?.survey,
+              });
+            }
           }
         })
         .catch((err: AxiosError) => {
@@ -120,7 +124,9 @@ export default function Survey() {
                 setOtherQuestions={setOtherQuestions}
               />
             )}
-            {currentPage === "THANKS" && <ThanksScreen />}
+            {currentPage === "THANKS" && (
+              <ThanksScreen flag={currentPage === "THANKS"} />
+            )}
           </div>
         </div>
       ) : (
