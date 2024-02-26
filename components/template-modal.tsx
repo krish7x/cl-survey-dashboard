@@ -11,8 +11,10 @@ export default memo(function TemplateModal({
   showModal,
   setShowModal,
   setShowCreateModal,
+  disableCreateButton,
 }: {
   showModal: boolean;
+  disableCreateButton: boolean;
   setShowModal: (value: boolean) => void;
   setShowCreateModal: (value: boolean) => void;
 }) {
@@ -219,6 +221,12 @@ export default memo(function TemplateModal({
     [templateQuestion]
   );
 
+  useEffect(() => {
+    if (disableCreateButton) {
+      handleSelectQuestion(0);
+    }
+  }, [disableCreateButton, handleSelectQuestion]);
+
   const addQuestionValidation = useMemo(() => {
     if (!templateQuestion.length && !createClicked) return true;
     return (
@@ -273,7 +281,7 @@ export default memo(function TemplateModal({
                   className="flex flex-col cursor-grab"
                   key={"question-" + inx}
                   onClick={() => handleSelectQuestion(inx)}
-                  draggable
+                  draggable={!disableCreateButton}
                   onDragStart={() => (dragQuestion.current = inx)}
                   onDragEnter={() => (draggedOverQuestion.current = inx)}
                   onDragEnd={handleSort}
@@ -297,24 +305,28 @@ export default memo(function TemplateModal({
                         </p>
                         {!title && <File className="stroke-gray-300 ml-2" />}
                       </div>
-                      <Trash2
-                        className="stroke-txtPurple ml-2 opacity-80"
-                        onClick={() => onClickDeleteTemplateQuestion(inx)}
-                      />
+                      {!disableCreateButton ? (
+                        <Trash2
+                          className="stroke-txtPurple ml-2 opacity-80"
+                          onClick={() => onClickDeleteTemplateQuestion(inx)}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 </div>
               );
             })}
-            <Button
-              gradientDuoTone="purpleToBlue"
-              onClick={addEmptyQuestion}
-              disabled={!addQuestionValidation}
-            >
-              <div className="flex gap-1 items-center">
-                Add a question <Plus size={20} color="#fff" />
-              </div>
-            </Button>
+            {!disableCreateButton ? (
+              <Button
+                gradientDuoTone="purpleToBlue"
+                onClick={addEmptyQuestion}
+                disabled={!addQuestionValidation}
+              >
+                <div className="flex gap-1 items-center">
+                  Add a question <Plus size={20} color="#fff" />
+                </div>
+              </Button>
+            ) : null}
           </div>
           {createClicked ? (
             <div className="flex flex-col pt-8 pb-16 px-6 gap-6 w-modalRightPanel overflow-y-scroll scrollbar-hide">
@@ -410,14 +422,16 @@ export default memo(function TemplateModal({
                           required
                           onChange={(e) => onChangeOptions(id, e.target.value)}
                         />
-                        <Trash2
-                          className={`absolute end-2.5 bottom-4 z-10 ${
-                            options.length > 1
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed"
-                          } stroke-txtPurple`}
-                          onClick={() => onClickDeleteOption(id)}
-                        />
+                        {!disableCreateButton ? (
+                          <Trash2
+                            className={`absolute end-2.5 bottom-4 z-10 ${
+                              options.length > 1
+                                ? "cursor-pointer"
+                                : "cursor-not-allowed"
+                            } stroke-txtPurple`}
+                            onClick={() => onClickDeleteOption(id)}
+                          />
+                        ) : null}
                       </div>
                     ))}
                     {(selectQuestionType as number) > 2 &&
@@ -433,7 +447,7 @@ export default memo(function TemplateModal({
                   </div>
                 </div>
               ) : null}
-              {validation ? (
+              {validation && !disableCreateButton ? (
                 <Button
                   gradientMonochrome="success"
                   pill
@@ -476,13 +490,15 @@ export default memo(function TemplateModal({
             </div>
           </div>
         ) : null}
-        <Button
-          className="ml-auto"
-          disabled={Boolean(validateCreateTemplate)}
-          onClick={() => setShowCreateModal(true)}
-        >
-          Create Template
-        </Button>
+        {!disableCreateButton ? (
+          <Button
+            className="ml-auto"
+            disabled={Boolean(validateCreateTemplate)}
+            onClick={() => setShowCreateModal(true)}
+          >
+            Create Template
+          </Button>
+        ) : null}
       </Modal.Footer>
     </Modal>
   );
