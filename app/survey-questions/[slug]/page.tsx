@@ -44,9 +44,6 @@ export default function CustomerSurvey() {
         .get(`/surveys/fetch/${surveyId}`)
         .then((res) => {
           if (res.data) {
-            if(res.data?.isSurveyCompleted){
-              
-            }
             setIsAuthorized(true);
             setSurvey({
               contactId: res.data?.contactId,

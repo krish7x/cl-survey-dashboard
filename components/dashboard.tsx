@@ -21,6 +21,7 @@ import { AxiosError } from "axios";
 import TemplateCreateModal from "./template-create-modal";
 import SurveyModal from "./survey-modal";
 import SendSurveyModal from "./send-survey-modal";
+import SurveyDataTable from "./survey-data-table";
 
 export default function Dashboard() {
   const user = useAtomValue(userAtom);
@@ -30,6 +31,7 @@ export default function Dashboard() {
   const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [showTemplateCreateModal, setShowTemplateCreateModal] = useState(false);
+  const [showSurveyContacts, setShowSurveyContacts] = useState(false);
   const [projectDetails, setProjectDetails] = useReducer(
     (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
       ...state,
@@ -315,6 +317,11 @@ export default function Dashboard() {
     setSendSurveyId(id);
   }, []);
 
+  const onClickShowSurveyContacts = (id: number) => {
+    setShowSurveyContacts(true);
+    console.log('Survey id', id)
+  }
+
   const onSendSurvey = useCallback(() => {
     setCreateSendSurveyLoading(true);
     const reqObj: ISendSurveyDetails = {
@@ -380,6 +387,7 @@ export default function Dashboard() {
         setShowTemplateModal={setShowTemplateModal}
         onClickSendSurvey={onClickSendSurvey}
         setShowSurveyModal={setShowSurveyModal}
+        onClickShowSurveyContacts={onClickShowSurveyContacts}
         isSurveyLoaded={isSurveyLoaded}
         isTemplateLoaded={isTemplateLoaded}
         resetForCreateSurvey={resetForCreateSurvey}
@@ -436,6 +444,8 @@ export default function Dashboard() {
         createTemplateLoading={createTemplateLoading}
         disableCreateButton={disableTemplateCreateButton}
       />
+      <SurveyDataTable showModal = {showSurveyContacts}
+          setShowModal={() => setShowSurveyContacts(false)} />
     </div>
   );
 }
