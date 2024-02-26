@@ -104,6 +104,9 @@ export default memo(function TemplateModal({
   }, [options]);
 
   const validation = useMemo(() => {
+    if (!templateQuestion.length) {
+      if (questionTitle && questionDescription) return true;
+    }
     if (!questionTitle || !questionDescription) return false;
     if (selectQuestionType === 1 || selectQuestionType === 2) return true;
     if (+selectQuestionType > 2) {
@@ -119,6 +122,7 @@ export default memo(function TemplateModal({
     questionTitle,
     selectQuestionType,
     selectedOptionPos,
+    templateQuestion.length,
   ]);
 
   const resetOptionValues = useCallback(() => {
@@ -157,10 +161,11 @@ export default memo(function TemplateModal({
     const tempQuestion: ITemplateQuestion = {
       title: questionTitle,
       description: questionDescription,
-      optionTypeId: selectQuestionType,
-      optionTypeName: questionTypeOptions.find(
-        (val) => val.id === selectQuestionType
-      )?.name,
+      optionTypeId: !templateQuestion.length ? 1 : selectQuestionType,
+      optionTypeName: !templateQuestion.length
+        ? "NPS Rating"
+        : questionTypeOptions.find((val) => val.id === selectQuestionType)
+            ?.name,
       isAdded: true,
     };
     if (isAdded && selectedQuestionIndex) {
