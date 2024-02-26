@@ -12,11 +12,13 @@ export default memo(function TemplateModal({
   setShowModal,
   setShowCreateModal,
   disableCreateButton,
+  resetForCreateTemplate,
 }: {
   showModal: boolean;
   disableCreateButton: boolean;
   setShowModal: (value: boolean) => void;
   setShowCreateModal: (value: boolean) => void;
+  resetForCreateTemplate: () => void;
 }) {
   const questionTypeOptions: IOptions[] = useMemo(
     () => [
@@ -227,6 +229,12 @@ export default memo(function TemplateModal({
     }
   }, [disableCreateButton, handleSelectQuestion]);
 
+  useEffect(() => {
+    if (!templateQuestion.length) {
+      addEmptyQuestion();
+    }
+  }, [addEmptyQuestion, showModal, templateQuestion.length]);
+
   const addQuestionValidation = useMemo(() => {
     if (!templateQuestion.length && !createClicked) return true;
     return (
@@ -260,11 +268,15 @@ export default memo(function TemplateModal({
     setTemplateQuestion(clone);
   }, [setTemplateQuestion, templateQuestion]);
 
+  console.log({ disableCreateButton });
   return (
     <Modal
       show={showModal}
       size="5xl"
-      onClose={() => setShowModal(false)}
+      onClose={() => {
+        resetForCreateTemplate();
+        setShowModal(false);
+      }}
       popup
     >
       <Modal.Body className="p-0 overflow-hidden">

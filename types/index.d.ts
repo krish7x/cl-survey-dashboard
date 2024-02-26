@@ -21,6 +21,7 @@ export interface IProject {
   id: number;
   projectName: string;
   userId: number;
+  templates: ITemplate[];
   description: string;
   createdAt: string;
   updatedAt: string;
@@ -37,7 +38,7 @@ export interface ISurvey {
   surveyName: string;
   description: string;
   userId: number;
-  template: ITemplate,
+  template: ITemplate;
   surveyJsonData?: SurveyJsonData;
   createdAt: string;
   updatedAt: string;
@@ -114,7 +115,9 @@ export interface ISurveyRequest {
   surveyName: string;
   description: string;
   userId?: number;
-  templateId?: number;
+  template: {
+    id?: number;
+  };
   surveyJsonData: SurveyJsonData;
 }
 

@@ -19,6 +19,8 @@ export default function MainPanel({
   onClickDeleteSurvey,
   onClickDeleteTemplate,
   setShowSurveyModal,
+  resetForCreateSurvey,
+  resetForCreateTemplate,
 }: {
   surveys: ISurvey[];
   templates: ITemplate[];
@@ -30,6 +32,8 @@ export default function MainPanel({
   onClickViewTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;
   onClickDeleteTemplate: (id: number) => void;
+  resetForCreateSurvey: () => void;
+  resetForCreateTemplate: () => void;
 }) {
   const user = useAtomValue(userAtom);
   const tab = useAtomValue(tabsAtom);
@@ -46,7 +50,10 @@ export default function MainPanel({
           <div className="flex gap-2">
             <Button
               gradientDuoTone="purpleToBlue"
-              onClick={() => setShowTemplateModal(true)}
+              onClick={() => {
+                resetForCreateSurvey();
+                setShowTemplateModal(true);
+              }}
             >
               <div className="flex gap-1 items-center">
                 Create Template <Plus size={16} color="#fff" />
@@ -54,7 +61,10 @@ export default function MainPanel({
             </Button>
             <Button
               gradientDuoTone="purpleToBlue"
-              onClick={() => setShowSurveyModal(true)}
+              onClick={() => {
+                setShowSurveyModal(true);
+                resetForCreateTemplate();
+              }}
             >
               <div className="flex gap-1 items-center">
                 Create Survey <Plus size={16} color="#fff" />

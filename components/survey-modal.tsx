@@ -2,9 +2,7 @@
 
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
 import { IOptions, IProject, ISurveyModalDetails, ITemplate } from "@/types";
-import { useEffect, useMemo, useState } from "react";
-import { axiosInstance } from "@/utils/axios";
-import { AxiosError } from "axios";
+import { useEffect, useMemo } from "react";
 
 export default function SurveyModal({
   showSurveyModal,
@@ -16,6 +14,7 @@ export default function SurveyModal({
   disableCreateButton,
   onClickCreate,
   setSurveyDetails,
+  resetForCreateSurvey,
 }: {
   showSurveyModal: boolean;
   createSurveyLoading: boolean;
@@ -26,35 +25,42 @@ export default function SurveyModal({
   currentProject?: IProject;
   onClickCreate: () => void;
   setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
+  resetForCreateSurvey: () => void;
 }) {
-  const [templates, setTemplates] = useState<IOptions[]>([]);
   const validation = useMemo(() => {
     const { title, description, projectId, templateId } = surveyDetails;
+    console.log({ title, description, projectId, templateId });
     return title && description && projectId && templateId;
   }, [surveyDetails]);
 
+  const templates: IOptions[] | undefined = useMemo(
+    () =>
+      currentProject?.templates.map((val) => ({
+        id: val.id,
+        name: val.templateName,
+      })),
+    [currentProject]
+  );
+
   useEffect(() => {
-    axiosInstance
-      .get(`/templates/get?project.id=${surveyDetails?.projectId}`)
-      .then((res) => {
-        const data = (res.data || []).map((val: ITemplate) => ({
-          id: val.id,
-          name: val.templateName,
-        }));
-        setTemplates(data);
-      })
-      .catch((err: AxiosError) => {
-        if (err.response?.status === 404) {
-          setTemplates([]);
-        }
+    if (showSurveyModal) {
+      setSurveyDetails({
+        ...surveyDetails,
+        projectId: currentProject?.id,
       });
-  }, [currentProject, surveyDetails]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showSurveyModal, currentProject?.id, setSurveyDetails]);
+
 
   return (
     <Modal
       show={showSurveyModal}
       size="lg"
-      onClose={() => setshowSurveyModal(false)}
+      onClose={() => {
+        setshowSurveyModal(false);
+        resetForCreateSurvey();
+      }}
       popup
     >
       <Modal.Header />
@@ -139,7 +145,7 @@ export default function SurveyModal({
               }
             >
               <option value={0}>Select Template</option>
-              {templates.length
+              {templates?.length
                 ? templates.map(({ id, name }) => (
                     <option
                       key={"project-" + id}
