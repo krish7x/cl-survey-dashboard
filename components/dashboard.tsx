@@ -260,7 +260,7 @@ export default function Dashboard() {
       setCreateTemplateLoading(false);
     });
   }, [
-    currentProject?.id,
+    currentProject,
     templateDetails?.title,
     templateDetails?.description,
     template,
@@ -319,8 +319,7 @@ export default function Dashboard() {
 
   const onClickShowSurveyContacts = (id: number) => {
     setShowSurveyContacts(true);
-    console.log('Survey id', id)
-  }
+  };
 
   const onSendSurvey = useCallback(() => {
     setCreateSendSurveyLoading(true);
@@ -415,6 +414,7 @@ export default function Dashboard() {
           name: val.projectName,
         }))}
         currentProject={currentProject}
+        currentTemplates={currentTemplates}
         createSurveyLoading={createSurveyLoading}
         disableCreateButton={disableSurveyCreateButton}
         resetForCreateSurvey={resetForCreateSurvey}
@@ -444,8 +444,10 @@ export default function Dashboard() {
         createTemplateLoading={createTemplateLoading}
         disableCreateButton={disableTemplateCreateButton}
       />
-      <SurveyDataTable showModal = {showSurveyContacts}
-          setShowModal={() => setShowSurveyContacts(false)} />
+      <SurveyDataTable
+        showModal={showSurveyContacts}
+        setShowModal={() => setShowSurveyContacts(false)}
+      />
     </div>
   );
 }
