@@ -9,7 +9,7 @@ export default function ThanksScreen(props: { flag: any }) {
       <h1 className="text-txtBlack font-semibold text-xl pt-40 md:w-[calc(500px)] text-center">
         {flag === "SURVEY_COMPLETED"
           ? "Thanks for you valuable feedback."
-          : "You had already completed the survey. Thanks for your valuable feedback"}
+          : "You have completed the survey. Thanks for your valuable feedback"}
       </h1>
       <div>
         <Image src={`/10.svg`} alt={`Thanks emoji`} width={72} height={72} />
