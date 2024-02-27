@@ -6,15 +6,15 @@ import { surveyContactsData } from "@/utils/surveyJson";
 
 export default function SurveyDataTable(props: {
   showModal: any;
-  setShowModal: any;
+  onClose: any;
 }) {
-  const { showModal, setShowModal } = props;
+  const { showModal, onClose } = props;
   return (
     <Modal
       size="7xl"
       show={showModal}
       popup
-      onClose={() => setShowModal(false)}
+      onClose={() => onClose(false)}
     >
       <Modal.Header>
         <h3 className="text-lg font-medium text-gray-900 p-6 px-10">

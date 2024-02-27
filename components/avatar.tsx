@@ -27,7 +27,7 @@ export default function Avatarr({
         <>
           <Dropdown.Header>
             <span className="block text-sm">{name}</span>
-            <span className="block truncate text-sm font-medium">{email}</span>
+            <span className="block truncate text-sm font-semibold">{email}</span>
           </Dropdown.Header>
           <Dropdown.Item>View Profile</Dropdown.Item>
           <Dropdown.Divider />

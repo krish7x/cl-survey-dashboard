@@ -22,6 +22,7 @@ import TemplateCreateModal from "./template-create-modal";
 import SurveyModal from "./survey-modal";
 import SendSurveyModal from "./send-survey-modal";
 import SurveyDataTable from "./survey-data-table";
+import NPSAnalytics from "./nps-analytics";
 
 export default function Dashboard() {
   const user = useAtomValue(userAtom);
@@ -32,6 +33,7 @@ export default function Dashboard() {
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [showTemplateCreateModal, setShowTemplateCreateModal] = useState(false);
   const [showSurveyContacts, setShowSurveyContacts] = useState(false);
+  const [showNPSAnalytics, setShowNPSAnalytics] = useState(false)
   const [projectDetails, setProjectDetails] = useReducer(
     (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
       ...state,
@@ -97,6 +99,7 @@ export default function Dashboard() {
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
   const [showSendSurveyModal, setShowSendSurveyModal] = useState(false);
   const [sendSurveyId, setSendSurveyId] = useState<number>(0);
+  const [activeSurveyCharts, setActiveSurveyCharts] = useState<any>({})
 
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
@@ -260,7 +263,7 @@ export default function Dashboard() {
       setCreateTemplateLoading(false);
     });
   }, [
-    currentProject?.id,
+    currentProject,
     templateDetails?.title,
     templateDetails?.description,
     template,
@@ -319,7 +322,15 @@ export default function Dashboard() {
 
   const onClickShowSurveyContacts = (id: number) => {
     setShowSurveyContacts(true);
-    console.log('Survey id', id)
+  };
+
+  const onClickShowCharts = (id: number, surveyName: any) => {
+    setActiveSurveyCharts({
+      id: id,
+      surveyName: surveyName
+    })
+    setShowNPSAnalytics(true);
+    console.log("Survey id", id);
   }
 
   const onSendSurvey = useCallback(() => {
@@ -386,6 +397,7 @@ export default function Dashboard() {
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateModal}
         onClickSendSurvey={onClickSendSurvey}
+        onClickShowCharts={onClickShowCharts}
         setShowSurveyModal={setShowSurveyModal}
         onClickShowSurveyContacts={onClickShowSurveyContacts}
         isSurveyLoaded={isSurveyLoaded}
@@ -415,6 +427,7 @@ export default function Dashboard() {
           name: val.projectName,
         }))}
         currentProject={currentProject}
+        currentTemplates={currentTemplates}
         createSurveyLoading={createSurveyLoading}
         disableCreateButton={disableSurveyCreateButton}
         resetForCreateSurvey={resetForCreateSurvey}
@@ -445,7 +458,10 @@ export default function Dashboard() {
         disableCreateButton={disableTemplateCreateButton}
       />
       <SurveyDataTable showModal = {showSurveyContacts}
-          setShowModal={() => setShowSurveyContacts(false)} />
+          onClose={() => setShowSurveyContacts(false)} />
+      <NPSAnalytics showModal={showNPSAnalytics}
+        onClose={() => setShowNPSAnalytics(false)} 
+        surveyName={activeSurveyCharts?.surveyName ? activeSurveyCharts.surveyName : "Caratlane NPS" }/>
     </div>
   );
 }

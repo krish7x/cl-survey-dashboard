@@ -6,12 +6,13 @@ import { useEffect, useMemo } from "react";
 
 export default function SurveyModal({
   showSurveyModal,
-  createSurveyLoading,
   setshowSurveyModal,
+  createSurveyLoading,
+  disableCreateButton,
   surveyDetails,
   projects,
   currentProject,
-  disableCreateButton,
+  currentTemplates,
   onClickCreate,
   setSurveyDetails,
   resetForCreateSurvey,
@@ -23,6 +24,7 @@ export default function SurveyModal({
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
   currentProject?: IProject;
+  currentTemplates?: ITemplate[];
   onClickCreate: () => void;
   setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
   resetForCreateSurvey: () => void;
@@ -34,11 +36,11 @@ export default function SurveyModal({
 
   const templates: IOptions[] | undefined = useMemo(
     () =>
-      currentProject?.templates?.map((val) => ({
+      currentTemplates?.map((val) => ({
         id: val.id,
         name: val.templateName,
       })),
-    [currentProject]
+    [currentTemplates]
   );
 
   useEffect(() => {

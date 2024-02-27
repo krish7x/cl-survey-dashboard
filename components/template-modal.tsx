@@ -165,11 +165,12 @@ export default memo(function TemplateModal({
     const tempQuestion: ITemplateQuestion = {
       title: questionTitle,
       description: questionDescription,
-      optionTypeId: !templateQuestion.length ? 1 : selectQuestionType,
-      optionTypeName: !templateQuestion.length
-        ? "NPS Rating"
-        : questionTypeOptions.find((val) => val.id === selectQuestionType)
-            ?.name,
+      optionTypeId: templateQuestion.length === 1 ? 1 : selectQuestionType,
+      optionTypeName:
+        templateQuestion.length === 1
+          ? "NPS Rating"
+          : questionTypeOptions.find((val) => val.id === selectQuestionType)
+              ?.name,
       isAdded: true,
     };
     if (isAdded && selectedQuestionIndex) {

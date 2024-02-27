@@ -20,6 +20,7 @@ export default function MainPanel({
   onClickDeleteTemplate,
   setShowSurveyModal,
   onClickSendSurvey,
+  onClickShowCharts,
   onClickShowSurveyContacts,
   resetForCreateSurvey,
   resetForCreateTemplate,
@@ -31,6 +32,7 @@ export default function MainPanel({
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
   onClickSendSurvey: (id: number) => void;
+  onClickShowCharts: (id: number, surveyName: any) => void;
   onClickViewSurvey: (id: number) => void;
   onClickViewTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;
@@ -87,6 +89,7 @@ export default function MainPanel({
             onClickViewSurvey={onClickViewSurvey}
             onClickSendSurvey={onClickSendSurvey}
             onClickShowSurveyContacts={onClickShowSurveyContacts}
+            onClickShowCharts={onClickShowCharts}
           />
         ) : (
           <MainPanelSkeleton />
