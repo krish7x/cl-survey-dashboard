@@ -34,7 +34,7 @@ const config: Config = {
         navBg: "rgba(174,203,203,0.25)",
         surveyIcon1: "#BFBFBF",
         surveyIcon2: "#9062A2",
-        surveyIcon3: "#12161C",
+        surveyIcon3: "#6F42C1 ",
         hoverBg: "#E1EBED",
         modalBorder: "#EDEDED",
         starStroke: "#7E3AF2",

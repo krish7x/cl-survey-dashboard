@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 export default function SurevyIcon() {
   const iconBg = useMemo(() => {
-    const colors = ["bg-surveyIcon1", "bg-surveyIcon2", "bg-navLeftBorder"];
+    const colors = ["bg-surveyIcon1", "bg-surveyIcon2", "bg-surveyIcon3"];
     const rand = Math.floor(Math.random() * colors.length);
     return colors[rand];
   }, []);

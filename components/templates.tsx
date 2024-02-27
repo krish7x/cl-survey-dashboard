@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ITemplate } from "@/types";
 import src from "../public/not-found.png";
 import TemplateIcon from "./template-icon";
+import { Tooltip } from "flowbite-react";
 
 export default function Templates({
   templates,
@@ -45,17 +46,21 @@ export default function Templates({
                   </div>
                 </div>
                 <div className="flex gap-3 items-center">
-                  <Eye
-                    className="mt-4 stroke-txtPurple"
-                    onClick={() => onClickViewTemplate(id)}
-                  />
-                  <Trash2
-                    className="mt-4 stroke-txtPurple"
-                    onClick={() => {
-                      setOpenModal(true);
-                      setTemplateId(id);
-                    }}
-                  />
+                  <Tooltip content="Template Details">
+                    <Eye
+                      className="mt-4 stroke-txtPurple"
+                      onClick={() => onClickViewTemplate(id)}
+                    />
+                  </Tooltip>
+                  <Tooltip content="Delete template">
+                    <Trash2
+                      className="mt-4 stroke-txtPurple"
+                      onClick={() => {
+                        setOpenModal(true);
+                        setTemplateId(id);
+                      }}
+                    />
+                  </Tooltip>
                 </div>
               </div>
             </div>
