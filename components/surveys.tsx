@@ -1,4 +1,4 @@
-import { Eye, Send, Trash, Trash2, Users } from "lucide-react";
+import { Eye, Send, Trash, Trash2, Users, BarChart3 } from "lucide-react";
 import SurevyIcon from "./survey-icon";
 import Image from "next/image";
 import { ISurvey } from "@/types";
@@ -12,6 +12,7 @@ export default function Surveys({
   onClickViewSurvey,
   onClickSendSurvey,
   onClickShowSurveyContacts,
+  onClickShowCharts
 }: {
   surveys: ISurvey[];
   setOpenModal: (value: boolean) => void;
@@ -19,6 +20,7 @@ export default function Surveys({
   onClickViewSurvey: (id: number) => void;
   onClickSendSurvey: (id: number) => void;
   onClickShowSurveyContacts: (id: number) => void;
+  onClickShowCharts: (id: number) => void
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -43,6 +45,12 @@ export default function Surveys({
                   </div>
                 </div>
                 <div className="flex gap-3 items-center">
+                  <Tooltip content="View Survey Analytics">
+                    <BarChart3
+                      className="mt-4 mx-2 stroke-txtPurple"
+                      onClick={() => onClickShowCharts(id)}
+                    />
+                  </Tooltip>
                   <Tooltip content="View Survey Contacts">
                     <Users
                       className="mt-4 mx-2 stroke-txtPurple"
@@ -62,15 +70,14 @@ export default function Surveys({
                     />
                   </Tooltip>
                   <Tooltip content="Delete Survey">
-                  <Trash
-                    className="mt-4 mx-2 stroke-txtPurple"
-                    onClick={() => {
-                      setOpenModal(true);
-                      setSurveyId(id);
-                    }}
-                  />
+                    <Trash
+                      className="mt-4 mx-2 stroke-txtPurple"
+                      onClick={() => {
+                        setOpenModal(true);
+                        setSurveyId(id);
+                      }}
+                    />
                   </Tooltip>
-                
                 </div>
               </div>
             </div>

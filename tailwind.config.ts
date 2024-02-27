@@ -41,7 +41,7 @@ const config: Config = {
         radio: "#62686f",
         modalBtnGreen: "#5dd55d",
         surveyGreen: "#008000",
-        surveyYellow: " #cccc00",
+        surveyYellow: "#cccc00",
         surveyRed: "#ff0000",
         radioText: "#111827",
       },

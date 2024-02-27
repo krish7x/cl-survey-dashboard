@@ -22,6 +22,7 @@ import TemplateCreateModal from "./template-create-modal";
 import SurveyModal from "./survey-modal";
 import SendSurveyModal from "./send-survey-modal";
 import SurveyDataTable from "./survey-data-table";
+import NPSAnalytics from "./nps-analytics";
 
 export default function Dashboard() {
   const user = useAtomValue(userAtom);
@@ -32,6 +33,7 @@ export default function Dashboard() {
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [showTemplateCreateModal, setShowTemplateCreateModal] = useState(false);
   const [showSurveyContacts, setShowSurveyContacts] = useState(false);
+  const [showNPSAnalytics, setShowNPSAnalytics] = useState(false)
   const [projectDetails, setProjectDetails] = useReducer(
     (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
       ...state,
@@ -321,6 +323,11 @@ export default function Dashboard() {
     setShowSurveyContacts(true);
   };
 
+  const onClickShowCharts = (id: number) => {
+    setShowNPSAnalytics(true);
+    console.log("Survey id", id);
+  }
+
   const onSendSurvey = useCallback(() => {
     setCreateSendSurveyLoading(true);
     const reqObj: ISendSurveyDetails = {
@@ -385,6 +392,7 @@ export default function Dashboard() {
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateModal}
         onClickSendSurvey={onClickSendSurvey}
+        onClickShowCharts={onClickShowCharts}
         setShowSurveyModal={setShowSurveyModal}
         onClickShowSurveyContacts={onClickShowSurveyContacts}
         isSurveyLoaded={isSurveyLoaded}
@@ -444,10 +452,11 @@ export default function Dashboard() {
         createTemplateLoading={createTemplateLoading}
         disableCreateButton={disableTemplateCreateButton}
       />
-      <SurveyDataTable
-        showModal={showSurveyContacts}
-        setShowModal={() => setShowSurveyContacts(false)}
-      />
+      <SurveyDataTable showModal = {showSurveyContacts}
+          onClose={() => setShowSurveyContacts(false)} />
+      <NPSAnalytics showModal={showNPSAnalytics}
+        onClose={() => setShowNPSAnalytics(false)} 
+        surveyName={'Caratlane NPS'}/>
     </div>
   );
 }
