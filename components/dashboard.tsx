@@ -99,6 +99,7 @@ export default function Dashboard() {
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
   const [showSendSurveyModal, setShowSendSurveyModal] = useState(false);
   const [sendSurveyId, setSendSurveyId] = useState<number>(0);
+  const [activeSurveyCharts, setActiveSurveyCharts] = useState<any>({})
 
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
@@ -323,7 +324,11 @@ export default function Dashboard() {
     setShowSurveyContacts(true);
   };
 
-  const onClickShowCharts = (id: number) => {
+  const onClickShowCharts = (id: number, surveyName: any) => {
+    setActiveSurveyCharts({
+      id: id,
+      surveyName: surveyName
+    })
     setShowNPSAnalytics(true);
     console.log("Survey id", id);
   }
@@ -456,7 +461,7 @@ export default function Dashboard() {
           onClose={() => setShowSurveyContacts(false)} />
       <NPSAnalytics showModal={showNPSAnalytics}
         onClose={() => setShowNPSAnalytics(false)} 
-        surveyName={'Caratlane NPS'}/>
+        surveyName={activeSurveyCharts?.surveyName ? activeSurveyCharts.surveyName : "Caratlane NPS" }/>
     </div>
   );
 }

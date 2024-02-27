@@ -32,7 +32,7 @@ export default function MainPanel({
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
   onClickSendSurvey: (id: number) => void;
-  onClickShowCharts: (id: number) => void;
+  onClickShowCharts: (id: number, surveyName: any) => void;
   onClickViewSurvey: (id: number) => void;
   onClickViewTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;

@@ -20,7 +20,7 @@ export default function Surveys({
   onClickViewSurvey: (id: number) => void;
   onClickSendSurvey: (id: number) => void;
   onClickShowSurveyContacts: (id: number) => void;
-  onClickShowCharts: (id: number) => void
+  onClickShowCharts: (id: number, surveyName: any) => void
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -48,7 +48,7 @@ export default function Surveys({
                   <Tooltip content="View Survey Analytics">
                     <BarChart3
                       className="mt-4 mx-2 stroke-txtPurple"
-                      onClick={() => onClickShowCharts(id)}
+                      onClick={() => onClickShowCharts(id, surveyName)}
                     />
                   </Tooltip>
                   <Tooltip content="View Survey Contacts">
