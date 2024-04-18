@@ -25,15 +25,38 @@ import SurveyDataTable from "./survey-data-table";
 import NPSAnalytics from "./nps-analytics";
 
 export default function Dashboard() {
+  //atoms
   const user = useAtomValue(userAtom);
   const tabs = useAtomValue(tabsAtom);
   const [template, setTemplate] = useAtom(templateQuestionsAtom);
+
+  //states
   const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
   const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [showTemplateCreateModal, setShowTemplateCreateModal] = useState(false);
   const [showSurveyContacts, setShowSurveyContacts] = useState(false);
-  const [showNPSAnalytics, setShowNPSAnalytics] = useState(false)
+  const [showNPSAnalytics, setShowNPSAnalytics] = useState(false);
+  const [projects, setProjects] = useState<IProject[]>([]);
+  const [currentProject, setCurrentProject] = useState<IProject>();
+  const [surveys, setSurveys] = useState<ISurvey[]>([]);
+  const [templates, setTemplates] = useState<ITemplate[]>([]);
+  const [currentTemplates, setCurrentTemplates] = useState<ITemplate[]>([]);
+  const [isSurveyLoaded, setIsSurveyLoaded] = useState(false);
+  const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
+  const [createProjectLoading, setCreateProjectLoading] = useState(false);
+  const [createSurveyLoading, setCreateSurveyLoading] = useState(false);
+  const [createSendSurveyLoading, setCreateSendSurveyLoading] = useState(false);
+  const [disableSurveyCreateButton, setDisableSurveyCreateButton] =
+    useState(false);
+  const [disableTemplateCreateButton, setDisableTemplateCreateButton] =
+    useState(false);
+  const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
+  const [showSendSurveyModal, setShowSendSurveyModal] = useState(false);
+  const [sendSurveyId, setSendSurveyId] = useState<number>(0);
+  const [activeSurveyCharts, setActiveSurveyCharts] = useState<any>({});
+
+  //reducers
   const [projectDetails, setProjectDetails] = useReducer(
     (state: ICreateModalDetails, diff: Partial<ICreateModalDetails>) => ({
       ...state,
@@ -82,25 +105,7 @@ export default function Dashboard() {
     }
   );
 
-  const [projects, setProjects] = useState<IProject[]>([]);
-  const [currentProject, setCurrentProject] = useState<IProject>();
-  const [surveys, setSurveys] = useState<ISurvey[]>([]);
-  const [templates, setTemplates] = useState<ITemplate[]>([]);
-  const [currentTemplates, setCurrentTemplates] = useState<ITemplate[]>([]);
-  const [isSurveyLoaded, setIsSurveyLoaded] = useState(false);
-  const [isTemplateLoaded, setIsTemplateLoaded] = useState(false);
-  const [createProjectLoading, setCreateProjectLoading] = useState(false);
-  const [createSurveyLoading, setCreateSurveyLoading] = useState(false);
-  const [createSendSurveyLoading, setCreateSendSurveyLoading] = useState(false);
-  const [disableSurveyCreateButton, setDisableSurveyCreateButton] =
-    useState(false);
-  const [disableTemplateCreateButton, setDisableTemplateCreateButton] =
-    useState(false);
-  const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
-  const [showSendSurveyModal, setShowSendSurveyModal] = useState(false);
-  const [sendSurveyId, setSendSurveyId] = useState<number>(0);
-  const [activeSurveyCharts, setActiveSurveyCharts] = useState<any>({})
-
+  //to pre-populate all the projects
   useEffect(() => {
     axiosInstance.get(`/projects/get`).then((res) => {
       setProjects(res.data);
@@ -108,6 +113,7 @@ export default function Dashboard() {
     });
   }, []);
 
+  //to pre-populate all the templates
   useEffect(() => {
     if (currentProject?.id) {
       axiosInstance
@@ -127,6 +133,7 @@ export default function Dashboard() {
     }
   }, [currentProject?.id]);
 
+  //to get surveys for certain project id - survey tab
   useEffect(() => {
     if (currentProject?.id && tabs.id === 1) {
       axiosInstance
@@ -145,6 +152,7 @@ export default function Dashboard() {
     }
   }, [currentProject, tabs.id]);
 
+  //to get templates for certain project id - templates tab
   useEffect(() => {
     if (currentProject?.id && tabs.id === 2) {
       axiosInstance
@@ -161,6 +169,24 @@ export default function Dashboard() {
     }
   }, [currentProject, tabs.id]);
 
+  //to get templates for certain project id - create survey modal
+  useEffect(() => {
+    if (surveyDetails?.projectId && showSurveyModal) {
+      axiosInstance
+        .get(`/templates/get?project.id=${surveyDetails?.projectId}`)
+        .then((res) => {
+          setCurrentTemplates([]);
+          setCurrentTemplates(res.data);
+        })
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 404) {
+            setCurrentTemplates([]);
+          }
+        });
+    }
+  }, [surveyDetails, showSurveyModal]);
+
+  //creation callback
   const onClickProjectCreate = useCallback(() => {
     setCreateProjectLoading(true);
     const reqBody = {
@@ -175,73 +201,6 @@ export default function Dashboard() {
       setCreateProjectLoading(false);
     });
   }, [projectDetails.description, projectDetails.title, projects, user?.id]);
-
-  const onClickDeleteSurvey = useCallback(
-    (id: number) => {
-      axiosInstance.delete(`/surveys/delete/${id}`).then(() => {
-        const arr = [...surveys];
-        const index = arr.findIndex((val) => val.id === id);
-        arr.splice(index, 1);
-        setSurveys(arr);
-      });
-    },
-    [surveys]
-  );
-
-  const onClickViewSurvey = useCallback(
-    (id: number) => {
-      const survey = surveys.find((val) => val.id === id);
-      setDisableSurveyCreateButton(true);
-      setSurveyDetails({
-        title: survey?.surveyName,
-        description: survey?.description,
-        projectId: survey?.project?.id,
-        templateId: survey?.template?.id,
-      });
-      setShowSurveyModal(true);
-    },
-    [surveys]
-  );
-
-  const onClickViewTemplate = useCallback(
-    (id: number) => {
-      const template = templates.find((val) => val.id === id);
-      setDisableTemplateCreateButton(true);
-      setTemplate(template?.templateJsonData as ITemplateQuestion[]);
-      setShowTemplateModal(true);
-    },
-    [setTemplate, templates]
-  );
-
-  const onClickDeleteTemplate = useCallback(
-    (id: number) => {
-      axiosInstance.delete(`/templates/delete/${id}`).then(() => {
-        const arr = [...templates];
-        const index = arr.findIndex((val) => val.id === id);
-        arr.splice(index, 1);
-        setTemplates(arr);
-
-        const arr2 = [...currentTemplates];
-        const index2 = arr2.findIndex((val) => val.id === id);
-        arr2.splice(index2, 1);
-        setCurrentTemplates(arr2);
-      });
-    },
-    [currentTemplates, templates]
-  );
-
-  const onClickDeleteProject = useCallback(
-    (id: number) => {
-      axiosInstance.delete(`/projects/delete/${id}`).then(() => {
-        const arr = [...projects];
-        const index = arr.findIndex((val) => val.id === id);
-        arr.splice(index, 1);
-        setProjects(arr);
-        setCurrentProject(arr[0]);
-      });
-    },
-    [projects]
-  );
 
   const onClickTemplateCreate = useCallback(() => {
     setCreateTemplateLoading(true);
@@ -315,10 +274,43 @@ export default function Dashboard() {
     user?.id,
   ]);
 
-  const onClickSendSurvey = useCallback((id: number) => {
-    setShowSendSurveyModal(true);
-    setSendSurveyId(id);
-  }, []);
+  const onClickDeleteSurvey = useCallback(
+    (id: number) => {
+      axiosInstance.delete(`/surveys/delete/${id}`).then(() => {
+        const arr = [...surveys];
+        const index = arr.findIndex((val) => val.id === id);
+        arr.splice(index, 1);
+        setSurveys(arr);
+      });
+    },
+    [surveys]
+  );
+
+  //viewing callback
+  const onClickViewSurvey = useCallback(
+    (id: number) => {
+      const survey = surveys.find((val) => val.id === id);
+      setDisableSurveyCreateButton(true);
+      setSurveyDetails({
+        title: survey?.surveyName,
+        description: survey?.description,
+        projectId: survey?.project?.id,
+        templateId: survey?.template?.id,
+      });
+      setShowSurveyModal(true);
+    },
+    [surveys]
+  );
+
+  const onClickViewTemplate = useCallback(
+    (id: number) => {
+      const template = templates.find((val) => val.id === id);
+      setDisableTemplateCreateButton(true);
+      setTemplate(template?.templateJsonData as ITemplateQuestion[]);
+      setShowTemplateModal(true);
+    },
+    [setTemplate, templates]
+  );
 
   const onClickShowSurveyContacts = (id: number) => {
     setShowSurveyContacts(true);
@@ -327,11 +319,46 @@ export default function Dashboard() {
   const onClickShowCharts = (id: number, surveyName: any) => {
     setActiveSurveyCharts({
       id: id,
-      surveyName: surveyName
-    })
+      surveyName: surveyName,
+    });
     setShowNPSAnalytics(true);
-    console.log("Survey id", id);
-  }
+  };
+
+  //delete callback
+  const onClickDeleteProject = useCallback(
+    (id: number) => {
+      axiosInstance.delete(`/projects/delete/${id}`).then(() => {
+        const arr = [...projects];
+        const index = arr.findIndex((val) => val.id === id);
+        arr.splice(index, 1);
+        setProjects(arr);
+        setCurrentProject(arr[0]);
+      });
+    },
+    [projects]
+  );
+  const onClickDeleteTemplate = useCallback(
+    (id: number) => {
+      axiosInstance.delete(`/templates/delete/${id}`).then(() => {
+        const arr = [...templates];
+        const index = arr.findIndex((val) => val.id === id);
+        arr.splice(index, 1);
+        setTemplates(arr);
+
+        const arr2 = [...currentTemplates];
+        const index2 = arr2.findIndex((val) => val.id === id);
+        arr2.splice(index2, 1);
+        setCurrentTemplates(arr2);
+      });
+    },
+    [currentTemplates, templates]
+  );
+
+  //send callback
+  const onClickSendSurvey = useCallback((id: number) => {
+    setShowSendSurveyModal(true);
+    setSendSurveyId(id);
+  }, []);
 
   const onSendSurvey = useCallback(() => {
     setCreateSendSurveyLoading(true);
@@ -364,6 +391,7 @@ export default function Dashboard() {
       });
   }, [sendSurveyDetails, sendSurveyId]);
 
+  //reset callback
   const resetForCreateSurvey = useCallback(() => {
     setSurveyDetails({
       title: "",
@@ -457,11 +485,19 @@ export default function Dashboard() {
         createTemplateLoading={createTemplateLoading}
         disableCreateButton={disableTemplateCreateButton}
       />
-      <SurveyDataTable showModal = {showSurveyContacts}
-          onClose={() => setShowSurveyContacts(false)} />
-      <NPSAnalytics showModal={showNPSAnalytics}
-        onClose={() => setShowNPSAnalytics(false)} 
-        surveyName={activeSurveyCharts?.surveyName ? activeSurveyCharts.surveyName : "Caratlane NPS" }/>
+      <SurveyDataTable
+        showModal={showSurveyContacts}
+        onClose={() => setShowSurveyContacts(false)}
+      />
+      <NPSAnalytics
+        showModal={showNPSAnalytics}
+        onClose={() => setShowNPSAnalytics(false)}
+        surveyName={
+          activeSurveyCharts?.surveyName
+            ? activeSurveyCharts.surveyName
+            : "Caratlane NPS"
+        }
+      />
     </div>
   );
 }
