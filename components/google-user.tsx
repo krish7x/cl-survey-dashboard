@@ -2,7 +2,7 @@
 
 import { userAtom } from "@/store/atom";
 import { IGoogleUser } from "@/types";
-import { axiosInstance } from "@/utils/axios";
+import { nextAxiosInstance } from "@/utils/axios";
 import { useSetAtom } from "jotai";
 import { memo, useEffect } from "react";
 
@@ -11,7 +11,7 @@ export default memo(function GoogleUserSetup({ user }: { user: IGoogleUser }) {
   useEffect(() => {
     const userStr = localStorage.getItem("user");
     if (!userStr) {
-      axiosInstance.get(`/users/get?email=${user?.email}`).then((res) => {
+      nextAxiosInstance.get(`/users?email=${user?.email}`).then((res) => {
         const data = {
           ...res.data[0],
           googleUserName: user.name,
