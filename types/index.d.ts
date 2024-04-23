@@ -99,6 +99,9 @@ export interface ITemplateRequest {
 export interface ICreateModalDetails {
   title: string;
   description: string;
+  option: IOptions;
+  projectId: number | null;
+  templateId?: number;
 }
 
 export interface ISurveyModalDetails {

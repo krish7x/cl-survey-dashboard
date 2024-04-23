@@ -24,7 +24,7 @@ export default function Radio({
       {options.map(({ id, name }, inx, self) => (
         <div className="flex items-center mb-4" key={"radio-button-" + inx}>
           <input
-            id={`${id}`}
+            id={`radio-button-option-${inx}`}
             type="radio"
             value=""
             name="default-radio"
@@ -34,7 +34,7 @@ export default function Radio({
             disabled={checked ? inx !== checkOption : false}
           />
           <label
-            htmlFor={`${id}`}
+            htmlFor={`radio-button-option-${inx}`}
             className="ms-2 text-sm font-normal text-radioText select-none"
           >
             {name}

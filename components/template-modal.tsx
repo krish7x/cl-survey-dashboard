@@ -7,18 +7,22 @@ import { templateQuestionsAtom } from "@/store/atom";
 import Radio from "./radio";
 import truncate from "lodash.truncate";
 
-export default memo(function TemplateModal({
+export default function TemplateModal({
   showModal,
   setShowModal,
-  setShowCreateModal,
+  setShowTemplateCreateModal,
+  createTemplateLoading,
   disableCreateButton,
   resetForCreateTemplate,
+  onClickTemplateCreate,
 }: {
   showModal: boolean;
   disableCreateButton: boolean;
   setShowModal: (value: boolean) => void;
-  setShowCreateModal: (value: boolean) => void;
+  setShowTemplateCreateModal: (value: boolean) => void;
+  createTemplateLoading: boolean;
   resetForCreateTemplate: () => void;
+  onClickTemplateCreate: () => void;
 }) {
   const questionTypeOptions: IOptions[] = useMemo(
     () => [
@@ -41,6 +45,10 @@ export default memo(function TemplateModal({
       {
         id: 5,
         name: "Radio button",
+      },
+      {
+        id: 6,
+        name: "Text Area",
       },
     ],
     []
@@ -108,11 +116,13 @@ export default memo(function TemplateModal({
   }, [options]);
 
   const validation = useMemo(() => {
-    if (templateQuestion.length === 1) {
-      if (questionTitle && questionDescription) return true;
-    }
     if (!questionTitle || !questionDescription) return false;
-    if (selectQuestionType === 1 || selectQuestionType === 2) return true;
+    if (
+      selectQuestionType === 1 ||
+      selectQuestionType === 2 ||
+      selectQuestionType === 6
+    )
+      return true;
     if (+selectQuestionType > 2) {
       if (!selectedOptionPos) return false;
       if (options.length && options.length > 1) {
@@ -126,7 +136,7 @@ export default memo(function TemplateModal({
     questionTitle,
     selectQuestionType,
     selectedOptionPos,
-    templateQuestion.length,
+    // templateQuestion.length,
   ]);
 
   const resetOptionValues = useCallback(() => {
@@ -165,12 +175,10 @@ export default memo(function TemplateModal({
     const tempQuestion: ITemplateQuestion = {
       title: questionTitle,
       description: questionDescription,
-      optionTypeId: templateQuestion.length === 1 ? 1 : selectQuestionType,
-      optionTypeName:
-        templateQuestion.length === 1
-          ? "NPS Rating"
-          : questionTypeOptions.find((val) => val.id === selectQuestionType)
-              ?.name,
+      optionTypeId: selectQuestionType,
+      optionTypeName: questionTypeOptions.find(
+        (val) => val.id === selectQuestionType
+      )?.name,
       isAdded: true,
     };
     if (isAdded && selectedQuestionIndex) {
@@ -276,6 +284,7 @@ export default memo(function TemplateModal({
       onClose={() => {
         resetForCreateTemplate();
         setShowModal(false);
+        setShowTemplateCreateModal(false);
       }}
       popup
     >
@@ -382,18 +391,17 @@ export default memo(function TemplateModal({
                 </h1>
                 <Radio
                   options={questionTypeOptions}
-                  stacked={false}
-                  checked={templateQuestion.length === 1}
-                  checkOption={templateQuestion.length === 1 ? 0 : null}
                   onChange={(id) => {
                     setSelectQuestionType(id);
                     if (id === 1 || id === 2) resetOptionValues();
                   }}
                   checkedId={selectQuestionType}
+                  stacked={false}
                 />
               </div>
 
-              {(selectQuestionType as number) > 2 ? (
+              {(selectQuestionType as number) > 2 &&
+              (selectQuestionType as number) !== 6 ? (
                 <div className="flex flex-col gap-6 pl-8">
                   <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
                     Add Options
@@ -426,8 +434,9 @@ export default memo(function TemplateModal({
 
                   <div className="flex flex-col gap-4">
                     {options.map(({ name, id }, inx) => (
-                      <div className="relative" key={"options-" + inx}>
+                      <div className="relative" key={`options-${id}` + inx}>
                         <input
+                          id={`options-${id}` + inx}
                           className="block w-full px-2 py-4 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 outline-starStroke"
                           placeholder={`Type option ${inx + 1}`}
                           value={name ? name : ""}
@@ -481,32 +490,12 @@ export default memo(function TemplateModal({
         </div>
       </Modal.Body>
       <Modal.Footer className="border-t h-footer flex justify-between items-center border-t-modalBorder relative">
-        {templateQuestion.length === 1 ? (
-          <div
-            className="flex items-center p-4 mb-4 mt-2 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
-            role="alert"
-          >
-            <svg
-              className="flex-shrink-0 inline w-4 h-4 me-2 items-center"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span className="sr-only">Info</span>
-            <div>
-              <span className="font-medium">Heads up!</span> NPS Rating is
-              mandatory for 1st question
-            </div>
-          </div>
-        ) : null}
         {!disableCreateButton ? (
           <Button
             className="ml-auto"
             disabled={Boolean(validateCreateTemplate)}
-            onClick={() => setShowCreateModal(true)}
+            isProcessing={createTemplateLoading}
+            onClick={onClickTemplateCreate}
           >
             Create Template
           </Button>
@@ -514,4 +503,4 @@ export default memo(function TemplateModal({
       </Modal.Footer>
     </Modal>
   );
-});
+}

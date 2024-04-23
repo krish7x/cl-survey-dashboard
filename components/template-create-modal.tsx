@@ -1,26 +1,71 @@
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
+import Radio from "./radio";
+import { IOptions, IProject, ITemplate } from "@/types";
+import { useEffect, useMemo } from "react";
 
 export default function TemplateCreateModal({
   showModal,
   disableCreateButton,
-  createTemplateLoading,
   setShowModal,
   title,
   description,
+  option,
   setTemplateDetails,
   onClickCreate,
+  projects,
+  currentTemplates,
+  currentProject,
+  templateId,
+  resetForCreateTemplate,
 }: {
   showModal: boolean;
   disableCreateButton: boolean;
-  createTemplateLoading: boolean;
   setShowModal: (value: boolean) => void;
   title: string;
   description: string;
+  option: IOptions;
   setTemplateDetails: (value: object) => void;
   onClickCreate: () => void;
+  currentTemplates?: ITemplate[];
+  currentProject?: IProject;
+  projects: IOptions[];
+  templateId?: number;
+  resetForCreateTemplate: () => void;
 }) {
+  const templates: IOptions[] | undefined = useMemo(
+    () =>
+      currentTemplates?.map((val) => ({
+        id: val.id,
+        name: val.templateName,
+      })),
+    [currentTemplates]
+  );
+
+  useEffect(() => {
+    if (showModal) {
+      setTemplateDetails({
+        ...setTemplateDetails,
+        projectId: currentProject?.id,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showModal, currentProject?.id, showModal]);
+
+  const validation = useMemo(() => {
+    if (option.id === 1) return !title || !description;
+    return !title || !description || !currentProject?.id || !templateId;
+  }, [currentProject?.id, description, option.id, templateId, title]);
+
   return (
-    <Modal show={showModal} size="md" onClose={() => setShowModal(false)} popup>
+    <Modal
+      show={showModal}
+      size="md"
+      onClose={() => {
+        setShowModal(false);
+        resetForCreateTemplate();
+      }}
+      popup
+    >
       <Modal.Header />
       <Modal.Body>
         <div className="space-y-6">
@@ -51,7 +96,7 @@ export default function TemplateCreateModal({
               <Label htmlFor="projectDescription" value="Description" />
             </div>
             <Textarea
-              id="description"
+              id="projectDescription"
               placeholder="description.."
               value={description}
               onChange={(event) =>
@@ -64,13 +109,96 @@ export default function TemplateCreateModal({
             />
           </div>
 
+          <div>
+            <div className="mb-2 block">
+              <Label htmlFor="projectDescription" value="Create as" />
+            </div>
+            <Radio
+              options={[
+                {
+                  id: 1,
+                  name: "New Template",
+                },
+                {
+                  id: 2,
+                  name: "Existing Template",
+                },
+              ]}
+              onChange={(id) =>
+                setTemplateDetails({
+                  option: {
+                    id,
+                  },
+                })
+              }
+              checkedId={option.id}
+              stacked={false}
+            />
+          </div>
+
+          {option.id === 2 && (
+            <>
+              <div>
+                <div className="block my-2">
+                  <Label htmlFor="project" value="Select Project" />
+                </div>
+                <select
+                  id="small"
+                  className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) =>
+                    setTemplateDetails({
+                      projectId: +e.target.value,
+                      templateId: 0,
+                    })
+                  }
+                >
+                  {projects.length
+                    ? projects.map(({ id, name }) => (
+                        <option
+                          key={"project-" + id}
+                          selected={id === currentProject?.id}
+                          value={id}
+                        >
+                          {name}
+                        </option>
+                      ))
+                    : null}
+                </select>
+              </div>
+
+              <div>
+                <div className="block my-2">
+                  <Label htmlFor="template" value="Select Template" />
+                </div>
+                <select
+                  id="small"
+                  className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) =>
+                    setTemplateDetails({
+                      templateId: +e.target.value,
+                    })
+                  }
+                >
+                  <option value={0}>Select Template</option>
+                  {templates?.length
+                    ? templates.map(({ id, name }) => (
+                        <option
+                          key={"project-" + id}
+                          value={id}
+                          selected={id === templateId}
+                        >
+                          {name}
+                        </option>
+                      ))
+                    : null}
+                </select>
+              </div>
+            </>
+          )}
+
           {!disableCreateButton ? (
             <div className="w-full">
-              <Button
-                isProcessing={createTemplateLoading}
-                onClick={onClickCreate}
-                disabled={!title || !description}
-              >
+              <Button onClick={onClickCreate} disabled={Boolean(validation)}>
                 Create
               </Button>
             </div>
