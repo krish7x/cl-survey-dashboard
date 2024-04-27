@@ -4,6 +4,7 @@ import Select from "@/components/select";
 import StarRating from "@/components/star-rating";
 import { IOptions } from "@/types";
 import { useCallback, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Components() {
   const OPTIONS = ["Option 1", "Option 2", "Option 3", "Option 4"];
@@ -59,11 +60,21 @@ export default function Components() {
 
   //radio button goes here
   const [radioOptions] = useState<IOptions[]>(
-    OPTIONS.map((val, inx) => ({ id: inx, name: val }))
+    OPTIONS.map((val, inx) => ({ id: uuidv4(), name: val }))
+  );
+
+  const [radioOptions1] = useState<IOptions[]>(
+    OPTIONS.map((val, inx) => ({ id: uuidv4(), name: val }))
   );
   const [checkedRadio, setCheckedRadio] = useState<string | number>();
+  const [checkedRadio1, setCheckedRadio1] = useState<string | number>();
+
   const onRadioChange = useCallback((id: number | string) => {
     setCheckedRadio(id);
+  }, []);
+
+  const onRadioChange1 = useCallback((id: number | string) => {
+    setCheckedRadio1(id);
   }, []);
 
   return (
@@ -103,6 +114,15 @@ export default function Components() {
           options={radioOptions}
           onChange={onRadioChange}
           checkedId={checkedRadio}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 w-96">
+        <h1>Radio Button</h1>
+        <Radio
+          options={radioOptions1}
+          onChange={onRadioChange1}
+          checkedId={checkedRadio1}
         />
       </div>
     </div>

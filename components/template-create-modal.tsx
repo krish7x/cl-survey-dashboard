@@ -52,7 +52,7 @@ export default function TemplateCreateModal({
   }, [showModal, currentProject?.id, showModal]);
 
   const validation = useMemo(() => {
-    if (option.id === 1) return !title || !description;
+    if (option.id === "template_1") return !title || !description;
     return !title || !description || !currentProject?.id || !templateId;
   }, [currentProject?.id, description, option.id, templateId, title]);
 
@@ -116,11 +116,11 @@ export default function TemplateCreateModal({
             <Radio
               options={[
                 {
-                  id: 1,
+                  id: "template_1",
                   name: "New Template",
                 },
                 {
-                  id: 2,
+                  id: "template_2",
                   name: "Existing Template",
                 },
               ]}
@@ -136,14 +136,14 @@ export default function TemplateCreateModal({
             />
           </div>
 
-          {option.id === 2 && (
+          {option.id === "template_2" && (
             <>
               <div>
                 <div className="block my-2">
                   <Label htmlFor="project" value="Select Project" />
                 </div>
                 <select
-                  id="small"
+                  id="project"
                   className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) =>
                     setTemplateDetails({
@@ -171,7 +171,7 @@ export default function TemplateCreateModal({
                   <Label htmlFor="template" value="Select Template" />
                 </div>
                 <select
-                  id="small"
+                  id="template"
                   className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) =>
                     setTemplateDetails({
@@ -183,7 +183,7 @@ export default function TemplateCreateModal({
                   {templates?.length
                     ? templates.map(({ id, name }) => (
                         <option
-                          key={"project-" + id}
+                          key={"template-" + id}
                           value={id}
                           selected={id === templateId}
                         >
