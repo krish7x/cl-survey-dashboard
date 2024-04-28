@@ -93,6 +93,7 @@ export interface ITemplateRequest {
   project: {
     id?: number;
   };
+  id?: number;
   templateName?: string;
   description?: string;
   templateJsonData?: Record<string, any>;

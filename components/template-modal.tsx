@@ -13,17 +13,17 @@ export default function TemplateModal({
   setShowModal,
   setShowTemplateCreateModal,
   createTemplateLoading,
-  disableCreateButton,
+  isTemplateEdit,
   resetForCreateTemplate,
-  onClickTemplateCreate,
+  onClickCreateOrUpdate,
 }: {
   showModal: boolean;
-  disableCreateButton: boolean;
+  isTemplateEdit: boolean;
   setShowModal: (value: boolean) => void;
   setShowTemplateCreateModal: (value: boolean) => void;
   createTemplateLoading: boolean;
   resetForCreateTemplate: () => void;
-  onClickTemplateCreate: () => void;
+  onClickCreateOrUpdate: () => void;
 }) {
   const questionTypeOptions: IOptions[] = useMemo(
     () => [
@@ -54,7 +54,7 @@ export default function TemplateModal({
     ],
     []
   );
-  const [createClicked, setCreateClicked] = useState(true);
+  const [showQuestion, setShowQuestion] = useState(false);
   const [questionId, setQuestionId] = useState<number>();
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionDescription, setQuestionDescription] = useState("");
@@ -70,6 +70,7 @@ export default function TemplateModal({
   const [ratingRange, setRatingRange] = useState<number | string>("range_5");
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [linkDetails, setLinkDetails] = useState<ILinkDetails>();
+  const [isAddQuestion, setIsAddQuestion] = useState(false);
 
   const [templateQuestion, setTemplateQuestion] = useAtom(
     templateQuestionsAtom
@@ -130,17 +131,36 @@ export default function TemplateModal({
     // templateQuestion.length,
   ]);
 
+  const getOptions = useCallback((): IOptions[] => {
+    const length =
+      ratingRange === "range_5" && selectQuestionType === 2 ? 5 : 10;
+    let arr: IOptions[] = [];
+    if (
+      (selectQuestionType === 1 || selectQuestionType === 2) &&
+      (!options.length || isAddQuestion)
+    ) {
+      arr = new Array(length).fill(null).map((_, inx) => ({
+        id: inx + 1,
+        name: `${inx + 1}`,
+        linkedTo: "",
+      }));
+    } else if (!isAddQuestion) {
+      arr = options;
+    }
+
+    return arr;
+  }, [isAddQuestion, options, ratingRange, selectQuestionType]);
+
   const resetOptionValues = useCallback(() => {
     setSelectedOptionPos("");
-    setOptions([]);
-  }, []);
+    setOptions(getOptions());
+  }, [getOptions]);
 
   const resetAll = useCallback(() => {
     setQuestionTitle("");
     setQuestionId(undefined);
     setQuestionDescription("");
     setSelectQuestionType("");
-    setCreateClicked(false);
     resetOptionValues();
   }, [
     resetOptionValues,
@@ -148,27 +168,7 @@ export default function TemplateModal({
     setQuestionId,
     setQuestionDescription,
     setSelectQuestionType,
-    setCreateClicked,
   ]);
-
-  const getOptions = useCallback((): IOptions[] => {
-    const length = ratingRange === "range_5" ? 5 : 10;
-    let arr: IOptions[] = [];
-    if (
-      (selectQuestionType === 1 || selectQuestionType === 2) &&
-      !options.length
-    ) {
-      arr = new Array(length).fill(null).map((_, inx) => ({
-        id: inx + 1,
-        name: `${inx + 1}`,
-        linkedTo: "",
-      }));
-    } else {
-      arr = options;
-    }
-
-    return arr;
-  }, [options, ratingRange, selectQuestionType]);
 
   const addEmptyQuestion = useCallback(() => {
     const tempQuestion: ITemplateQuestion = {
@@ -178,7 +178,8 @@ export default function TemplateModal({
       optionTypeName: "NPS Rating",
     };
     resetAll();
-    setCreateClicked(true);
+    setShowQuestion(true);
+    setIsAddQuestion(true);
     setSelectedQuestionIndex(null);
     let arr = [];
     if (!templateQuestion.length) {
@@ -187,14 +188,7 @@ export default function TemplateModal({
       arr = [...templateQuestion, tempQuestion];
     }
     setTemplateQuestion(arr);
-    setOptions(getOptions());
-  }, [
-    getOptions,
-    resetAll,
-    setTemplateQuestion,
-    templateQuestion,
-    setCreateClicked,
-  ]);
+  }, [resetAll, templateQuestion, setTemplateQuestion]);
 
   const onClickCreateQuestion = useCallback(() => {
     const tempQuestion: ITemplateQuestion = {
@@ -244,7 +238,8 @@ export default function TemplateModal({
   const handleSelectQuestion = useCallback(
     (inx: number) => {
       const curQuestion: ITemplateQuestion = templateQuestion?.[inx];
-      setCreateClicked(true);
+      setShowQuestion(true);
+      setIsAddQuestion(false);
       setQuestionId(curQuestion?.questionId);
       setQuestionTitle(curQuestion?.title);
       setQuestionDescription(curQuestion?.description);
@@ -254,25 +249,25 @@ export default function TemplateModal({
       setSelectedQuestionIndex(inx + 1);
       setIsAdded(curQuestion?.isAdded || false);
     },
-    [templateQuestion, setCreateClicked]
+    [templateQuestion, setShowQuestion]
   );
 
   const addQuestionValidation = useMemo(() => {
-    if (!templateQuestion.length && !createClicked) return true;
+    if (!templateQuestion.length && !showQuestion) return true;
     return (
       templateQuestion.length && templateQuestion.every((val) => val.title)
     );
-  }, [createClicked, templateQuestion]);
+  }, [showQuestion, templateQuestion]);
 
   const onClickDeleteTemplateQuestion = useCallback(
     (inx: number) => {
       resetAll();
+      setShowQuestion(false);
       setQuestionId(undefined);
       setQuestionTitle("");
       setTemplateQuestion((data) => data.filter((_, index) => index !== inx));
-      handleSelectQuestion(1);
     },
-    [handleSelectQuestion, resetAll, setTemplateQuestion]
+    [resetAll, setTemplateQuestion]
   );
 
   const validateCreateTemplate = useMemo(() => {
@@ -354,18 +349,6 @@ export default function TemplateModal({
     }
   }, [selectQuestionType]);
 
-  useEffect(() => {
-    if (disableCreateButton) {
-      handleSelectQuestion(0);
-    }
-  }, [disableCreateButton, handleSelectQuestion]);
-
-  useEffect(() => {
-    if (!templateQuestion.length) {
-      addEmptyQuestion();
-    }
-  }, [addEmptyQuestion, showModal, templateQuestion.length]);
-
   return (
     <Modal
       show={showModal}
@@ -374,13 +357,15 @@ export default function TemplateModal({
         resetForCreateTemplate();
         setShowModal(false);
         setShowTemplateCreateModal(false);
+        setShowQuestion(false);
       }}
       popup
     >
       <Modal.Body className="p-0 overflow-hidden">
         <Modal.Header className="border-b border-b-modalBorder relative">
           <span className="absolute left-[calc(50%-96px)]">
-            {disableCreateButton ? "Template details" : "Build your template"}
+            {isTemplateEdit ? "Update" : "Build"}
+            {" template"}
           </span>
         </Modal.Header>
         <div className="p-0 flex h-templateModal w-full ">
@@ -391,7 +376,6 @@ export default function TemplateModal({
                   className="flex flex-col cursor-grab"
                   key={"question-" + inx}
                   onClick={() => handleSelectQuestion(inx)}
-                  draggable={!disableCreateButton}
                   onDragStart={() => (dragQuestion.current = inx)}
                   onDragEnter={() => (draggedOverQuestion.current = inx)}
                   onDragEnd={handleSort}
@@ -410,35 +394,34 @@ export default function TemplateModal({
                         <p className="text-sm font-normal text-radio select-none">
                           {inx + 1}.{" "}
                           {truncate(title ? title : "Draft", {
-                            length: 20,
+                            length: 40,
                           })}
                         </p>
                         {!title && <File className="stroke-gray-300 ml-2" />}
                       </div>
-                      {!disableCreateButton ? (
-                        <Trash2
-                          className="stroke-txtPurple ml-2 opacity-80"
-                          onClick={() => onClickDeleteTemplateQuestion(inx)}
-                        />
-                      ) : null}
+                      <Trash2
+                        className="stroke-txtPurple ml-2 opacity-80"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onClickDeleteTemplateQuestion(inx);
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
               );
             })}
-            {!disableCreateButton ? (
-              <Button
-                gradientDuoTone="purpleToBlue"
-                onClick={addEmptyQuestion}
-                disabled={!addQuestionValidation}
-              >
-                <div className="flex gap-1 items-center">
-                  Add a question <Plus size={20} color="#fff" />
-                </div>
-              </Button>
-            ) : null}
+            <Button
+              gradientDuoTone="purpleToBlue"
+              onClick={addEmptyQuestion}
+              disabled={!addQuestionValidation}
+            >
+              <div className="flex gap-1 items-center">
+                Add a question <Plus size={20} color="#fff" />
+              </div>
+            </Button>
           </div>
-          {createClicked ? (
+          {showQuestion ? (
             <div className="flex flex-col pt-8 pb-16 px-6 gap-6 w-modalRightPanel overflow-y-scroll scrollbar-hide">
               <div className="flex gap-2 w-full ">
                 <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2 w-full">
@@ -607,16 +590,15 @@ export default function TemplateModal({
                             )
                           }
                         />
-                        {!disableCreateButton ? (
-                          <Trash2
-                            className={`absolute end-2.5 bottom-4 z-10 ${
-                              options.length > 1
-                                ? "cursor-pointer"
-                                : "cursor-not-allowed"
-                            } stroke-txtPurple`}
-                            onClick={() => onClickDeleteOption(id)}
-                          />
-                        ) : null}
+
+                        <Trash2
+                          className={`absolute end-2.5 bottom-4 z-10 ${
+                            options.length > 1
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed"
+                          } stroke-txtPurple`}
+                          onClick={() => onClickDeleteOption(id)}
+                        />
                       </div>
                     ))}
                     {(selectQuestionType as number) > 2 &&
@@ -633,7 +615,7 @@ export default function TemplateModal({
                 </div>
               ) : null}
 
-              {validation && !disableCreateButton ? (
+              {validation ? (
                 <Button
                   gradientMonochrome="success"
                   pill
@@ -664,16 +646,15 @@ export default function TemplateModal({
         />
       </Modal.Body>
       <Modal.Footer className="border-t h-footer flex justify-between items-center border-t-modalBorder relative">
-        {!disableCreateButton ? (
-          <Button
-            className="ml-auto"
-            disabled={Boolean(validateCreateTemplate)}
-            isProcessing={createTemplateLoading}
-            onClick={onClickTemplateCreate}
-          >
-            Create Template
-          </Button>
-        ) : null}
+        <Button
+          className="ml-auto"
+          disabled={Boolean(validateCreateTemplate)}
+          isProcessing={createTemplateLoading}
+          onClick={onClickCreateOrUpdate}
+        >
+          {isTemplateEdit ? "Update" : "Create"}
+          {""} template
+        </Button>
       </Modal.Footer>
     </Modal>
   );

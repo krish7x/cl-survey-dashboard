@@ -50,8 +50,7 @@ export default function Dashboard() {
   const [createSendSurveyLoading, setCreateSendSurveyLoading] = useState(false);
   const [disableSurveyCreateButton, setDisableSurveyCreateButton] =
     useState(false);
-  const [disableTemplateCreateButton, setDisableTemplateCreateButton] =
-    useState(false);
+  const [showUpdateTemplate, setShowUpdateTemplate] = useState(false);
   const [createTemplateLoading, setCreateTemplateLoading] = useState(false);
   const [showSendSurveyModal, setShowSendSurveyModal] = useState(false);
   const [sendSurveyId, setSendSurveyId] = useState<number>(0);
@@ -233,12 +232,13 @@ export default function Dashboard() {
     });
   }, [projectDetails.description, projectDetails.title, projects, user?.id]);
 
-  const onClickTemplateCreate = useCallback(() => {
+  const onClickTemplateCreateOrUpdate = useCallback(() => {
     setCreateTemplateLoading(true);
     const reqObj: ITemplateRequest = {
       project: {
         id: currentProject?.id,
       },
+      id: templateDetails?.templateId,
       templateName: templateDetails?.title,
       description: templateDetails?.description,
       templateJsonData: template.map((val, inx) => ({
@@ -247,9 +247,23 @@ export default function Dashboard() {
         isAdded: true,
       })),
     };
-    axiosInstance.post("/templates/create", reqObj).then((res) => {
-      setTemplates([...templates, res.data]);
-      setCurrentTemplates([...currentTemplates, res.data]);
+    let instance = null;
+    if (showUpdateTemplate) {
+      instance = axiosInstance.put(
+        `/templates/update/${templateDetails?.templateId}`,
+        reqObj
+      );
+    } else {
+      instance = axiosInstance.post("/templates/create", reqObj);
+    }
+    instance.then((res) => {
+      if (!showUpdateTemplate) {
+        setTemplates([...templates, res.data]);
+        setCurrentTemplates([...currentTemplates, res.data]);
+      } else {
+        setTemplates([res.data]);
+        setCurrentTemplates([res.data]);
+      }
       setTemplate([]);
       setTemplateDetails({ title: "", description: "" });
       setShowTemplateCreateModal(false);
@@ -257,10 +271,12 @@ export default function Dashboard() {
       setCreateTemplateLoading(false);
     });
   }, [
-    currentProject,
+    currentProject?.id,
     templateDetails?.title,
     templateDetails?.description,
+    templateDetails?.templateId,
     template,
+    showUpdateTemplate,
     templates,
     currentTemplates,
     setTemplate,
@@ -325,12 +341,17 @@ export default function Dashboard() {
     [surveys]
   );
 
-  const onClickViewTemplate = useCallback(
+  const onClickEditTemplate = useCallback(
     (id: number) => {
       const template = templates.find((val) => val.id === id);
-      setDisableTemplateCreateButton(true);
+      setShowUpdateTemplate(true);
+      setTemplateDetails({
+        templateId: id,
+        title: template?.templateName,
+        description: template?.description,
+      });
       setTemplate(template?.templateJsonData as ITemplateQuestion[]);
-      setShowTemplateModal(true);
+      setShowTemplateCreateModal(true);
     },
     [setTemplate, templates]
   );
@@ -462,7 +483,7 @@ export default function Dashboard() {
       projectId: 0,
       templateId: 0,
     });
-    setDisableTemplateCreateButton(false);
+    setShowUpdateTemplate(false);
   }, [setTemplate]);
 
   return (
@@ -479,7 +500,7 @@ export default function Dashboard() {
         templates={currentTemplates}
         onClickDeleteSurvey={onClickDeleteSurvey}
         onClickViewSurvey={onClickViewSurvey}
-        onClickViewTemplate={onClickViewTemplate}
+        onClickEditTemplate={onClickEditTemplate}
         onClickDeleteTemplate={onClickDeleteTemplate}
         setShowTemplateModal={setShowTemplateCreateModal}
         onClickSendSurvey={onClickSendSurvey}
@@ -530,17 +551,17 @@ export default function Dashboard() {
         showModal={showTemplateModal}
         setShowModal={setShowTemplateModal}
         setShowTemplateCreateModal={setShowTemplateCreateModal}
-        disableCreateButton={disableTemplateCreateButton}
+        isTemplateEdit={showUpdateTemplate}
         resetForCreateTemplate={resetForCreateTemplate}
-        onClickTemplateCreate={onClickTemplateCreate}
+        onClickCreateOrUpdate={onClickTemplateCreateOrUpdate}
         createTemplateLoading={createTemplateLoading}
       />
       <TemplateCreateModal
+        isTemplateEdit={showUpdateTemplate}
         showModal={showTemplateCreateModal}
         setShowModal={setShowTemplateCreateModal}
         setTemplateDetails={setTemplateDetails}
         onClickCreate={prefillAndShowTemplateModal}
-        disableCreateButton={disableTemplateCreateButton}
         projects={projects.map((val) => ({
           id: val.id,
           name: val.projectName,

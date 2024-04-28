@@ -15,7 +15,7 @@ export default function MainPanel({
   isTemplateLoaded,
   setShowTemplateModal,
   onClickViewSurvey,
-  onClickViewTemplate,
+  onClickEditTemplate,
   onClickDeleteSurvey,
   onClickDeleteTemplate,
   setShowSurveyModal,
@@ -34,7 +34,7 @@ export default function MainPanel({
   onClickSendSurvey: (id: number) => void;
   onClickShowCharts: (id: number, surveyName: any) => void;
   onClickViewSurvey: (id: number) => void;
-  onClickViewTemplate: (id: number) => void;
+  onClickEditTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;
   onClickDeleteTemplate: (id: number) => void;
   onClickShowSurveyContacts: (id: number) => void;
@@ -99,7 +99,7 @@ export default function MainPanel({
       {tab.id === 2 ? (
         isTemplateLoaded ? (
           <Templates
-            onClickViewTemplate={onClickViewTemplate}
+            onClickEditTemplate={onClickEditTemplate}
             templates={templates}
             setOpenModal={setOpenModal}
             setTemplateId={setTemplateId}

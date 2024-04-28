@@ -5,7 +5,7 @@ import { useEffect, useMemo } from "react";
 
 export default function TemplateCreateModal({
   showModal,
-  disableCreateButton,
+  isTemplateEdit = false,
   setShowModal,
   title,
   description,
@@ -18,8 +18,8 @@ export default function TemplateCreateModal({
   templateId,
   resetForCreateTemplate,
 }: {
+  isTemplateEdit: boolean;
   showModal: boolean;
-  disableCreateButton: boolean;
   setShowModal: (value: boolean) => void;
   title: string;
   description: string;
@@ -70,9 +70,7 @@ export default function TemplateCreateModal({
       <Modal.Body>
         <div className="space-y-6">
           <h3 className="text-lg font-medium text-gray-900">
-            {disableCreateButton
-              ? "View template details"
-              : "Create new template"}
+            {isTemplateEdit ? "Update template" : "Create new template"}
           </h3>
           <div>
             <div className="mb-2 block">
@@ -109,34 +107,36 @@ export default function TemplateCreateModal({
             />
           </div>
 
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="projectDescription" value="Create as" />
-            </div>
-            <Radio
-              options={[
-                {
-                  id: "template_1",
-                  name: "New Template",
-                },
-                {
-                  id: "template_2",
-                  name: "Existing Template",
-                },
-              ]}
-              onChange={(id) =>
-                setTemplateDetails({
-                  option: {
-                    id,
+          {!isTemplateEdit && (
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="projectDescription" value="Create as" />
+              </div>
+              <Radio
+                options={[
+                  {
+                    id: "template_1",
+                    name: "New Template",
                   },
-                })
-              }
-              checkedId={option.id}
-              stacked={false}
-            />
-          </div>
+                  {
+                    id: "template_2",
+                    name: "Existing Template",
+                  },
+                ]}
+                onChange={(id) =>
+                  setTemplateDetails({
+                    option: {
+                      id,
+                    },
+                  })
+                }
+                checkedId={option.id}
+                stacked={false}
+              />
+            </div>
+          )}
 
-          {option.id === "template_2" && (
+          {option.id === "template_2" && !isTemplateEdit && (
             <>
               <div>
                 <div className="block my-2">
@@ -196,13 +196,11 @@ export default function TemplateCreateModal({
             </>
           )}
 
-          {!disableCreateButton ? (
-            <div className="w-full">
-              <Button onClick={onClickCreate} disabled={Boolean(validation)}>
-                Create
-              </Button>
-            </div>
-          ) : null}
+          <div className="w-full">
+            <Button onClick={onClickCreate} disabled={Boolean(validation)}>
+              {isTemplateEdit ? "Update" : "Create"}
+            </Button>
+          </div>
         </div>
       </Modal.Body>
     </Modal>
