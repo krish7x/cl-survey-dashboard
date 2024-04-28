@@ -95,10 +95,12 @@ export default function TemplateQuestionModal({
         <div className="flex flex-col gap-4 pl-5 py-8">
           <Radio
             options={
-              questions.map(({ questionId, title }) => ({
-                id: questionId,
-                name: title,
-              })) as IOptions[]
+              questions
+                .filter((val) => val.title)
+                .map(({ questionId, title }) => ({
+                  id: questionId,
+                  name: title,
+                })) as IOptions[]
             }
             idText={"linked"}
             checkedId={selectedQuestionId}

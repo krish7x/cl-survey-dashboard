@@ -1,6 +1,6 @@
 import { ILinkDetails, IOptions, ITemplateQuestion } from "@/types";
 import { Button, FloatingLabel, Modal } from "flowbite-react";
-import { File, Plus, Trash2 } from "lucide-react";
+import { File, Link, Plus, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, memo, useRef } from "react";
 import { useAtom } from "jotai";
 import { templateQuestionsAtom } from "@/store/atom";
@@ -140,9 +140,35 @@ export default function TemplateModal({
     setQuestionId(undefined);
     setQuestionDescription("");
     setSelectQuestionType("");
-    resetOptionValues();
     setCreateClicked(false);
-  }, [resetOptionValues, setQuestionTitle, setQuestionDescription]);
+    resetOptionValues();
+  }, [
+    resetOptionValues,
+    setQuestionTitle,
+    setQuestionId,
+    setQuestionDescription,
+    setSelectQuestionType,
+    setCreateClicked,
+  ]);
+
+  const getOptions = useCallback((): IOptions[] => {
+    const length = ratingRange === "range_5" ? 5 : 10;
+    let arr: IOptions[] = [];
+    if (
+      (selectQuestionType === 1 || selectQuestionType === 2) &&
+      !options.length
+    ) {
+      arr = new Array(length).fill(null).map((_, inx) => ({
+        id: inx + 1,
+        name: `${inx + 1}`,
+        linkedTo: "",
+      }));
+    } else {
+      arr = options;
+    }
+
+    return arr;
+  }, [options, ratingRange, selectQuestionType]);
 
   const addEmptyQuestion = useCallback(() => {
     const tempQuestion: ITemplateQuestion = {
@@ -161,26 +187,14 @@ export default function TemplateModal({
       arr = [...templateQuestion, tempQuestion];
     }
     setTemplateQuestion(arr);
-  }, [resetAll, setTemplateQuestion, templateQuestion]);
-
-  const getOptions = useCallback((): IOptions[] => {
-    const length = ratingRange === "range_5" ? 5 : 10;
-    let arr: IOptions[] = [];
-    if (
-      (selectQuestionType === 1 || selectQuestionType === 2) &&
-      !options.length
-    ) {
-      arr = new Array(length).fill(null).map((_, inx) => ({
-        id: inx + 1,
-        name: `${inx + 1}`,
-        linkedTo: options[inx].linkedTo || "",
-      }));
-    } else {
-      arr = options;
-    }
-
-    return arr;
-  }, [options, ratingRange, selectQuestionType]);
+    setOptions(getOptions());
+  }, [
+    getOptions,
+    resetAll,
+    setTemplateQuestion,
+    templateQuestion,
+    setCreateClicked,
+  ]);
 
   const onClickCreateQuestion = useCallback(() => {
     const tempQuestion: ITemplateQuestion = {
@@ -240,7 +254,7 @@ export default function TemplateModal({
       setSelectedQuestionIndex(inx + 1);
       setIsAdded(curQuestion?.isAdded || false);
     },
-    [templateQuestion]
+    [templateQuestion, setCreateClicked]
   );
 
   const addQuestionValidation = useMemo(() => {
@@ -253,12 +267,12 @@ export default function TemplateModal({
   const onClickDeleteTemplateQuestion = useCallback(
     (inx: number) => {
       resetAll();
-      setCreateClicked(false);
       setQuestionId(undefined);
       setQuestionTitle("");
       setTemplateQuestion((data) => data.filter((_, index) => index !== inx));
+      handleSelectQuestion(1);
     },
-    [resetAll, setTemplateQuestion]
+    [handleSelectQuestion, resetAll, setTemplateQuestion]
   );
 
   const validateCreateTemplate = useMemo(() => {
@@ -270,12 +284,42 @@ export default function TemplateModal({
   const draggedOverQuestion = useRef<number>(0);
 
   const handleSort = useCallback(() => {
-    const clone = [...templateQuestion];
-    const tempQuestion = clone[dragQuestion.current];
+    let clone = [...templateQuestion];
+    const tempDraggedQuestion = clone[dragQuestion.current];
+    const tempDraggedOverQuestion = clone[draggedOverQuestion.current];
     clone[dragQuestion.current] = clone[draggedOverQuestion.current];
-    clone[draggedOverQuestion.current] = tempQuestion;
+    clone[draggedOverQuestion.current] = tempDraggedQuestion;
+    clone = clone.map((val, inx) => ({ ...val, questionId: inx + 1 }));
+    clone = clone.map((val1) => {
+      const options = val1.optionsJson?.options.map((val2) => {
+        if (val2.linkedTo === tempDraggedQuestion.questionId) {
+          return {
+            ...val2,
+            linkedTo: tempDraggedOverQuestion.questionId,
+          };
+        } else if (val2.linkedTo === tempDraggedOverQuestion.questionId) {
+          return {
+            ...val2,
+            linkedTo: tempDraggedQuestion.questionId,
+          };
+        } else {
+          return val2;
+        }
+      });
+      return {
+        ...val1,
+        optionsJson: {
+          ...val1.optionsJson,
+          options,
+        },
+      };
+    }) as ITemplateQuestion[];
     setTemplateQuestion(clone);
-  }, [setTemplateQuestion, templateQuestion]);
+    const toBeUpdatedOptions = clone.find(
+      (val) => val.questionId === questionId
+    );
+    setOptions(toBeUpdatedOptions?.optionsJson?.options as IOptions[]);
+  }, [questionId, setTemplateQuestion, templateQuestion]);
 
   const handleLinkQuestion = useCallback(
     (questionId: number, optionId: number) => {
@@ -446,57 +490,56 @@ export default function TemplateModal({
 
               {(selectQuestionType as number) === 1 ||
               (selectQuestionType as number) === 2 ? (
-                <div className="flex flex-col gap-4 pl-8">
+                <div className="flex flex-col gap-6 pl-8">
                   <div className="flex justify-between border-b border-b-navBorder pb-2">
                     <h1 className="text-sidebarText text-md font-semibold">
                       Link Question
                     </h1>
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm font-normal text-radio select-none">
-                      Select your range
-                    </p>
-                    <Radio
-                      options={[
-                        {
-                          id: "range_5",
-                          name: "1 - 5",
-                        },
-                        {
-                          id: "range_10",
-                          name: "1 - 10",
-                        },
-                      ]}
-                      stacked={false}
-                      checkedId={ratingRange}
-                      onChange={(id) => setRatingRange(id)}
-                    />
-                  </div>
+                  {(selectQuestionType as number) === 2 ? (
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm font-normal text-radio select-none">
+                        Select your range
+                      </p>
+                      <Radio
+                        options={[
+                          {
+                            id: "range_5",
+                            name: "1 - 5",
+                          },
+                          {
+                            id: "range_10",
+                            name: "1 - 10",
+                          },
+                        ]}
+                        stacked={false}
+                        checkedId={ratingRange}
+                        onChange={(id) => setRatingRange(id)}
+                      />
+                    </div>
+                  ) : null}
 
                   <Button.Group outline>
-                    {new Array(ratingRange === "range_5" ? 5 : 10)
-                      .fill(null)
-                      .map((_, inx) => ({ id: inx + 1, name: inx + 1 }))
-                      .map((_, index) => (
-                        <Button
-                          key={"rating-button-" + index}
-                          color="gray"
-                          onClick={() =>
-                            handleLinkQuestion(
-                              selectedQuestionIndex as number,
-                              index + 1
-                            )
-                          }
-                        >
-                          {index + 1}
-                          {options[index].linkedTo ? (
-                            <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
-                              {options[index].linkedTo}
-                            </div>
-                          ) : null}
-                        </Button>
-                      ))}
+                    {options.map(({ id, linkedTo }, index) => (
+                      <Button
+                        key={"rating-button-" + index}
+                        color="gray"
+                        onClick={() =>
+                          handleLinkQuestion(
+                            selectedQuestionIndex as number,
+                            +id
+                          )
+                        }
+                      >
+                        {+id}
+                        {linkedTo ? (
+                          <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                            {linkedTo}
+                          </div>
+                        ) : null}
+                      </Button>
+                    ))}
                   </Button.Group>
                 </div>
               ) : null}
@@ -534,7 +577,7 @@ export default function TemplateModal({
                   </div>
 
                   <div className="flex flex-col gap-4">
-                    {options.map(({ name, id }, inx) => (
+                    {options.map(({ name, id, linkedTo }, inx) => (
                       <div className="relative" key={`options-${id}` + inx}>
                         <input
                           id={`options-${id}` + inx}
@@ -543,6 +586,26 @@ export default function TemplateModal({
                           value={name ? name : ""}
                           required
                           onChange={(e) => onChangeOptions(id, e.target.value)}
+                        />
+
+                        {linkedTo ? (
+                          <div className="absolute right-[calc(12%)] bottom-4 z-10 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900">
+                            {linkedTo}
+                          </div>
+                        ) : null}
+
+                        <Link
+                          className={`absolute right-10 bottom-4 z-10 ${
+                            options.length > 1
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed"
+                          } stroke-txtPurple`}
+                          onClick={() =>
+                            handleLinkQuestion(
+                              selectedQuestionIndex as number,
+                              +id
+                            )
+                          }
                         />
                         {!disableCreateButton ? (
                           <Trash2
