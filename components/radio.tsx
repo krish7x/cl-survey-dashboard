@@ -4,16 +4,16 @@ export default function Radio({
   options,
   onChange,
   checkedId,
+  disableId,
   stacked = true,
-  checked = false,
-  checkOption = null,
+  idText = "",
 }: {
   options: IOptions[];
   onChange: (id: string | number) => void;
   checkedId?: string | number;
+  disableId?: string | number;
   stacked?: boolean;
-  checked?: boolean;
-  checkOption?: number | null;
+  idText?: string;
 }) {
   return (
     <div
@@ -21,20 +21,23 @@ export default function Radio({
         stacked ? "flex-col" : "flex-wrap gap-x-6 gap-y-2"
       } gap-2`}
     >
-      {options.map(({ id, name }, inx, self) => (
-        <div className="flex items-center mb-4" key={"radio-button-" + inx}>
+      {options.map(({ id, name }, inx) => (
+        <div
+          className="flex items-center mb-4"
+          key={"radio-button-" + inx + "-" + id}
+        >
           <input
-            id={`radio-button-option-${inx}`}
+            id={`radio-button-option-${inx}-${id}`}
+            name={`radio-button-option-${idText}${inx}-${id}`}
             type="radio"
-            value=""
-            name="default-radio"
-            checked={checked ? inx === checkOption : id === checkedId}
+            value={name}
+            checked={id === checkedId}
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
             onChange={() => onChange(id)}
-            disabled={checked ? inx !== checkOption : false}
+            disabled={id === disableId}
           />
           <label
-            htmlFor={`radio-button-option-${inx}`}
+            htmlFor={`radio-button-option-${inx}-${id}`}
             className="ms-2 text-sm font-normal text-radioText select-none"
           >
             {name}

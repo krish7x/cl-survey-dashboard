@@ -30,6 +30,7 @@ export interface IProject {
 export interface IOptions {
   id: number | string;
   name: string;
+  linkedTo?: number | string;
 }
 
 export interface ISurvey {
@@ -80,6 +81,7 @@ export interface IOptionJson {
 
 export interface ITemplateQuestion {
   title: string;
+  questionId?: number;
   description: string;
   optionTypeId: number | string;
   optionTypeName?: string;
@@ -171,4 +173,9 @@ export interface ISendSurveyDetails {
     id: number;
   };
   metaData: string;
+}
+
+export interface ILinkDetails {
+  questionId: number;
+  optionId: number;
 }

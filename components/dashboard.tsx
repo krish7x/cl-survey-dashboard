@@ -241,7 +241,11 @@ export default function Dashboard() {
       },
       templateName: templateDetails?.title,
       description: templateDetails?.description,
-      templateJsonData: template,
+      templateJsonData: template.map((val, inx) => ({
+        ...val,
+        questionId: inx + 1,
+        isAdded: true,
+      })),
     };
     axiosInstance.post("/templates/create", reqObj).then((res) => {
       setTemplates([...templates, res.data]);
@@ -377,7 +381,6 @@ export default function Dashboard() {
         const index = arr.findIndex((val) => val.id === id);
         arr.splice(index, 1);
         setTemplates(arr);
-
         const arr2 = [...currentTemplates];
         const index2 = arr2.findIndex((val) => val.id === id);
         arr2.splice(index2, 1);
