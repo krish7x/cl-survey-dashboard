@@ -98,13 +98,13 @@ export default function TemplateQuestionModal({
               questions
                 .filter((val) => val.title)
                 .map(({ questionId, title }) => ({
-                  id: questionId,
+                  id: "q-" + questionId,
                   name: title,
                 })) as IOptions[]
             }
             idText={"linked"}
-            checkedId={selectedQuestionId}
-            onChange={(e) => setSelectedQuestionId(e)}
+            checkedId={"q-" + selectedQuestionId}
+            onChange={(e) => setSelectedQuestionId(+e.toString().split("-")[1])}
           />
         </div>
       </Modal.Body>
