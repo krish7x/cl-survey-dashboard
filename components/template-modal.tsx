@@ -220,6 +220,7 @@ export default function TemplateModal({
       }
     }
     resetAll();
+    setShowQuestion(false);
   }, [
     questionId,
     questionTitle,
