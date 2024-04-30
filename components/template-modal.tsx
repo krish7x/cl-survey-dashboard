@@ -197,57 +197,72 @@ export default function TemplateModal({
     setTemplateQuestion(arr);
   }, [resetAll, templateQuestion, setTemplateQuestion]);
 
-  const onClickCreateQuestion = useCallback(
-    (canReset = true) => {
-      const lastQuestionId =
-        templateQuestion[templateQuestion.length - 2]?.questionId;
-      const tempQuestion: ITemplateQuestion = {
-        questionId: lastQuestionId ? lastQuestionId + 1 : 1,
-        title: questionTitle,
-        description: questionDescription,
-        optionTypeId: selectQuestionType,
-        optionTypeName: questionTypeOptions.find(
-          (val) => val.id === selectQuestionType
-        )?.name,
-        isAdded: true,
+  const onClickCreateQuestion = useCallback(() => {
+    const lastQuestionId =
+      templateQuestion[templateQuestion.length - 2]?.questionId;
+    const tempQuestion: ITemplateQuestion = {
+      questionId: lastQuestionId ? lastQuestionId + 1 : 1,
+      title: questionTitle,
+      description: questionDescription,
+      optionTypeId: selectQuestionType,
+      optionTypeName: questionTypeOptions.find(
+        (val) => val.id === selectQuestionType
+      )?.name,
+      isAdded: true,
+      optionsJson: {
+        optionPosition: selectedOptionPos,
+        options: getOptions(),
+      },
+    };
+    if (isAdded && selectedQuestionIndex) {
+      let arr = [...templateQuestion];
+      arr[selectedQuestionIndex - 1] = tempQuestion;
+      setTemplateQuestion(arr);
+    } else {
+      if (templateQuestion.length) {
+        setTemplateQuestion([
+          ...templateQuestion.filter((val) => val.title),
+          tempQuestion,
+        ]);
+      } else {
+        setTemplateQuestion([tempQuestion]);
+      }
+    }
+    resetAll();
+    setShowQuestion(false);
+  }, [
+    questionTitle,
+    questionDescription,
+    selectQuestionType,
+    questionTypeOptions,
+    selectedOptionPos,
+    getOptions,
+    isAdded,
+    selectedQuestionIndex,
+    resetAll,
+    templateQuestion,
+    setTemplateQuestion,
+  ]);
+
+  const onLinkUpdateOptions = useCallback(() => {
+    if (selectedQuestionIndex) {
+      let arr = [...templateQuestion];
+      arr[selectedQuestionIndex - 1] = {
+        ...arr[selectedQuestionIndex - 1],
         optionsJson: {
           optionPosition: selectedOptionPos,
           options: getOptions(),
         },
       };
-      if (isAdded && selectedQuestionIndex) {
-        let arr = [...templateQuestion];
-        arr[selectedQuestionIndex - 1] = tempQuestion;
-        setTemplateQuestion(arr);
-      } else {
-        if (templateQuestion.length) {
-          setTemplateQuestion([
-            ...templateQuestion.filter((val) => val.title),
-            tempQuestion,
-          ]);
-        } else {
-          setTemplateQuestion([tempQuestion]);
-        }
-      }
-      if (canReset) {
-        resetAll();
-        setShowQuestion(false);
-      }
-    },
-    [
-      questionTitle,
-      questionDescription,
-      selectQuestionType,
-      questionTypeOptions,
-      selectedOptionPos,
-      getOptions,
-      isAdded,
-      selectedQuestionIndex,
-      resetAll,
-      templateQuestion,
-      setTemplateQuestion,
-    ]
-  );
+      setTemplateQuestion(arr);
+    }
+  }, [
+    getOptions,
+    selectedOptionPos,
+    selectedQuestionIndex,
+    setTemplateQuestion,
+    templateQuestion,
+  ]);
 
   const handleSelectQuestion = useCallback(
     (inx: number) => {
@@ -404,6 +419,7 @@ export default function TemplateModal({
                 <div
                   className="flex flex-col cursor-grab"
                   key={"question-" + inx}
+                  draggable
                   onClick={() => handleSelectQuestion(inx)}
                   onDragStart={() => (dragQuestion.current = inx)}
                   onDragEnter={() => (draggedOverQuestion.current = inx)}
@@ -624,7 +640,7 @@ export default function TemplateModal({
                                 : "cursor-not-allowed"
                             } stroke-txtPurple`}
                             onClick={() => {
-                              onClickCreateQuestion(false);
+                              onLinkUpdateOptions();
                               handleLinkQuestion(
                                 selectedQuestionIndex as number,
                                 +id
