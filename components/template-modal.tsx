@@ -131,6 +131,14 @@ export default function TemplateModal({
     // templateQuestion.length,
   ]);
 
+  const hideNPS = useMemo(() => {
+    if (templateQuestion.length === 1) return false;
+    const npsIndex = templateQuestion.findIndex(
+      (val) => val.optionTypeId === 1
+    );
+    return npsIndex !== 1 && npsIndex + 1 !== selectedQuestionIndex;
+  }, [templateQuestion, selectedQuestionIndex]);
+
   const getOptions = useCallback((): IOptions[] => {
     const length =
       ratingRange === "range_5" && selectQuestionType === 2 ? 5 : 10;
@@ -142,12 +150,11 @@ export default function TemplateModal({
       arr = new Array(length).fill(null).map((_, inx) => ({
         id: inx + 1,
         name: `${inx + 1}`,
-        linkedTo: "",
+        linkedTo: undefined,
       }));
-    } else if (!isAddQuestion) {
+    } else {
       arr = options;
     }
-
     return arr;
   }, [isAddQuestion, options, ratingRange, selectQuestionType]);
 
@@ -171,16 +178,16 @@ export default function TemplateModal({
   ]);
 
   const addEmptyQuestion = useCallback(() => {
+    resetAll();
     const tempQuestion: ITemplateQuestion = {
       title: "",
       description: "",
-      optionTypeId: 1,
-      optionTypeName: "NPS Rating",
+      optionTypeId: "",
+      optionTypeName: "",
     };
-    resetAll();
     setShowQuestion(true);
     setIsAddQuestion(true);
-    setSelectedQuestionIndex(null);
+    setSelectedQuestionIndex(templateQuestion.length + 1);
     let arr = [];
     if (!templateQuestion.length) {
       arr.push(tempQuestion);
@@ -191,8 +198,10 @@ export default function TemplateModal({
   }, [resetAll, templateQuestion, setTemplateQuestion]);
 
   const onClickCreateQuestion = useCallback(() => {
+    const lastQuestionId =
+      templateQuestion[templateQuestion.length - 2]?.questionId;
     const tempQuestion: ITemplateQuestion = {
-      questionId,
+      questionId: lastQuestionId ? lastQuestionId + 1 : 1,
       title: questionTitle,
       description: questionDescription,
       optionTypeId: selectQuestionType,
@@ -222,7 +231,6 @@ export default function TemplateModal({
     resetAll();
     setShowQuestion(false);
   }, [
-    questionId,
     questionTitle,
     questionDescription,
     selectQuestionType,
@@ -329,32 +337,47 @@ export default function TemplateModal({
   );
 
   useEffect(() => {
-    if (
-      selectedOptionPos &&
-      !options.length &&
-      (selectedOptionPos === "x" || selectedOptionPos === "y")
-    ) {
-      const options: IOptions = {
-        id: 1,
-        name: "",
-      };
-      setOptions([options]);
-    }
-  }, [options.length, selectedOptionPos]);
-
-  useEffect(() => {
     if (selectQuestionType === 1) {
       setRatingRange("range_10");
-    } else {
-      setRatingRange("range_5");
     }
   }, [selectQuestionType]);
+
+  useEffect(() => {
+    if (selectedQuestionIndex) {
+      const curQuestion = templateQuestion[selectedQuestionIndex - 1];
+      if (!curQuestion?.isAdded || !curQuestion?.optionsJson?.options?.length) {
+        if (selectQuestionType === 2) {
+          const length = ratingRange === "range_5" ? 5 : 10;
+          const arr = new Array(length).fill(null).map((_, inx) => ({
+            id: inx + 1,
+            name: `${inx + 1}`,
+            linkedTo: undefined,
+          }));
+          setOptions(arr);
+        } else {
+          setSelectedOptionPos("y");
+          setOptions([
+            {
+              id: 1,
+              name: "",
+            },
+          ]);
+        }
+      }
+    }
+  }, [
+    selectQuestionType,
+    selectedQuestionIndex,
+    ratingRange,
+    templateQuestion,
+  ]);
 
   return (
     <Modal
       show={showModal}
       size="5xl"
       onClose={() => {
+        resetAll();
         resetForCreateTemplate();
         setShowModal(false);
         setShowTemplateCreateModal(false);
@@ -458,22 +481,29 @@ export default function TemplateModal({
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-4 pl-8">
-                <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
-                  Select question type
-                </h1>
-                <Radio
-                  options={questionTypeOptions}
-                  onChange={(id) => {
-                    setSelectQuestionType(id);
-                  }}
-                  checkedId={selectQuestionType}
-                  stacked={false}
-                />
-              </div>
-
-              {(selectQuestionType as number) === 1 ||
-              (selectQuestionType as number) === 2 ? (
+              {selectedQuestionIndex ? (
+                !templateQuestion[selectedQuestionIndex - 1]?.isAdded ? (
+                  <div className="flex flex-col gap-4 pl-8">
+                    <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
+                      Select question type
+                    </h1>
+                    <Radio
+                      options={questionTypeOptions.filter((val) =>
+                        hideNPS ? val.id !== 1 : val
+                      )}
+                      onChange={(id) => {
+                        setSelectQuestionType(id);
+                      }}
+                      checkedId={selectQuestionType}
+                      stacked={false}
+                      disabled={!hideNPS}
+                    />
+                  </div>
+                ) : null
+              ) : null}
+              {((selectQuestionType as number) === 1 ||
+                (selectQuestionType as number) === 2) &&
+              templateQuestion.length > 1 ? (
                 <div className="flex flex-col gap-6 pl-8">
                   <div className="flex justify-between border-b border-b-navBorder pb-2">
                     <h1 className="text-sidebarText text-md font-semibold">
@@ -481,7 +511,10 @@ export default function TemplateModal({
                     </h1>
                   </div>
 
-                  {(selectQuestionType as number) === 2 ? (
+                  {(selectQuestionType as number) === 2 &&
+                  (selectedQuestionIndex
+                    ? !templateQuestion[selectedQuestionIndex - 1]?.isAdded
+                    : true) ? (
                     <div className="flex flex-col gap-2">
                       <p className="text-sm font-normal text-radio select-none">
                         Select your range

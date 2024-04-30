@@ -4,16 +4,16 @@ export default function Radio({
   options,
   onChange,
   checkedId,
-  disableId,
+  disabled,
   stacked = true,
   idText = "",
 }: {
   options: IOptions[];
   onChange: (id: string | number) => void;
   checkedId?: string | number;
-  disableId?: string | number;
   stacked?: boolean;
   idText?: string;
+  disabled?: boolean;
 }) {
   return (
     <div
@@ -34,7 +34,7 @@ export default function Radio({
             checked={id === checkedId}
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
             onChange={() => onChange(id)}
-            disabled={id === disableId}
+            disabled={disabled && checkedId ? id !== checkedId : false}
           />
           <label
             htmlFor={`radio-button-option-${inx}-${id}`}

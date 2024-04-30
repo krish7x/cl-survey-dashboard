@@ -103,7 +103,9 @@ export default function TemplateQuestionModal({
                 })) as IOptions[]
             }
             idText={"linked"}
-            checkedId={"q-" + selectedQuestionId}
+            checkedId={
+              selectedQuestionId ? "q-" + selectedQuestionId : undefined
+            }
             onChange={(e) => setSelectedQuestionId(+e.toString().split("-")[1])}
           />
         </div>
