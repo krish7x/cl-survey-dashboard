@@ -197,52 +197,57 @@ export default function TemplateModal({
     setTemplateQuestion(arr);
   }, [resetAll, templateQuestion, setTemplateQuestion]);
 
-  const onClickCreateQuestion = useCallback(() => {
-    const lastQuestionId =
-      templateQuestion[templateQuestion.length - 2]?.questionId;
-    const tempQuestion: ITemplateQuestion = {
-      questionId: lastQuestionId ? lastQuestionId + 1 : 1,
-      title: questionTitle,
-      description: questionDescription,
-      optionTypeId: selectQuestionType,
-      optionTypeName: questionTypeOptions.find(
-        (val) => val.id === selectQuestionType
-      )?.name,
-      isAdded: true,
-      optionsJson: {
-        optionPosition: selectedOptionPos,
-        options: getOptions(),
-      },
-    };
-    if (isAdded && selectedQuestionIndex) {
-      let arr = [...templateQuestion];
-      arr[selectedQuestionIndex - 1] = tempQuestion;
-      setTemplateQuestion(arr);
-    } else {
-      if (templateQuestion.length) {
-        setTemplateQuestion([
-          ...templateQuestion.filter((val) => val.title),
-          tempQuestion,
-        ]);
+  const onClickCreateQuestion = useCallback(
+    (canReset = true) => {
+      const lastQuestionId =
+        templateQuestion[templateQuestion.length - 2]?.questionId;
+      const tempQuestion: ITemplateQuestion = {
+        questionId: lastQuestionId ? lastQuestionId + 1 : 1,
+        title: questionTitle,
+        description: questionDescription,
+        optionTypeId: selectQuestionType,
+        optionTypeName: questionTypeOptions.find(
+          (val) => val.id === selectQuestionType
+        )?.name,
+        isAdded: true,
+        optionsJson: {
+          optionPosition: selectedOptionPos,
+          options: getOptions(),
+        },
+      };
+      if (isAdded && selectedQuestionIndex) {
+        let arr = [...templateQuestion];
+        arr[selectedQuestionIndex - 1] = tempQuestion;
+        setTemplateQuestion(arr);
       } else {
-        setTemplateQuestion([tempQuestion]);
+        if (templateQuestion.length) {
+          setTemplateQuestion([
+            ...templateQuestion.filter((val) => val.title),
+            tempQuestion,
+          ]);
+        } else {
+          setTemplateQuestion([tempQuestion]);
+        }
       }
-    }
-    resetAll();
-    setShowQuestion(false);
-  }, [
-    questionTitle,
-    questionDescription,
-    selectQuestionType,
-    questionTypeOptions,
-    selectedOptionPos,
-    getOptions,
-    isAdded,
-    selectedQuestionIndex,
-    resetAll,
-    templateQuestion,
-    setTemplateQuestion,
-  ]);
+      if (canReset) {
+        resetAll();
+        setShowQuestion(false);
+      }
+    },
+    [
+      questionTitle,
+      questionDescription,
+      selectQuestionType,
+      questionTypeOptions,
+      selectedOptionPos,
+      getOptions,
+      isAdded,
+      selectedQuestionIndex,
+      resetAll,
+      templateQuestion,
+      setTemplateQuestion,
+    ]
+  );
 
   const handleSelectQuestion = useCallback(
     (inx: number) => {
@@ -611,19 +616,22 @@ export default function TemplateModal({
                           </div>
                         ) : null}
 
-                        <Link
-                          className={`absolute right-10 bottom-4 z-10 ${
-                            options.length > 1
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed"
-                          } stroke-txtPurple`}
-                          onClick={() =>
-                            handleLinkQuestion(
-                              selectedQuestionIndex as number,
-                              +id
-                            )
-                          }
-                        />
+                        {name.length > 1 ? (
+                          <Link
+                            className={`absolute right-10 bottom-4 z-10 ${
+                              options.length > 1
+                                ? "cursor-pointer"
+                                : "cursor-not-allowed"
+                            } stroke-txtPurple`}
+                            onClick={() => {
+                              onClickCreateQuestion(false);
+                              handleLinkQuestion(
+                                selectedQuestionIndex as number,
+                                +id
+                              );
+                            }}
+                          />
+                        ) : null}
 
                         <Trash2
                           className={`absolute end-2.5 bottom-4 z-10 ${
@@ -654,7 +662,7 @@ export default function TemplateModal({
                   gradientMonochrome="success"
                   pill
                   className="ml-8  text-white"
-                  onClick={onClickCreateQuestion}
+                  onClick={() => onClickCreateQuestion()}
                 >
                   {isAdded && selectedQuestionIndex ? "Update" : "Create"}{" "}
                   question
