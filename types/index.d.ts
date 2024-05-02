@@ -87,6 +87,8 @@ export interface ITemplateQuestion {
   optionTypeName?: string;
   optionsJson?: IOptionJson;
   isAdded?: boolean;
+  rating?: number;
+  answer?: number | number[];
 }
 
 export interface ITemplateRequest {
@@ -96,7 +98,7 @@ export interface ITemplateRequest {
   id?: number;
   templateName?: string;
   description?: string;
-  templateJsonData?: Record<string, any>;
+  templateJsonData?: ITemplateQuestion[];
 }
 
 export interface ICreateModalDetails {
@@ -179,4 +181,34 @@ export interface ISendSurveyDetails {
 export interface ILinkDetails {
   questionId: number;
   optionId: number;
+}
+
+export interface IActiveSurveyCharts {
+  id: number;
+  surveyName: string;
+}
+
+export interface IFetchSurvey {
+  id: number;
+  contactId: number;
+  contactEmailId: string;
+  surveyUrl: string;
+  uuid: string;
+  metaData: string;
+  isEmailSent: boolean;
+  isSurveyCompleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  project: Project;
+  template: Template;
+  contact: Contact;
+}
+
+export interface Contact {
+  id: number;
+  name: string;
+  emailId: string;
+  phone: string;
+  createdAt: string;
+  updatedAt: string;
 }

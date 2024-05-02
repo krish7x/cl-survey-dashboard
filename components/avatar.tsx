@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { Avatar, Dropdown } from "flowbite-react";
-import { signOut } from "next-auth/react";
+import { Avatar, Dropdown } from 'flowbite-react';
+import { signOut } from 'next-auth/react';
 
 export default function Avatarr({
   name,
@@ -15,7 +15,11 @@ export default function Avatarr({
     <Dropdown
       label={
         image ? (
-          <Avatar alt="User settings" img={image} rounded />
+          <Avatar
+            alt="User settings"
+            img={image}
+            rounded
+          />
         ) : (
           <Avatar rounded />
         )
@@ -27,14 +31,16 @@ export default function Avatarr({
         <>
           <Dropdown.Header>
             <span className="block text-sm">{name}</span>
-            <span className="block truncate text-sm font-semibold">{email}</span>
+            <span className="block truncate text-sm font-semibold">
+              {email}
+            </span>
           </Dropdown.Header>
           <Dropdown.Item>View Profile</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
             onClick={() => {
               signOut();
-              localStorage.removeItem("user");
+              localStorage.removeItem('user');
             }}
           >
             Sign out

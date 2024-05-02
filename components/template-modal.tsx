@@ -1,14 +1,15 @@
-import { ILinkDetails, IOptions, ITemplateQuestion } from "@/types";
-import { Button, FloatingLabel, Modal } from "flowbite-react";
-import { File, Link, Plus, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState, memo, useRef } from "react";
-import { useAtom } from "jotai";
-import { templateQuestionsAtom } from "@/store/atom";
-import Radio from "./radio";
-import truncate from "lodash.truncate";
-import TemplateQuestionModal from "./template-question-modal";
+import { templateQuestionsAtom } from '@/store/atom';
+import { ILinkDetails, IOptions, ITemplateQuestion } from '@/types';
+import { Button, FloatingLabel, Modal } from 'flowbite-react';
+import { useAtom } from 'jotai';
+import truncate from 'lodash.truncate';
+import { File, Link, Plus, Trash2 } from 'lucide-react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export default function TemplateModal({
+import Radio from './radio';
+import TemplateQuestionModal from './template-question-modal';
+
+export default memo(function TemplateModal({
   showModal,
   createTemplateLoading,
   isTemplateEdit,
@@ -29,81 +30,81 @@ export default function TemplateModal({
     () => [
       {
         id: 1,
-        name: "NPS Rating",
+        name: 'NPS Rating',
       },
       {
         id: 2,
-        name: "Star Rating",
+        name: 'Star Rating',
       },
       {
         id: 3,
-        name: "Multiple choice - Single Select",
+        name: 'Multiple choice - Single Select',
       },
       {
         id: 4,
-        name: "Multiple choice - multi select",
+        name: 'Multiple choice - multi select',
       },
       {
         id: 5,
-        name: "Radio button",
+        name: 'Radio button',
       },
       {
         id: 6,
-        name: "Text Area",
+        name: 'Text Area',
       },
     ],
-    []
+    [],
   );
   const [showQuestion, setShowQuestion] = useState(false);
   const [questionId, setQuestionId] = useState<number>();
-  const [questionTitle, setQuestionTitle] = useState("");
-  const [questionDescription, setQuestionDescription] = useState("");
+  const [questionTitle, setQuestionTitle] = useState('');
+  const [questionDescription, setQuestionDescription] = useState('');
   const [selectQuestionType, setSelectQuestionType] = useState<string | number>(
-    0
+    0,
   );
-  const [selectedOptionPos, setSelectedOptionPos] = useState("");
+  const [selectedOptionPos, setSelectedOptionPos] = useState('');
   const [options, setOptions] = useState<IOptions[]>([]);
   const [tempOptions, setTempOptions] = useState<IOptions[]>([]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
   const [isAdded, setIsAdded] = useState(false);
-  const [ratingRange, setRatingRange] = useState<number | string>("range_5");
+  const [ratingRange, setRatingRange] = useState<number | string>('range_5');
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [linkDetails, setLinkDetails] = useState<ILinkDetails>();
   const [isAddQuestion, setIsAddQuestion] = useState(false);
 
   const [templateQuestion, setTemplateQuestion] = useAtom(
-    templateQuestionsAtom
+    templateQuestionsAtom,
   );
 
   const onChangeOptions = useCallback(
     (id: string | number, value: string) => {
       const arr = [...options];
-      const index = arr.findIndex((val) => val.id === id);
+      const index = arr.findIndex(val => val.id === id);
       arr[index].name = value;
       setOptions(arr);
     },
-    [options, setOptions]
+    [options, setOptions],
   );
 
   const onClickDeleteOption = useCallback(
     (id: string | number) => {
       if (options.length > 1) {
         const arr = [...options];
-        const index = arr.findIndex((val) => val.id === id);
+        const index = arr.findIndex(val => val.id === id);
         arr.splice(index, 1);
         setOptions(arr);
       }
     },
-    [options, setOptions]
+    [options, setOptions],
   );
 
   const onClickAddOptions = useCallback(() => {
     const id = options[options.length - 1].id;
     const emptyOptions: IOptions = {
       id: +id + 1,
-      name: "",
+      name: '',
     };
     setOptions([...options, emptyOptions]);
   }, [options]);
@@ -119,7 +120,7 @@ export default function TemplateModal({
     if (+selectQuestionType > 2) {
       if (!selectedOptionPos) return false;
       if (options.length && options.length > 1) {
-        return options.every((val) => val.name.length > 1);
+        return options.every(val => val.name.length > 1);
       }
     }
     return false;
@@ -134,16 +135,14 @@ export default function TemplateModal({
 
   const hideNPS = useMemo(() => {
     if (templateQuestion.length === 1) return false;
-    const npsIndex = templateQuestion.findIndex(
-      (val) => val.optionTypeId === 1
-    );
+    const npsIndex = templateQuestion.findIndex(val => val.optionTypeId === 1);
     if (npsIndex === -1) return false;
     return npsIndex !== 1 && npsIndex + 1 !== selectedQuestionIndex;
   }, [templateQuestion, selectedQuestionIndex]);
 
   const getOptions = useCallback((): IOptions[] => {
     const length =
-      ratingRange === "range_5" && selectQuestionType === 2 ? 5 : 10;
+      ratingRange === 'range_5' && selectQuestionType === 2 ? 5 : 10;
     let arr: IOptions[] = [];
     if (
       (selectQuestionType === 1 || selectQuestionType === 2) &&
@@ -161,15 +160,15 @@ export default function TemplateModal({
   }, [isAddQuestion, options, ratingRange, selectQuestionType]);
 
   const resetOptionValues = useCallback(() => {
-    setSelectedOptionPos("");
+    setSelectedOptionPos('');
     setOptions(getOptions());
   }, [getOptions]);
 
   const resetAll = useCallback(() => {
-    setQuestionTitle("");
+    setQuestionTitle('');
     setQuestionId(undefined);
-    setQuestionDescription("");
-    setSelectQuestionType("");
+    setQuestionDescription('');
+    setSelectQuestionType('');
     resetOptionValues();
   }, [
     resetOptionValues,
@@ -182,10 +181,10 @@ export default function TemplateModal({
   const addEmptyQuestion = useCallback(() => {
     resetAll();
     const tempQuestion: ITemplateQuestion = {
-      title: "",
-      description: "",
-      optionTypeId: "",
-      optionTypeName: "",
+      title: '',
+      description: '',
+      optionTypeId: '',
+      optionTypeName: '',
     };
     setShowQuestion(true);
     setIsAddQuestion(true);
@@ -204,15 +203,15 @@ export default function TemplateModal({
       templateQuestion[templateQuestion.length - 2]?.questionId;
     const tempQuestion: ITemplateQuestion = {
       questionId: isAdded
-        ? +(selectedQuestionIndex || "1")
+        ? +(selectedQuestionIndex || '1')
         : lastQuestionId
-        ? lastQuestionId + 1
-        : 1,
+          ? lastQuestionId + 1
+          : 1,
       title: questionTitle,
       description: questionDescription,
       optionTypeId: selectQuestionType,
       optionTypeName: questionTypeOptions.find(
-        (val) => val.id === selectQuestionType
+        val => val.id === selectQuestionType,
       )?.name,
       isAdded: true,
       optionsJson: {
@@ -227,7 +226,7 @@ export default function TemplateModal({
     } else {
       if (templateQuestion.length) {
         setTemplateQuestion([
-          ...templateQuestion.filter((val) => val.title),
+          ...templateQuestion.filter(val => val.title),
           tempQuestion,
         ]);
       } else {
@@ -279,19 +278,17 @@ export default function TemplateModal({
       setQuestionTitle(curQuestion?.title);
       setQuestionDescription(curQuestion?.description);
       setSelectQuestionType(curQuestion?.optionTypeId);
-      setSelectedOptionPos(curQuestion?.optionsJson?.optionPosition || "");
+      setSelectedOptionPos(curQuestion?.optionsJson?.optionPosition || '');
       setOptions(curQuestion?.optionsJson?.options || []);
       setSelectedQuestionIndex(inx + 1);
       setIsAdded(curQuestion?.isAdded || false);
     },
-    [templateQuestion, setShowQuestion]
+    [templateQuestion, setShowQuestion],
   );
 
   const addQuestionValidation = useMemo(() => {
     if (!templateQuestion.length && !showQuestion) return true;
-    return (
-      templateQuestion.length && templateQuestion.every((val) => val.title)
-    );
+    return templateQuestion.length && templateQuestion.every(val => val.title);
   }, [showQuestion, templateQuestion]);
 
   const onClickDeleteTemplateQuestion = useCallback(
@@ -299,10 +296,10 @@ export default function TemplateModal({
       resetAll();
       setShowQuestion(false);
       setQuestionId(undefined);
-      setQuestionTitle("");
-      setTemplateQuestion((data) => data.filter((_, index) => index !== inx));
+      setQuestionTitle('');
+      setTemplateQuestion(data => data.filter((_, index) => index !== inx));
     },
-    [resetAll, setTemplateQuestion]
+    [resetAll, setTemplateQuestion],
   );
 
   const validateCreateTemplate = useMemo(() => {
@@ -320,8 +317,8 @@ export default function TemplateModal({
     clone[dragQuestion.current] = clone[draggedOverQuestion.current];
     clone[draggedOverQuestion.current] = tempDraggedQuestion;
     clone = clone.map((val, inx) => ({ ...val, questionId: inx + 1 }));
-    clone = clone.map((val1) => {
-      const options = val1.optionsJson?.options.map((val2) => {
+    clone = clone.map(val1 => {
+      const options = val1.optionsJson?.options.map(val2 => {
         if (val2.linkedTo === tempDraggedQuestion.questionId) {
           return {
             ...val2,
@@ -345,9 +342,7 @@ export default function TemplateModal({
       };
     }) as ITemplateQuestion[];
     setTemplateQuestion(clone);
-    const toBeUpdatedOptions = clone.find(
-      (val) => val.questionId === questionId
-    );
+    const toBeUpdatedOptions = clone.find(val => val.questionId === questionId);
     setOptions(toBeUpdatedOptions?.optionsJson?.options as IOptions[]);
   }, [questionId, setTemplateQuestion, templateQuestion]);
 
@@ -359,19 +354,19 @@ export default function TemplateModal({
         optionId,
       });
     },
-    []
+    [],
   );
 
   useEffect(() => {
     if (selectQuestionType === 1) {
-      setRatingRange("range_10");
+      setRatingRange('range_10');
     }
   }, [selectQuestionType]);
 
   useEffect(() => {
     if (selectedQuestionIndex) {
       const curQuestion = templateQuestion[selectedQuestionIndex - 1];
-      const length = ratingRange === "range_5" ? 5 : 10;
+      const length = ratingRange === 'range_5' ? 5 : 10;
       if (!curQuestion?.isAdded || !curQuestion?.optionsJson?.options?.length) {
         if (selectQuestionType === 1 || selectQuestionType === 2) {
           const arr = new Array(length).fill(null).map((_, inx) => ({
@@ -380,11 +375,11 @@ export default function TemplateModal({
           }));
           setOptions(arr);
         } else {
-          setSelectedOptionPos("y");
+          setSelectedOptionPos('y');
           setOptions([
             {
               id: 1,
-              name: "",
+              name: '',
             },
           ]);
         }
@@ -395,18 +390,18 @@ export default function TemplateModal({
           const arr = new Array(length).fill(null).map((_, inx) => ({
             id: inx + 1,
             name: `${inx + 1}`,
-            linkedTo: currentOptions[inx]?.linkedTo || "",
+            linkedTo: currentOptions[inx]?.linkedTo || '',
           }));
           setOptions(arr);
         } else {
-          const isRating = curQuestion?.optionsJson?.options[0]?.name === "1";
+          const isRating = curQuestion?.optionsJson?.options[0]?.name === '1';
           if (tempOptions?.length && !isRating) {
             setOptions(tempOptions);
           } else {
             setOptions([
               {
                 id: 1,
-                name: "",
+                name: '',
               },
             ]);
           }
@@ -437,8 +432,8 @@ export default function TemplateModal({
       <Modal.Body className="p-0 overflow-hidden">
         <Modal.Header className="border-b border-b-modalBorder relative">
           <span className="absolute left-[calc(50%-96px)]">
-            {isTemplateEdit ? "Update" : "Build"}
-            {" template"}
+            {isTemplateEdit ? 'Update' : 'Build'}
+            {' template'}
           </span>
         </Modal.Header>
         <div className="p-0 flex h-templateModal w-full ">
@@ -447,27 +442,27 @@ export default function TemplateModal({
               return (
                 <div
                   className="flex flex-col cursor-grab"
-                  key={"question-" + inx}
+                  key={'question-' + inx}
                   draggable
                   onClick={() => handleSelectQuestion(inx)}
                   onDragStart={() => (dragQuestion.current = inx)}
                   onDragEnter={() => (draggedOverQuestion.current = inx)}
                   onDragEnd={handleSort}
-                  onDragOver={(e) => e.preventDefault()}
+                  onDragOver={e => e.preventDefault()}
                 >
                   <div
                     className={`flex w-full border px-3 py-2 rounded-md cursor-pointer border-l-4 hover:bg-green-100 border-l-navLeftBorder
                   ${
                     (selectedQuestionIndex as number) - 1 === inx
-                      ? "bg-navBg"
-                      : ""
+                      ? 'bg-navBg'
+                      : ''
                   }`}
                   >
                     <div className="flex w-full justify-between">
                       <div className="flex">
                         <p className="text-sm font-normal text-radio select-none">
-                          {inx + 1}.{" "}
-                          {truncate(title ? title : "Draft", {
+                          {inx + 1}.{' '}
+                          {truncate(title ? title : 'Draft', {
                             length: 40,
                           })}
                         </p>
@@ -475,7 +470,7 @@ export default function TemplateModal({
                       </div>
                       <Trash2
                         className="stroke-txtPurple ml-2 opacity-80"
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           onClickDeleteTemplateQuestion(inx);
                         }}
@@ -491,7 +486,11 @@ export default function TemplateModal({
               disabled={!addQuestionValidation}
             >
               <div className="flex gap-1 items-center">
-                Add a question <Plus size={20} color="#fff" />
+                Add a question{' '}
+                <Plus
+                  size={20}
+                  color="#fff"
+                />
               </div>
             </Button>
           </div>
@@ -514,7 +513,7 @@ export default function TemplateModal({
                     variant="standard"
                     label="Start typing your question here..."
                     size={80}
-                    onChange={(e) => setQuestionTitle(e.target.value)}
+                    onChange={e => setQuestionTitle(e.target.value)}
                     value={questionTitle}
                   />
                 </div>
@@ -526,7 +525,7 @@ export default function TemplateModal({
                     variant="standard"
                     size={82}
                     label="Add description to your question"
-                    onChange={(e) => setQuestionDescription(e.target.value)}
+                    onChange={e => setQuestionDescription(e.target.value)}
                     value={questionDescription}
                   />
                 </div>
@@ -538,7 +537,7 @@ export default function TemplateModal({
                   </h1>
                   <Radio
                     options={questionTypeOptions}
-                    onChange={(id) => {
+                    onChange={id => {
                       setSelectQuestionType(id);
                     }}
                     checkedId={selectQuestionType}
@@ -567,17 +566,17 @@ export default function TemplateModal({
                       <Radio
                         options={[
                           {
-                            id: "range_5",
-                            name: "1 - 5",
+                            id: 'range_5',
+                            name: '1 - 5',
                           },
                           {
-                            id: "range_10",
-                            name: "1 - 10",
+                            id: 'range_10',
+                            name: '1 - 10',
                           },
                         ]}
                         stacked={false}
                         checkedId={ratingRange}
-                        onChange={(id) => setRatingRange(id)}
+                        onChange={id => setRatingRange(id)}
                       />
                     </div>
                   ) : null}
@@ -585,12 +584,12 @@ export default function TemplateModal({
                   <Button.Group outline>
                     {options.map(({ id, linkedTo }, index) => (
                       <Button
-                        key={"rating-button-" + index}
+                        key={'rating-button-' + index}
                         color="gray"
                         onClick={() =>
                           handleLinkQuestion(
                             selectedQuestionIndex as number,
-                            +id
+                            +id,
                           )
                         }
                       >
@@ -620,19 +619,19 @@ export default function TemplateModal({
                       <Button.Group>
                         <Button
                           gradientDuoTone={
-                            selectedOptionPos === "x" ? "purpleToBlue" : ""
+                            selectedOptionPos === 'x' ? 'purpleToBlue' : ''
                           }
                           color="gray"
-                          onClick={() => setSelectedOptionPos("x")}
+                          onClick={() => setSelectedOptionPos('x')}
                         >
                           Horizontal
                         </Button>
                         <Button
                           gradientDuoTone={
-                            selectedOptionPos === "y" ? "purpleToBlue" : ""
+                            selectedOptionPos === 'y' ? 'purpleToBlue' : ''
                           }
                           color="gray"
-                          onClick={() => setSelectedOptionPos("y")}
+                          onClick={() => setSelectedOptionPos('y')}
                         >
                           Vertical
                         </Button>
@@ -645,7 +644,7 @@ export default function TemplateModal({
                         setOptions([
                           {
                             id: 1,
-                            name: "",
+                            name: '',
                           },
                         ])
                       }
@@ -656,14 +655,17 @@ export default function TemplateModal({
 
                   <div className="flex flex-col gap-4">
                     {options.map(({ name, id, linkedTo }, inx) => (
-                      <div className="relative" key={`options-${id}` + inx}>
+                      <div
+                        className="relative"
+                        key={`options-${id}` + inx}
+                      >
                         <input
                           id={`options-${id}` + inx}
                           className="block w-full px-2 py-4 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 outline-starStroke"
                           placeholder={`Type option ${inx + 1}`}
-                          value={name ? name : ""}
+                          value={name ? name : ''}
                           required
-                          onChange={(e) => onChangeOptions(id, e.target.value)}
+                          onChange={e => onChangeOptions(id, e.target.value)}
                         />
 
                         {linkedTo ? (
@@ -676,14 +678,14 @@ export default function TemplateModal({
                           <Link
                             className={`absolute right-10 bottom-4 z-10 ${
                               options.length > 1
-                                ? "cursor-pointer"
-                                : "cursor-not-allowed"
+                                ? 'cursor-pointer'
+                                : 'cursor-not-allowed'
                             } stroke-txtPurple`}
                             onClick={() => {
                               onLinkUpdateOptions();
                               handleLinkQuestion(
                                 selectedQuestionIndex as number,
-                                +id
+                                +id,
                               );
                             }}
                           />
@@ -692,8 +694,8 @@ export default function TemplateModal({
                         <Trash2
                           className={`absolute end-2.5 bottom-4 z-10 ${
                             options.length > 1
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed"
+                              ? 'cursor-pointer'
+                              : 'cursor-not-allowed'
                           } stroke-txtPurple`}
                           onClick={() => onClickDeleteOption(id)}
                         />
@@ -720,7 +722,7 @@ export default function TemplateModal({
                   className="ml-8  text-white"
                   onClick={() => onClickCreateQuestion()}
                 >
-                  {isAdded && selectedQuestionIndex ? "Update" : "Create"}{" "}
+                  {isAdded && selectedQuestionIndex ? 'Update' : 'Create'}{' '}
                   question
                 </Button>
               ) : null}
@@ -739,7 +741,7 @@ export default function TemplateModal({
           setShowModal={setShowQuestionModal}
           linkDetails={linkDetails}
           questions={templateQuestion.filter(
-            (val) => val.questionId !== linkDetails?.questionId
+            val => val.questionId !== linkDetails?.questionId,
           )}
         />
       </Modal.Body>
@@ -750,10 +752,10 @@ export default function TemplateModal({
           isProcessing={createTemplateLoading}
           onClick={onClickCreateOrUpdate}
         >
-          {isTemplateEdit ? "Update" : "Create"}
-          {""} template
+          {isTemplateEdit ? 'Update' : 'Create'}
+          {''} template
         </Button>
       </Modal.Footer>
     </Modal>
   );
-}
+});

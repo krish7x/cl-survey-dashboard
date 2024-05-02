@@ -1,4 +1,4 @@
-import { IOptions } from "@/types";
+import { IOptions } from '@/types';
 
 export default function Radio({
   options,
@@ -6,7 +6,7 @@ export default function Radio({
   checkedId,
   disabled,
   stacked = true,
-  idText = "",
+  idText = '',
   disabledId,
 }: {
   options: IOptions[];
@@ -20,13 +20,13 @@ export default function Radio({
   return (
     <div
       className={`flex ${
-        stacked ? "flex-col" : "flex-wrap gap-x-6 gap-y-2"
+        stacked ? 'flex-col' : 'flex-wrap gap-x-6 gap-y-2'
       } gap-2`}
     >
       {options.map(({ id, name }, inx) => (
         <div
           className="flex items-center mb-4"
-          key={"radio-button-" + inx + "-" + id}
+          key={'radio-button-' + inx + '-' + id}
         >
           <input
             id={`radio-button-option-${inx}-${id}`}

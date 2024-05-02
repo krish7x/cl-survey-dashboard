@@ -1,11 +1,13 @@
-"use client";
-import { Button } from "flowbite-react";
-import Image from "next/image";
-import { useState } from "react";
+'use client';
+
+import { ITemplateQuestion } from '@/types';
+import { Button } from 'flowbite-react';
+import Image from 'next/image';
+import { useState } from 'react';
 
 export default function NpsQuestionPage(props: {
-  surveyData: any;
-  onSubmit: any;
+  surveyData?: ITemplateQuestion;
+  onSubmit: (value: number) => void;
 }) {
   const { surveyData, onSubmit } = props;
   const [currentRating, setCurrentRating] = useState(0);
@@ -34,9 +36,9 @@ export default function NpsQuestionPage(props: {
         <Image
           src={src}
           className={`px-4 py-2 md:w-24 ${
-            color === "text-surveyRed" ? "w-20 md:w-24" : "w-24 md:w-28"
+            color === 'text-surveyRed' ? 'w-20 md:w-24' : 'w-24 md:w-28'
           }  transform scale-115 hover:scale-110 focus:scale-110 transition-transform ${
-            rating === currentRating ? "bg-gray-300 rounded-lg" : ""
+            rating === currentRating ? 'bg-gray-300 rounded-lg' : ''
           } sm:px-1`}
           alt={`Emoji ${rating}`}
           width={72}
@@ -50,7 +52,7 @@ export default function NpsQuestionPage(props: {
   return (
     <div className="flex flex-col w-full h-full items-center pt-16 md:pt-24 pb-10">
       <h1 className="px-4 sm:px-8 md:px-16 sm:leading-2 lg:px-24 my-4 sm:my-4 md:my-8 lg:my-10 text-txtBlack font-semibold text-md md:text-3xl text-center">
-        {surveyData.title}
+        {surveyData?.title}
       </h1>
       <div className="flex flex-col md:gap-4 md:flex-row justify-center items-center">
         {/* Group 1 */}
@@ -59,9 +61,9 @@ export default function NpsQuestionPage(props: {
             Definitely
           </h5>
           <div className="flex gap-2 md:gap-3">
-            {[10, 9].map((val) => (
+            {[10, 9].map(val => (
               <RenderEmoji
-                key={"emoji" + val}
+                key={'emoji' + val}
                 rating={val}
                 src={`/${val}.svg`}
                 color="text-surveyGreen"
@@ -76,9 +78,9 @@ export default function NpsQuestionPage(props: {
             Maybe
           </h5>
           <div className="flex gap-2 md:gap-3">
-            {[8, 7].map((val) => (
+            {[8, 7].map(val => (
               <RenderEmoji
-                key={"emoji" + val}
+                key={'emoji' + val}
                 rating={val}
                 src={`/${val}.svg`}
                 color="text-surveyYellow"
@@ -93,9 +95,9 @@ export default function NpsQuestionPage(props: {
             Not at all
           </h5>
           <div className="flex gap-1 md:gap-3 justify-center flex-wrap md:flex-nowrap">
-            {[6, 5, 4, 3, 2, 1].map((val) => (
+            {[6, 5, 4, 3, 2, 1].map(val => (
               <RenderEmoji
-                key={"emoji" + val}
+                key={'emoji' + val}
                 rating={val}
                 src={`/${val}.svg`}
                 color="text-surveyRed"

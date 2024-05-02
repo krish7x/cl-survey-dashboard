@@ -1,6 +1,7 @@
-"use client";
-import { IOptions } from "@/types";
-import { Button } from "flowbite-react";
+'use client';
+
+import { IOptions } from '@/types';
+import { Button } from 'flowbite-react';
 
 export default function Select({
   options,
@@ -9,7 +10,7 @@ export default function Select({
   onChange,
 }: {
   options: IOptions[];
-  selectedOptions: any[];
+  selectedOptions: Array<number | string>;
   maxSelect: number;
   onChange: (id: string | number, maxSelect: number) => void;
 }) {
@@ -17,11 +18,11 @@ export default function Select({
     <div className="flex flex-col gap-3 w-full">
       {options.map(({ id, name }, inx) => (
         <Button
-          key={"button-" + inx}
+          key={'button-' + inx}
           outline={!selectedOptions?.includes(id)}
-          size={"lg"}
+          size={'lg'}
           className={`items-start hover:opacity-70 ${
-            selectedOptions?.includes(inx) ? "bg-starStroke" : ""
+            selectedOptions?.includes(inx) ? 'bg-starStroke' : ''
           }`}
           gradientDuoTone="purpleToBlue"
           onClick={() => onChange(id, maxSelect)}

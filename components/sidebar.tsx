@@ -1,12 +1,13 @@
-import { userAtom } from "@/store/atom";
-import { IProject } from "@/types";
-import { Button, Modal, Sidebar, Tooltip } from "flowbite-react";
-import { useAtomValue } from "jotai";
-import { AlertOctagon, PlusCircle, Trash2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import ListSkeleton from "./list-skeleton";
-import truncate from "lodash.truncate";
-import { useRouter, useSearchParams } from "next/navigation";
+import { userAtom } from '@/store/atom';
+import { IProject } from '@/types';
+import { Button, Modal, Sidebar, Tooltip } from 'flowbite-react';
+import { useAtomValue } from 'jotai';
+import truncate from 'lodash.truncate';
+import { AlertOctagon, PlusCircle, Trash2 } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+
+import ListSkeleton from './list-skeleton';
 
 export default function SidebarComponent({
   setShowModal,
@@ -24,13 +25,13 @@ export default function SidebarComponent({
   const router = useRouter();
   const { get } = useSearchParams();
   const user = useAtomValue(userAtom);
-  const isAdmin = useMemo(() => user && user.role === "admin", [user]);
+  const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteProjectId, setDeleteProjectId] = useState(0);
 
   useEffect(() => {
-    const projectId = +(get("projectId") || "0");
-    const curProject = projects.find((val) => val.id === projectId);
+    const projectId = +(get('projectId') || '0');
+    const curProject = projects.find(val => val.id === projectId);
     setCurrentProject(curProject as IProject);
   }, [get, projects, setCurrentProject]);
 
@@ -41,7 +42,11 @@ export default function SidebarComponent({
     >
       <div className="flex justify-between items-center pl-5 pr-2 mb-4 scrollbar-hide">
         <h1 className="text-txtPurple text-md font-medium">Projects</h1>
-        <Tooltip content="Create Project" placement="top" className="w-28">
+        <Tooltip
+          content="Create Project"
+          placement="top"
+          className="w-28"
+        >
           {isAdmin && (
             <PlusCircle
               color="#63686F"
@@ -54,14 +59,17 @@ export default function SidebarComponent({
       </div>
       <div className="flex flex-col gap-1 ">
         {projects?.length ? (
-          projects.map((data) => (
-            <Sidebar.Items key={"Project-" + data.id} className="select-none">
+          projects.map(data => (
+            <Sidebar.Items
+              key={'Project-' + data.id}
+              className="select-none"
+            >
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
                   className={`text-sidebarText text-sm py-3 flex cursor-pointer font-medium -mr-3 rounded-none ${
                     currentProject?.id === data.id
                       ? "bg-navBg before:content-[''] before:absolute before:top-0 before:-left-2 before:w-1 before:h-full before:bg-navLeftBorder hover:bg-navBg"
-                      : ""
+                      : ''
                   }`}
                   onClick={() => {
                     router.push(`?projectId=${data.id}`);
@@ -111,7 +119,10 @@ export default function SidebarComponent({
               >
                 {"Yes, I'm sure"}
               </Button>
-              <Button color="gray" onClick={() => setOpenDeleteModal(false)}>
+              <Button
+                color="gray"
+                onClick={() => setOpenDeleteModal(false)}
+              >
                 No, cancel
               </Button>
             </div>

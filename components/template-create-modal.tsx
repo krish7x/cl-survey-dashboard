@@ -1,7 +1,8 @@
-import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
-import Radio from "./radio";
-import { IOptions, IProject, ITemplate } from "@/types";
-import { useEffect, useMemo } from "react";
+import { IOptions, IProject, ITemplate } from '@/types';
+import { Button, Label, Modal, TextInput, Textarea } from 'flowbite-react';
+import { useEffect, useMemo } from 'react';
+
+import Radio from './radio';
 
 export default function TemplateCreateModal({
   showModal,
@@ -34,11 +35,11 @@ export default function TemplateCreateModal({
 }) {
   const templates: IOptions[] | undefined = useMemo(
     () =>
-      currentTemplates?.map((val) => ({
+      currentTemplates?.map(val => ({
         id: val.id,
         name: val.templateName,
       })),
-    [currentTemplates]
+    [currentTemplates],
   );
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function TemplateCreateModal({
   }, [showModal, currentProject?.id, showModal]);
 
   const validation = useMemo(() => {
-    if (option.id === "template_1") return !title || !description;
+    if (option.id === 'template_1') return !title || !description;
     return !title || !description || !currentProject?.id || !templateId;
   }, [currentProject?.id, description, option.id, templateId, title]);
 
@@ -70,18 +71,21 @@ export default function TemplateCreateModal({
       <Modal.Body>
         <div className="space-y-6">
           <h3 className="text-lg font-medium text-gray-900">
-            {isTemplateEdit ? "Update template" : "Create new template"}
+            {isTemplateEdit ? 'Update template' : 'Create new template'}
           </h3>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="templateTitle" value="Template title" />
+              <Label
+                htmlFor="templateTitle"
+                value="Template title"
+              />
             </div>
             <TextInput
               id="templateTitle"
               placeholder="title.."
               className="focus:border-none focus:outline-none"
               value={title}
-              onChange={(event) =>
+              onChange={event =>
                 setTemplateDetails({
                   title: event.target.value,
                 })
@@ -91,13 +95,16 @@ export default function TemplateCreateModal({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="projectDescription" value="Description" />
+              <Label
+                htmlFor="projectDescription"
+                value="Description"
+              />
             </div>
             <Textarea
               id="projectDescription"
               placeholder="description.."
               value={description}
-              onChange={(event) =>
+              onChange={event =>
                 setTemplateDetails({
                   description: event.target.value,
                 })
@@ -110,20 +117,23 @@ export default function TemplateCreateModal({
           {!isTemplateEdit && (
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="projectDescription" value="Create as" />
+                <Label
+                  htmlFor="projectDescription"
+                  value="Create as"
+                />
               </div>
               <Radio
                 options={[
                   {
-                    id: "template_1",
-                    name: "New Template",
+                    id: 'template_1',
+                    name: 'New Template',
                   },
                   {
-                    id: "template_2",
-                    name: "Existing Template",
+                    id: 'template_2',
+                    name: 'Existing Template',
                   },
                 ]}
-                onChange={(id) =>
+                onChange={id =>
                   setTemplateDetails({
                     option: {
                       id,
@@ -136,16 +146,19 @@ export default function TemplateCreateModal({
             </div>
           )}
 
-          {option.id === "template_2" && !isTemplateEdit && (
+          {option.id === 'template_2' && !isTemplateEdit && (
             <>
               <div>
                 <div className="block my-2">
-                  <Label htmlFor="project" value="Select Project" />
+                  <Label
+                    htmlFor="project"
+                    value="Select Project"
+                  />
                 </div>
                 <select
                   id="project"
                   className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) =>
+                  onChange={e =>
                     setTemplateDetails({
                       projectId: +e.target.value,
                       templateId: 0,
@@ -155,7 +168,7 @@ export default function TemplateCreateModal({
                   {projects.length
                     ? projects.map(({ id, name }) => (
                         <option
-                          key={"project-" + id}
+                          key={'project-' + id}
                           selected={id === currentProject?.id}
                           value={id}
                         >
@@ -168,12 +181,15 @@ export default function TemplateCreateModal({
 
               <div>
                 <div className="block my-2">
-                  <Label htmlFor="template" value="Select Template" />
+                  <Label
+                    htmlFor="template"
+                    value="Select Template"
+                  />
                 </div>
                 <select
                   id="template"
                   className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) =>
+                  onChange={e =>
                     setTemplateDetails({
                       templateId: +e.target.value,
                     })
@@ -183,7 +199,7 @@ export default function TemplateCreateModal({
                   {templates?.length
                     ? templates.map(({ id, name }) => (
                         <option
-                          key={"template-" + id}
+                          key={'template-' + id}
                           value={id}
                           selected={id === templateId}
                         >
@@ -197,8 +213,11 @@ export default function TemplateCreateModal({
           )}
 
           <div className="w-full">
-            <Button onClick={onClickCreate} disabled={Boolean(validation)}>
-              {isTemplateEdit ? "Update" : "Create"}
+            <Button
+              onClick={onClickCreate}
+              disabled={Boolean(validation)}
+            >
+              {isTemplateEdit ? 'Update' : 'Create'}
             </Button>
           </div>
         </div>

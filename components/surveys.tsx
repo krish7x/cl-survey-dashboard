@@ -1,9 +1,10 @@
-import { Eye, Send, Trash, Trash2, Users, BarChart3 } from "lucide-react";
-import SurevyIcon from "./survey-icon";
-import Image from "next/image";
-import { ISurvey } from "@/types";
-import src from "../public/not-found.png";
-import { Tooltip } from "flowbite-react";
+import { ISurvey } from '@/types';
+import { Tooltip } from 'flowbite-react';
+import { BarChart3, Eye, Send, Trash, Users } from 'lucide-react';
+import Image from 'next/image';
+
+import src from '../public/not-found.png';
+import SurevyIcon from './survey-icon';
 
 export default function Surveys({
   surveys,
@@ -12,7 +13,7 @@ export default function Surveys({
   onClickViewSurvey,
   onClickSendSurvey,
   onClickShowSurveyContacts,
-  onClickShowCharts
+  onClickShowCharts,
 }: {
   surveys: ISurvey[];
   setOpenModal: (value: boolean) => void;
@@ -20,7 +21,7 @@ export default function Surveys({
   onClickViewSurvey: (id: number) => void;
   onClickSendSurvey: (id: number) => void;
   onClickShowSurveyContacts: (id: number) => void;
-  onClickShowCharts: (id: number, surveyName: any) => void
+  onClickShowCharts: (id: number, surveyName: string) => void;
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -28,7 +29,7 @@ export default function Surveys({
         surveys.map(
           ({ id, surveyName, project: { projectName }, lastModifiedDate }) => (
             <div
-              key={"survey-" + id}
+              key={'survey-' + id}
               className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
             >
               <div className="flex w-full justify-between px-2 items-center">
@@ -39,7 +40,7 @@ export default function Surveys({
                       {surveyName}
                     </h3>
                     <p className="text-xs text-txtPurple">
-                      Linked to <strong>{projectName}</strong> . Last modified:{" "}
+                      Linked to <strong>{projectName}</strong> . Last modified:{' '}
                       <strong>{lastModifiedDate}</strong>
                     </p>
                   </div>
@@ -81,7 +82,7 @@ export default function Surveys({
                 </div>
               </div>
             </div>
-          )
+          ),
         )
       ) : (
         <div className="flex flex-col justify-center items-center flex-1 gap-2 mb-20">

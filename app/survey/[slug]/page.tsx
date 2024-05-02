@@ -1,55 +1,59 @@
-"use client";
-import { useState, useEffect } from "react";
-import { axiosInstance } from "@/utils/axios";
-import { usePathname } from "next/navigation";
-import { AxiosError } from "axios";
-import { Spinner } from "flowbite-react";
-import ThanksScreen from "@/components/thanks-screen";
-import NpsQuestionPage from "@/components/nps-question-screen";
-import OtherQuestionPage from "@/components/other-question-screen";
-import Image from "next/image";
+'use client';
+
+import NpsQuestionPage from '@/components/nps-question-screen';
+import OtherQuestionPage from '@/components/other-question-screen';
+import ThanksScreen from '@/components/thanks-screen';
+import { IFetchSurvey, ITemplateQuestion } from '@/types';
+import { axiosInstance } from '@/utils/axios';
+import { AxiosError } from 'axios';
+import { Spinner } from 'flowbite-react';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Survey() {
-  const [currentPage, setCurrentPage] = useState("NPS");
-  const [npsQuestion, setNpsQuestions] = useState<any>({});
-  const [otherQuestions, setOtherQuestions] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState('NPS');
+  const [npsQuestion, setNpsQuestions] = useState<ITemplateQuestion>();
+  const [otherQuestions, setOtherQuestions] = useState<ITemplateQuestion[]>();
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-  const [survey, setSurvey] = useState<any>();
+  const [surveyData, setSurveyData] = useState<IFetchSurvey>();
   const path = usePathname();
 
   useEffect(() => {
-    const npsQuestionList = survey?.template?.templateJsonData?.filter(
-      (item: any) => item.optionTypeName === "NPS Rating"
-    );
-    const otherQuestionList = survey?.template?.templateJsonData?.filter(
-      (item: any) => item.optionTypeName !== "NPS Rating"
-    );
+    const npsQuestionList = surveyData?.template?.templateJsonData?.filter(
+      item => item.optionTypeName === 'NPS Rating',
+    ) as ITemplateQuestion[];
+
+    const otherQuestionList = surveyData?.template?.templateJsonData?.filter(
+      item => item.optionTypeName !== 'NPS Rating',
+    ) as ITemplateQuestion[];
     if (npsQuestionList?.length >= 1) {
-      setCurrentPage("NPS");
+      setCurrentPage('NPS');
       setNpsQuestions(npsQuestionList[0]);
     }
+
     if (otherQuestionList?.length >= 1) {
       setOtherQuestions(
-        otherQuestionList.map((item: any, key: any) => ({
+        otherQuestionList.map((item: ITemplateQuestion, key: number) => ({
           id: key + 1,
           ...item,
-        }))
+        })),
       );
     }
-  }, [survey]);
+  }, [surveyData]);
 
   useEffect(() => {
-    const surveyId = path.split("/")[2];
+    const surveyId = path.split('/')[2];
     if (surveyId) {
       axiosInstance
         .get(`/surveys/fetch/${surveyId}`)
-        .then((res) => {
+        .then(res => {
           if (res.data) {
             setIsAuthorized(true);
             if (res.data?.isSurveyCompleted) {
-              setCurrentPage("THANKS");
+              setCurrentPage('THANKS');
             } else {
-              setSurvey({
+              setSurveyData({
                 contactId: res.data?.contactId,
                 uuid: res.data?.uuid,
                 ...res.data?.survey,
@@ -65,34 +69,38 @@ export default function Survey() {
     }
   }, [path]);
 
-  const handleNPSSubmit = async (val: any) => {
-    setNpsQuestions((prevState: any) => ({ ...prevState, rating: val }));
+  const handleNPSSubmit = async (score: number) => {
+    const npsQues = { ...npsQuestion, rating: score };
+    setNpsQuestions(npsQues as ITemplateQuestion);
     const reqData = {
-      contactId: survey.contactId,
-      surveyId: survey.id,
-      score: val,
-      uuid: survey.uuid,
+      contactId: surveyData?.contactId,
+      surveyId: surveyData?.id,
+      score,
+      uuid: surveyData?.uuid,
       surveyResponseData: null,
     };
 
-    await axiosInstance.post(`/responses/create`, reqData).then((res) => {
+    await axiosInstance.post(`/responses/create`, reqData).then(res => {
       if (res.data) {
-        setCurrentPage("OTHER");
+        setCurrentPage('OTHER');
       }
     });
   };
 
   const handleOthersSubmit = async () => {
     const reqData = {
-      contactId: survey.contactId,
-      surveyId: survey.id,
-      uuid: survey.uuid,
-      surveyResponseData: [npsQuestion, ...otherQuestions],
+      contactId: surveyData?.contactId,
+      surveyId: surveyData?.id,
+      uuid: surveyData?.uuid,
+      surveyResponseData: [
+        npsQuestion,
+        ...(otherQuestions as ITemplateQuestion[]),
+      ],
     };
 
-    await axiosInstance.post(`/responses/create`, reqData).then((res) => {
+    await axiosInstance.post(`/responses/create`, reqData).then(res => {
       if (res.data) {
-        setCurrentPage("THANKS");
+        setCurrentPage('THANKS');
       }
     });
   };
@@ -103,35 +111,33 @@ export default function Survey() {
         <div className="flex flex-col w-full h-full">
           <div className="w-full flex justify-center bg-slate-50 p-3 md:p-5 fixed top-0 z-10">
             <Image
-              src={"/carat.png"}
+              src={'/carat.png'}
               className="h-10 self-center"
               width={200}
               height={40}
-              alt={"caratlane-logo"}
+              alt={'caratlane-logo'}
             />
           </div>
           <div className="flex flex-col w-full h-auto">
-            {currentPage === "NPS" && (
+            {currentPage === 'NPS' && (
               <NpsQuestionPage
                 surveyData={npsQuestion}
                 onSubmit={handleNPSSubmit}
               />
             )}
-            {currentPage === "OTHER" && (
+            {currentPage === 'OTHER' && (
               <OtherQuestionPage
-                questions={otherQuestions}
+                questions={otherQuestions as ITemplateQuestion[]}
                 onSubmit={handleOthersSubmit}
                 setOtherQuestions={setOtherQuestions}
               />
             )}
-            {currentPage === "THANKS" && (
-              <ThanksScreen flag={currentPage === "THANKS"} />
-            )}
+            {currentPage === 'THANKS' && <ThanksScreen flag={currentPage} />}
           </div>
         </div>
       ) : (
         <div className="flex w-full h-full justify-center items-center">
-          <Spinner size={"xl"} />
+          <Spinner size={'xl'} />
         </div>
       )}
     </>

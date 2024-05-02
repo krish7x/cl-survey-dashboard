@@ -1,9 +1,10 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { ITemplate } from "@/types";
-import src from "../public/not-found.png";
-import TemplateIcon from "./template-icon";
-import { Tooltip } from "flowbite-react";
+import { ITemplate } from '@/types';
+import { Tooltip } from 'flowbite-react';
+import { Pencil, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+
+import src from '../public/not-found.png';
+import TemplateIcon from './template-icon';
 
 export default function Templates({
   templates,
@@ -22,10 +23,13 @@ export default function Templates({
         templates.map(
           ({ id, templateName, templateJsonData, lastModifiedDate }) => (
             <div
-              key={"survey-" + id}
+              key={'survey-' + id}
               className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
             >
-              <div className="flex w-full justify-between px-2" items-center>
+              <div
+                className="flex w-full justify-between px-2"
+                items-center
+              >
                 <div className="flex gap-4 group">
                   <TemplateIcon />
                   <div className="flex flex-col gap-1 py-2">
@@ -35,12 +39,12 @@ export default function Templates({
                     <p className="text-xs text-txtPurple">
                       {(templateJsonData || [])?.length
                         ? `No of question: `
-                        : ""}
-                      {"     "}
+                        : ''}
+                      {'     '}
                       {templateJsonData?.length ? (
                         <strong>{templateJsonData?.length}</strong>
                       ) : null}
-                      <span>{"  "}</span>Last modified:{" "}
+                      <span>{'  '}</span>Last modified:{' '}
                       <strong>{lastModifiedDate}</strong>
                     </p>
                   </div>
@@ -64,7 +68,7 @@ export default function Templates({
                 </div>
               </div>
             </div>
-          )
+          ),
         )
       ) : (
         <div className="flex flex-col justify-center items-center flex-1 gap-2 mb-20">
