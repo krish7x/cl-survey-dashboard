@@ -390,7 +390,7 @@ export default function TemplateModal({
         }
       } else {
         setTempOptions(curQuestion?.optionsJson?.options);
-        if (selectQuestionType === 2) {
+        if (selectQuestionType === 1 || selectQuestionType === 2) {
           const currentOptions = curQuestion?.optionsJson?.options;
           const arr = new Array(length).fill(null).map((_, inx) => ({
             id: inx + 1,
