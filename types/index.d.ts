@@ -88,7 +88,7 @@ export interface ITemplateQuestion {
   optionsJson?: IOptionJson;
   isAdded?: boolean;
   rating?: number;
-  answer?: number | number[];
+  answer?: number[];
 }
 
 export interface ITemplateRequest {

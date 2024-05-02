@@ -73,7 +73,7 @@ export default function OtherQuestionPage(props: {
             <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
             <StarRating
               starCount={5}
-              rating={item.answer ? (item.answer as number) : 0}
+              rating={item.answer ? item.answer?.[0] : 0}
               onChange={val => onStarRatingChange(val, item?.questionId)}
             />
           </div>
@@ -129,7 +129,7 @@ export default function OtherQuestionPage(props: {
               onChange={radioId =>
                 onRadioChange(radioId as number, item.questionId)
               }
-              checkedId={item?.answer ? (item.answer as number | string) : ''}
+              checkedId={item?.answer ? item?.answer?.[0] : ''}
               stacked={item?.optionsJson?.optionPosition === 'y'}
             />
           </div>
