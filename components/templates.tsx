@@ -1,4 +1,4 @@
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { ITemplate } from "@/types";
 import src from "../public/not-found.png";
@@ -9,12 +9,12 @@ export default function Templates({
   templates,
   setOpenModal,
   setTemplateId,
-  onClickViewTemplate,
+  onClickEditTemplate,
 }: {
   templates: ITemplate[];
   setOpenModal: (value: boolean) => void;
   setTemplateId: (value: number) => void;
-  onClickViewTemplate: (id: number) => void;
+  onClickEditTemplate: (id: number) => void;
 }) {
   return (
     <div className="flex flex-col pt-5 h-full">
@@ -47,9 +47,9 @@ export default function Templates({
                 </div>
                 <div className="flex gap-3 items-center">
                   <Tooltip content="Template Details">
-                    <Eye
+                    <Pencil
                       className="mt-4 stroke-txtPurple"
-                      onClick={() => onClickViewTemplate(id)}
+                      onClick={() => onClickEditTemplate(id)}
                     />
                   </Tooltip>
                   <Tooltip content="Delete template">

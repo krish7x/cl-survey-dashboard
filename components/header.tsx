@@ -4,12 +4,16 @@ import { useAtom, useAtomValue } from "jotai";
 import { tabsAtom, userAtom } from "@/store/atom";
 import Avatar from "./avatar";
 import HeaderSkeleton from "./header-skeleton";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { IOptions } from "@/types";
 
 export default function Header() {
+  const router = useRouter();
+  const { get } = useSearchParams();
   const user = useAtomValue(userAtom);
   const [tabs, setTabs] = useAtom(tabsAtom);
-
+  const [projectId, setProjectId] = useState("");
   const tabsOption = useMemo(
     () => [
       {
@@ -23,6 +27,13 @@ export default function Header() {
     ],
     []
   );
+
+  useEffect(() => {
+    setProjectId(get("projectId") as string);
+    const tabId = +(get("tab") || "1");
+    const curTab = tabsOption.find((val) => val.id === tabId);
+    setTabs(curTab as IOptions);
+  }, [get, setTabs, tabsOption]);
 
   return (
     <div className="px-4 md:pl-6 md:pr-10 pt-3 border-b border-b-navBorder flex items-center justify-between w-full ">
@@ -44,7 +55,14 @@ export default function Header() {
                           ? " border-b-blue-600"
                           : "hover:text-gray-600 active hover:border-gray-300"
                       } rounded-t-lg `}
-                      onClick={() => setTabs(val)}
+                      onClick={() => {
+                        router.push(
+                          `?${projectId ? `projectId=${projectId}&` : ""}tab=${
+                            val.id
+                          }`
+                        );
+                        setTabs(val);
+                      }}
                     >
                       {val.name}
                     </button>

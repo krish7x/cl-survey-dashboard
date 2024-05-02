@@ -3,9 +3,10 @@ import { IProject } from "@/types";
 import { Button, Modal, Sidebar, Tooltip } from "flowbite-react";
 import { useAtomValue } from "jotai";
 import { AlertOctagon, PlusCircle, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ListSkeleton from "./list-skeleton";
 import truncate from "lodash.truncate";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SidebarComponent({
   setShowModal,
@@ -20,10 +21,18 @@ export default function SidebarComponent({
   setCurrentProject: (data: IProject) => void;
   onDeleteProject: (val: number) => void;
 }) {
+  const router = useRouter();
+  const { get } = useSearchParams();
   const user = useAtomValue(userAtom);
   const isAdmin = useMemo(() => user && user.role === "admin", [user]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteProjectId, setDeleteProjectId] = useState(0);
+
+  useEffect(() => {
+    const projectId = +(get("projectId") || "0");
+    const curProject = projects.find((val) => val.id === projectId);
+    setCurrentProject(curProject as IProject);
+  }, [get, projects, setCurrentProject]);
 
   return (
     <Sidebar
@@ -54,7 +63,10 @@ export default function SidebarComponent({
                       ? "bg-navBg before:content-[''] before:absolute before:top-0 before:-left-2 before:w-1 before:h-full before:bg-navLeftBorder hover:bg-navBg"
                       : ""
                   }`}
-                  onClick={() => setCurrentProject(data)}
+                  onClick={() => {
+                    router.push(`?projectId=${data.id}`);
+                    setCurrentProject(data);
+                  }}
                 >
                   {truncate(data.projectName, {
                     length: 25,
