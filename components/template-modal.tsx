@@ -10,20 +10,20 @@ import TemplateQuestionModal from "./template-question-modal";
 
 export default function TemplateModal({
   showModal,
-  setShowModal,
-  setShowTemplateCreateModal,
   createTemplateLoading,
   isTemplateEdit,
+  setShowModal,
+  setShowTemplateCreateModal,
   resetForCreateTemplate,
   onClickCreateOrUpdate,
 }: {
   showModal: boolean;
   isTemplateEdit: boolean;
+  createTemplateLoading: boolean;
+  onClickCreateOrUpdate: () => void;
   setShowModal: (value: boolean) => void;
   setShowTemplateCreateModal: (value: boolean) => void;
-  createTemplateLoading: boolean;
   resetForCreateTemplate: () => void;
-  onClickCreateOrUpdate: () => void;
 }) {
   const questionTypeOptions: IOptions[] = useMemo(
     () => [
@@ -136,6 +136,7 @@ export default function TemplateModal({
     const npsIndex = templateQuestion.findIndex(
       (val) => val.optionTypeId === 1
     );
+    if (npsIndex === -1) return false;
     return npsIndex !== 1 && npsIndex + 1 !== selectedQuestionIndex;
   }, [templateQuestion, selectedQuestionIndex]);
 
@@ -366,7 +367,7 @@ export default function TemplateModal({
     if (selectedQuestionIndex) {
       const curQuestion = templateQuestion[selectedQuestionIndex - 1];
       if (!curQuestion?.isAdded || !curQuestion?.optionsJson?.options?.length) {
-        if (selectQuestionType === 2) {
+        if (selectQuestionType === 1 || selectQuestionType === 2) {
           const length = ratingRange === "range_5" ? 5 : 10;
           const arr = new Array(length).fill(null).map((_, inx) => ({
             id: inx + 1,
@@ -520,7 +521,19 @@ export default function TemplateModal({
                       disabled={!hideNPS}
                     />
                   </div>
-                ) : null
+                ) : (
+                  <div className="flex flex-col gap-4 pl-8">
+                    <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
+                      Selected question type - [
+                      {
+                        questionTypeOptions.find(
+                          (val) => val.id === selectQuestionType
+                        )?.name
+                      }
+                      ]
+                    </h1>
+                  </div>
+                )
               ) : null}
               {((selectQuestionType as number) === 1 ||
                 (selectQuestionType as number) === 2) &&
