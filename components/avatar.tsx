@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Avatar, Dropdown } from 'flowbite-react';
 import { signOut } from 'next-auth/react';
 
