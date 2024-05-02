@@ -229,6 +229,10 @@ export default function Dashboard() {
       setProjects([res.data, ...projects]);
       setCurrentProject(res.data);
       setCreateProjectLoading(false);
+      setProjectDetails({
+        title: "",
+        description: "",
+      });
     });
   }, [projectDetails.description, projectDetails.title, projects, user?.id]);
 

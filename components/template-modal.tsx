@@ -63,6 +63,7 @@ export default function TemplateModal({
   );
   const [selectedOptionPos, setSelectedOptionPos] = useState("");
   const [options, setOptions] = useState<IOptions[]>([]);
+  const [tempOptions, setTempOptions] = useState<IOptions[]>([]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
@@ -202,7 +203,11 @@ export default function TemplateModal({
     const lastQuestionId =
       templateQuestion[templateQuestion.length - 2]?.questionId;
     const tempQuestion: ITemplateQuestion = {
-      questionId: lastQuestionId ? lastQuestionId + 1 : 1,
+      questionId: isAdded
+        ? +(selectedQuestionIndex || "1")
+        : lastQuestionId
+        ? lastQuestionId + 1
+        : 1,
       title: questionTitle,
       description: questionDescription,
       optionTypeId: selectQuestionType,
@@ -366,13 +371,12 @@ export default function TemplateModal({
   useEffect(() => {
     if (selectedQuestionIndex) {
       const curQuestion = templateQuestion[selectedQuestionIndex - 1];
+      const length = ratingRange === "range_5" ? 5 : 10;
       if (!curQuestion?.isAdded || !curQuestion?.optionsJson?.options?.length) {
         if (selectQuestionType === 1 || selectQuestionType === 2) {
-          const length = ratingRange === "range_5" ? 5 : 10;
           const arr = new Array(length).fill(null).map((_, inx) => ({
             id: inx + 1,
             name: `${inx + 1}`,
-            linkedTo: undefined,
           }));
           setOptions(arr);
         } else {
@@ -384,6 +388,29 @@ export default function TemplateModal({
             },
           ]);
         }
+      } else {
+        setTempOptions(curQuestion?.optionsJson?.options);
+        if (selectQuestionType === 2) {
+          const currentOptions = curQuestion?.optionsJson?.options;
+          const arr = new Array(length).fill(null).map((_, inx) => ({
+            id: inx + 1,
+            name: `${inx + 1}`,
+            linkedTo: currentOptions[inx]?.linkedTo || "",
+          }));
+          setOptions(arr);
+        } else {
+          const isRating = curQuestion?.optionsJson?.options[0]?.name === "1";
+          if (tempOptions?.length && !isRating) {
+            setOptions(tempOptions);
+          } else {
+            setOptions([
+              {
+                id: 1,
+                name: "",
+              },
+            ]);
+          }
+        }
       }
     }
   }, [
@@ -391,6 +418,7 @@ export default function TemplateModal({
     selectedQuestionIndex,
     ratingRange,
     templateQuestion,
+    tempOptions,
   ]);
 
   return (
@@ -504,41 +532,26 @@ export default function TemplateModal({
                 </div>
               </div>
               {selectedQuestionIndex ? (
-                !templateQuestion[selectedQuestionIndex - 1]?.isAdded ? (
-                  <div className="flex flex-col gap-4 pl-8">
-                    <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
-                      Select question type
-                    </h1>
-                    <Radio
-                      options={questionTypeOptions.filter((val) =>
-                        hideNPS ? val.id !== 1 : val
-                      )}
-                      onChange={(id) => {
-                        setSelectQuestionType(id);
-                      }}
-                      checkedId={selectQuestionType}
-                      stacked={false}
-                      disabled={!hideNPS}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-4 pl-8">
-                    <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
-                      Selected question type - [
-                      {
-                        questionTypeOptions.find(
-                          (val) => val.id === selectQuestionType
-                        )?.name
-                      }
-                      ]
-                    </h1>
-                  </div>
-                )
+                <div className="flex flex-col gap-4 pl-8">
+                  <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
+                    Select question type
+                  </h1>
+                  <Radio
+                    options={questionTypeOptions}
+                    onChange={(id) => {
+                      setSelectQuestionType(id);
+                    }}
+                    checkedId={selectQuestionType}
+                    stacked={false}
+                    disabled={hideNPS}
+                    disabledId={hideNPS ? 1 : undefined}
+                  />
+                </div>
               ) : null}
               {((selectQuestionType as number) === 1 ||
                 (selectQuestionType as number) === 2) &&
               templateQuestion.length > 1 ? (
-                <div className="flex flex-col gap-6 pl-8">
+                <div className="flex flex-col gap-4 pl-8">
                   <div className="flex justify-between border-b border-b-navBorder pb-2">
                     <h1 className="text-sidebarText text-md font-semibold">
                       Link Question
@@ -546,9 +559,7 @@ export default function TemplateModal({
                   </div>
 
                   {(selectQuestionType as number) === 2 &&
-                  (selectedQuestionIndex
-                    ? !templateQuestion[selectedQuestionIndex - 1]?.isAdded
-                    : true) ? (
+                  selectedQuestionIndex ? (
                     <div className="flex flex-col gap-2">
                       <p className="text-sm font-normal text-radio select-none">
                         Select your range
@@ -601,30 +612,46 @@ export default function TemplateModal({
                   <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
                     Add Options
                   </h1>
-                  <div className="flex gap-4 items-center">
-                    <p className="text-md font-normal text-radio select-none">
-                      Select option position
-                    </p>
-                    <Button.Group>
-                      <Button
-                        gradientDuoTone={
-                          selectedOptionPos === "x" ? "purpleToBlue" : ""
-                        }
-                        color="gray"
-                        onClick={() => setSelectedOptionPos("x")}
-                      >
-                        Horizontal
-                      </Button>
-                      <Button
-                        gradientDuoTone={
-                          selectedOptionPos === "y" ? "purpleToBlue" : ""
-                        }
-                        color="gray"
-                        onClick={() => setSelectedOptionPos("y")}
-                      >
-                        Vertical
-                      </Button>
-                    </Button.Group>
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-4 items-center">
+                      <p className="text-md font-normal text-radio select-none">
+                        Select option position
+                      </p>
+                      <Button.Group>
+                        <Button
+                          gradientDuoTone={
+                            selectedOptionPos === "x" ? "purpleToBlue" : ""
+                          }
+                          color="gray"
+                          onClick={() => setSelectedOptionPos("x")}
+                        >
+                          Horizontal
+                        </Button>
+                        <Button
+                          gradientDuoTone={
+                            selectedOptionPos === "y" ? "purpleToBlue" : ""
+                          }
+                          color="gray"
+                          onClick={() => setSelectedOptionPos("y")}
+                        >
+                          Vertical
+                        </Button>
+                      </Button.Group>
+                    </div>
+                    <Button
+                      color="failure"
+                      className="opacity-80"
+                      onClick={() =>
+                        setOptions([
+                          {
+                            id: 1,
+                            name: "",
+                          },
+                        ])
+                      }
+                    >
+                      Reset
+                    </Button>
                   </div>
 
                   <div className="flex flex-col gap-4">

@@ -91,7 +91,7 @@ export default function TemplateQuestionModal({
       }}
       popup
     >
-      <Modal.Body className="p-0 overflow-y-scroll">
+      <Modal.Body className="p-0 overflow-y-scroll scrollbar-hide">
         <Modal.Header className="border-b border-b-modalBorder relative">
           <span className="absolute left-[calc(50%-96px)]">
             Link a question
