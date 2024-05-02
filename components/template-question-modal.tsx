@@ -4,17 +4,18 @@ import { useCallback, useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { templateQuestionsAtom } from "@/store/atom";
 import Radio from "./radio";
+import { Link, Unlink } from "lucide-react";
 
 export default function TemplateQuestionModal({
   showModal,
-  setShowModal,
   linkDetails,
   questions,
+  setShowModal,
 }: {
   showModal: boolean;
-  setShowModal: (value: boolean) => void;
   linkDetails?: ILinkDetails;
   questions: ITemplateQuestion[];
+  setShowModal: (value: boolean) => void;
 }) {
   const [templateQuestion, setTemplateQuestion] = useAtom(
     templateQuestionsAtom
@@ -39,41 +40,46 @@ export default function TemplateQuestionModal({
     }
   }, [linkDetails, templateQuestion, showModal]);
 
-  const handleLinking = useCallback(() => {
-    const cloneTemplateQuestions = [...templateQuestion];
-    const questionId = cloneTemplateQuestions.findIndex(
-      (val) => val.questionId === linkDetails?.questionId
-    );
-    const selectedQuestionOptions = [
-      ...(cloneTemplateQuestions[questionId].optionsJson
-        ?.options as IOptions[]),
-    ];
-    const selectedOptionIndex = selectedQuestionOptions.findIndex(
-      (val) => val.id === linkDetails?.optionId
-    );
-    selectedQuestionOptions[selectedOptionIndex].linkedTo = selectedQuestionId;
-    cloneTemplateQuestions.map((val) => {
-      if (val.questionId === linkDetails?.questionId) {
-        return {
-          ...val,
-          optionsJson: {
-            ...val.optionsJson,
-            options: selectedQuestionOptions,
-          },
-        };
-      }
-      return val;
-    });
-    setTemplateQuestion(cloneTemplateQuestions);
-    setShowModal(false);
-  }, [
-    linkDetails?.optionId,
-    linkDetails?.questionId,
-    selectedQuestionId,
-    setShowModal,
-    setTemplateQuestion,
-    templateQuestion,
-  ]);
+  const handleLinking = useCallback(
+    (unlink = false) => {
+      const cloneTemplateQuestions = [...templateQuestion];
+      const questionId = cloneTemplateQuestions.findIndex(
+        (val) => val.questionId === linkDetails?.questionId
+      );
+      const selectedQuestionOptions = [
+        ...(cloneTemplateQuestions[questionId].optionsJson
+          ?.options as IOptions[]),
+      ];
+      const selectedOptionIndex = selectedQuestionOptions.findIndex(
+        (val) => val.id === linkDetails?.optionId
+      );
+      selectedQuestionOptions[selectedOptionIndex].linkedTo = unlink
+        ? ""
+        : selectedQuestionId;
+      cloneTemplateQuestions.map((val) => {
+        if (val.questionId === linkDetails?.questionId) {
+          return {
+            ...val,
+            optionsJson: {
+              ...val.optionsJson,
+              options: selectedQuestionOptions,
+            },
+          };
+        }
+        return val;
+      });
+      setTemplateQuestion(cloneTemplateQuestions);
+      !unlink && setShowModal(false);
+    },
+    [
+      linkDetails?.optionId,
+      linkDetails?.questionId,
+      selectedQuestionId,
+      setShowModal,
+      setTemplateQuestion,
+      templateQuestion,
+    ]
+  );
 
   return (
     <Modal
@@ -111,12 +117,23 @@ export default function TemplateQuestionModal({
         </div>
       </Modal.Body>
       <Modal.Footer className="border-t h-16 flex justify-between items-center border-t-modalBorder relative">
+        {selectedQuestionId ? (
+          <Button
+            className="ml-auto"
+            disabled={!Boolean(selectedQuestionId)}
+            onClick={() => handleLinking(true)}
+          >
+            Unlink
+            <Unlink size={16} className="ml-1" />
+          </Button>
+        ) : null}
         <Button
           className="ml-auto"
           disabled={!Boolean(selectedQuestionId)}
-          onClick={handleLinking}
+          onClick={() => handleLinking()}
         >
           Link
+          <Link size={16} className="ml-1" />
         </Button>
       </Modal.Footer>
     </Modal>
