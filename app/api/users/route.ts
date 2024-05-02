@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAll } from "../../../utils/crud";
+import { getAll, create } from "../../../utils/crud";
 import { prisma } from '../../../prisma'
 
 export async function GET(req: NextRequest) {
@@ -11,7 +11,18 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(users);
   } catch (err) {
     console.error("Error fetching users", err);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: `Internal Server Error: ${err}` }, { status: 500 })
   }
+}
 
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    console.log("inside post route\n", body);
+    const users = await create(prisma.user, body);
+    return NextResponse.json(users);
+  } catch (err) {
+    console.error("Error fetching users", err);
+    return NextResponse.json({ error: `Internal Server Error: ${err}` }, { status: 500 })
+  }
 }
