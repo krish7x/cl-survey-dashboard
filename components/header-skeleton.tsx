@@ -1,8 +1,8 @@
 export default function HeaderSkeleton() {
   return (
-    <div className="flex flex-col gap-2 items-center justify-between ml-4">
-      <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-      <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+    <div className="ml-4 flex flex-col items-center justify-between gap-2">
+      <div className="h-2 w-32 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+      <div className="h-2 w-32 rounded-full bg-gray-200 dark:bg-gray-700"></div>
     </div>
   );
 }

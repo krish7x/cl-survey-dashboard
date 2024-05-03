@@ -1,13 +1,14 @@
-"use client";
-import Radio from "@/components/radio";
-import Select from "@/components/select";
-import StarRating from "@/components/star-rating";
-import { IOptions } from "@/types";
-import { useCallback, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+'use client';
+
+import Radio from '@/components/radio';
+import Select from '@/components/select';
+import StarRating from '@/components/star-rating';
+import { IOptions } from '@/types';
+import { useCallback, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Components() {
-  const OPTIONS = ["Option 1", "Option 2", "Option 3", "Option 4"];
+  const OPTIONS = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 
   //star rating goes here
   const [rating, setRating] = useState<number>(0);
@@ -15,56 +16,60 @@ export default function Components() {
     (value: number) => {
       setRating(value);
     },
-    [setRating]
+    [setRating],
   );
 
   //single select goes here
   const [singleSelectOptions] = useState<IOptions[]>(
-    OPTIONS.map((val, inx) => ({ id: inx, name: val }))
+    OPTIONS.map((val, inx) => ({ id: inx, name: val })),
   );
-  const [singleSelectedOptions, setSingleSelectedOptions] = useState<any[]>([]);
+  const [singleSelectedOptions, setSingleSelectedOptions] = useState<
+    Array<number | string>
+  >([]);
   const onSingleSelectChange = useCallback(
     (inx: number | string, maxSelect: number) => {
       if (singleSelectedOptions.length < maxSelect) {
         if (!singleSelectedOptions.includes(inx)) {
           setSingleSelectedOptions([...singleSelectedOptions, inx]);
         } else {
-          setSingleSelectedOptions((val) => val.filter((val) => val !== inx));
+          setSingleSelectedOptions(val => val.filter(val => val !== inx));
         }
       } else {
-        setSingleSelectedOptions((val) => [...val.slice(1), inx]);
+        setSingleSelectedOptions(val => [...val.slice(1), inx]);
       }
     },
-    [singleSelectedOptions, setSingleSelectedOptions]
+    [singleSelectedOptions, setSingleSelectedOptions],
   );
 
   //multi select goes here
   const [multiSelectOptions] = useState<IOptions[]>(
-    OPTIONS.map((val, inx) => ({ id: inx, name: val }))
+    OPTIONS.map((val, inx) => ({ id: inx, name: val })),
   );
-  const [multiSelectedOptions, setMultiSelectedOptions] = useState<any[]>([]);
+  const [multiSelectedOptions, setMultiSelectedOptions] = useState<
+    Array<number | string>
+  >([]);
   const onMultiSelectChange = useCallback(
     (inx: number | string, maxSelect: number) => {
       if (multiSelectedOptions.length < maxSelect) {
         if (!multiSelectedOptions.includes(inx)) {
           setMultiSelectedOptions([...multiSelectedOptions, inx]);
         } else {
-          setMultiSelectedOptions((val) => val.filter((val) => val !== inx));
+          setMultiSelectedOptions(val => val.filter(val => val !== inx));
         }
       } else {
-        setMultiSelectedOptions((val) => [...val.slice(1), inx]);
+        setMultiSelectedOptions(val => [...val.slice(1), inx]);
       }
     },
-    [multiSelectedOptions, setMultiSelectedOptions]
+    [multiSelectedOptions, setMultiSelectedOptions],
   );
 
   //radio button goes here
   const [radioOptions] = useState<IOptions[]>(
-    OPTIONS.map((val, inx) => ({ id: uuidv4(), name: val }))
+    OPTIONS.map((val: string) => ({ id: uuidv4(), name: val })),
   );
 
   const [radioOptions1] = useState<IOptions[]>(
-    OPTIONS.map((val, inx) => ({ id: uuidv4(), name: val }))
+    OPTIONS.map((val: string) => ({ id: uuidv4(), name: val })),
   );
   const [checkedRadio, setCheckedRadio] = useState<string | number>();
   const [checkedRadio1, setCheckedRadio1] = useState<string | number>();
@@ -78,7 +83,7 @@ export default function Components() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center py-8 gap-10">
+    <div className="flex flex-col items-center justify-center gap-10 py-8">
       <div className="flex flex-col gap-4">
         <h1>Star Rating component</h1>
         <StarRating
@@ -88,7 +93,7 @@ export default function Components() {
         />
       </div>
 
-      <div className="flex flex-col gap-2 w-96">
+      <div className="flex w-96 flex-col gap-2">
         <h1>Multiple choice with single select</h1>
         <Select
           options={singleSelectOptions}
@@ -98,7 +103,7 @@ export default function Components() {
         />
       </div>
 
-      <div className="flex flex-col gap-2 w-96">
+      <div className="flex w-96 flex-col gap-2">
         <h1>Multiple choice with multi select</h1>
         <Select
           options={multiSelectOptions}
@@ -108,7 +113,7 @@ export default function Components() {
         />
       </div>
 
-      <div className="flex flex-col gap-2 w-96">
+      <div className="flex w-96 flex-col gap-2">
         <h1>Radio Button</h1>
         <Radio
           options={radioOptions}
@@ -117,7 +122,7 @@ export default function Components() {
         />
       </div>
 
-      <div className="flex flex-col gap-2 w-96">
+      <div className="flex w-96 flex-col gap-2">
         <h1>Radio Button</h1>
         <Radio
           options={radioOptions1}

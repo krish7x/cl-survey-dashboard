@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ISendSurveyDetails } from "@/types";
-import { Button, Label, Modal, TextInput } from "flowbite-react";
+import { ISendSurveyDetails } from '@/types';
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
 
 export default function SurveyModal({
   showSendSurveyModal,
@@ -35,7 +35,10 @@ export default function SurveyModal({
           </h3>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="name" value="Customer name" />
+              <Label
+                htmlFor="name"
+                value="Customer name"
+              />
             </div>
             <TextInput
               id="name"
@@ -43,7 +46,7 @@ export default function SurveyModal({
               placeholder="John"
               value={sendSurveyDetails.contactName}
               required
-              onChange={(e) =>
+              onChange={e =>
                 setSendSurveyDetails({
                   contactName: e.target.value,
                 })
@@ -52,7 +55,10 @@ export default function SurveyModal({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="email" value="Customer email" />
+              <Label
+                htmlFor="email"
+                value="Customer email"
+              />
             </div>
             <TextInput
               id="name"
@@ -60,7 +66,7 @@ export default function SurveyModal({
               placeholder="john@example.com"
               value={sendSurveyDetails.contactEmailId}
               required
-              onChange={(e) =>
+              onChange={e =>
                 setSendSurveyDetails({
                   contactEmailId: e.target.value,
                 })
