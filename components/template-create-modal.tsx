@@ -30,7 +30,7 @@ export default function TemplateCreateModal({
   currentTemplates?: ITemplate[];
   currentProject?: IProject;
   projects: IOptions[];
-  templateId?: number;
+  templateId?: string;
   resetForCreateTemplate: () => void;
 }) {
   const templates: IOptions[] | undefined = useMemo(

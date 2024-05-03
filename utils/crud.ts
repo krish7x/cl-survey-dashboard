@@ -1,101 +1,100 @@
-import { NextResponse } from "next/server"
-
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const create = (schema: any, data: object): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .create({
-        data
+        data,
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
 export const createMany = (schema: any, data: object[]): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .createMany({
-        data
+        data,
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
 export const updateById = (
   schema: any,
   data: object,
   key: string = 'id',
-  id: number | string | undefined
+  id: number | string | undefined,
 ): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .update({
         where: {
-          [key]: id
+          [key]: id,
         },
-        data
+        data,
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
 export const deleteById = (
   schema: any,
   key: string = 'id',
-  id: number | string | undefined
+  id: number | string | undefined,
 ): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .delete({
         where: {
-          [key]: id
-        }
+          [key]: id,
+        },
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
 export const getById = (
   schema: any,
   key: string = 'id',
-  id: number | string | undefined
+  id: number | string | undefined,
 ): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .findUnique({
         where: {
-          [key]: id
-        }
+          [key]: id,
+        },
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
 export const getAlli = (
   schema: any,
   take: number = 10,
-  skip: number = 0
+  skip: number = 0,
 ): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .findMany({ take, skip })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
 export const getAll = async (
   schema: any,
   filters: object,
   take: number = 10,
-  skip: number = 0
+  skip: number = 0,
 ): Promise<any> => {
   try {
-    console.log(filters);
     const data = await schema.findMany({ where: filters, take, skip });
     return data;
   } catch (error) {
@@ -108,7 +107,7 @@ export const getAllById = (
   key: string = 'id',
   id: number | string | undefined,
   take: number = 10,
-  skip: number = 0
+  skip: number = 0,
 ): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
@@ -116,26 +115,23 @@ export const getAllById = (
         take,
         skip,
         where: {
-          [key]: id
-        }
+          [key]: id,
+        },
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};
 
-export const getAllByQuery = (
-  schema: any,
-  queryObj: object
-): Promise<any> => {
+export const getAllByQuery = (schema: any, queryObj: object): Promise<any> => {
   return new Promise(async (res, rej) => {
     await schema
       .findMany({
         where: {
-          ...queryObj
-        }
+          ...queryObj,
+        },
       })
       .then((response: any) => res(response))
-      .catch((err: any) => rej(err))
-  })
-}
+      .catch((err: any) => rej(err));
+  });
+};

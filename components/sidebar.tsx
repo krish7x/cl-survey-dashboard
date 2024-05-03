@@ -20,21 +20,22 @@ export default function SidebarComponent({
   projects: IProject[];
   currentProject?: IProject;
   setCurrentProject: (data: IProject) => void;
-  onDeleteProject: (val: number) => void;
+  onDeleteProject: (val: string) => void;
 }) {
   const router = useRouter();
   const { get } = useSearchParams();
   const user = useAtomValue(userAtom);
   const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [deleteProjectId, setDeleteProjectId] = useState(0);
+  const [deleteProjectId, setDeleteProjectId] = useState('');
 
   useEffect(() => {
-    const projectId = +(get('projectId') || '0');
+    const projectId = get('projectId');
     const curProject = projects.find(val => val.id === projectId);
     setCurrentProject(curProject as IProject);
   }, [get, projects, setCurrentProject]);
 
+  const tab = useMemo(() => get('tab'), [get]);
   return (
     <Sidebar
       aria-label="Default sidebar example"
@@ -72,7 +73,9 @@ export default function SidebarComponent({
                       : ''
                   }`}
                   onClick={() => {
-                    router.push(`?projectId=${data.id}`);
+                    router.push(
+                      `?projectId=${data.id}${tab ? `&tab=${tab}` : ''}`,
+                    );
                     setCurrentProject(data);
                   }}
                 >
