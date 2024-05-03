@@ -17,17 +17,17 @@ export default function Surveys({
 }: {
   surveys: ISurvey[];
   setOpenModal: (value: boolean) => void;
-  setSurveyId: (value: number) => void;
-  onClickViewSurvey: (id: number) => void;
-  onClickSendSurvey: (id: number) => void;
-  onClickShowSurveyContacts: (id: number) => void;
-  onClickShowCharts: (id: number, surveyName: string) => void;
+  setSurveyId: (value: string) => void;
+  onClickViewSurvey: (id: string) => void;
+  onClickSendSurvey: (id: string) => void;
+  onClickShowSurveyContacts: (id: string) => void;
+  onClickShowCharts: (id: string, surveyName: string) => void;
 }) {
   return (
     <div className="flex h-full flex-col pt-5">
       {surveys.length ? (
         surveys.map(
-          ({ id, surveyName, project: { projectName }, lastModifiedDate }) => (
+          ({ id, surveyName, project: { projectName }, updatedAt }) => (
             <div
               key={'survey-' + id}
               className="flex w-full  cursor-pointer justify-between border-b border-b-navBorder py-4 hover:bg-green-100"
@@ -41,7 +41,7 @@ export default function Surveys({
                     </h3>
                     <p className="text-xs text-txtPurple">
                       Linked to <strong>{projectName}</strong> . Last modified:{' '}
-                      <strong>{lastModifiedDate}</strong>
+                      <strong>{updatedAt}</strong>
                     </p>
                   </div>
                 </div>

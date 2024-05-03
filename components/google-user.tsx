@@ -11,7 +11,7 @@ export default memo(function GoogleUserSetup({ user }: { user: IGoogleUser }) {
   useEffect(() => {
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      axiosInstance.get(`/users/get?email=${user?.email}`).then(res => {
+      axiosInstance.get(`/users?email=${user?.email}`).then(res => {
         const data = {
           ...res.data[0],
           googleUserName: user.name,
