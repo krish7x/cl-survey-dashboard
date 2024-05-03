@@ -1,8 +1,17 @@
-import { IGoogleUser } from "@/types";
-import { User, getServerSession } from "next-auth";
+import { IGoogleUser } from '@/types';
+import { TokenSet, getServerSession } from 'next-auth';
 
-export const session = async ({ session, token }: any) => {
-  session.user.id = token.id;
+export const session = async ({
+  session,
+  token,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  session: any;
+  token: TokenSet;
+}) => {
+  if (session.user) {
+    session.user.id = token.id;
+  }
   return session;
 };
 

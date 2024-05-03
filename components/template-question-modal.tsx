@@ -1,10 +1,11 @@
-import { ILinkDetails, IOptions, ITemplateQuestion } from "@/types";
-import { Button, Modal } from "flowbite-react";
-import { useCallback, useEffect, useState } from "react";
-import { useAtom } from "jotai";
-import { templateQuestionsAtom } from "@/store/atom";
-import Radio from "./radio";
-import { Link, Unlink } from "lucide-react";
+import { templateQuestionsAtom } from '@/store/atom';
+import { ILinkDetails, IOptions, ITemplateQuestion } from '@/types';
+import { Button, Modal } from 'flowbite-react';
+import { useAtom } from 'jotai';
+import { Link, Unlink } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+
+import Radio from './radio';
 
 export default function TemplateQuestionModal({
   showModal,
@@ -18,7 +19,7 @@ export default function TemplateQuestionModal({
   setShowModal: (value: boolean) => void;
 }) {
   const [templateQuestion, setTemplateQuestion] = useAtom(
-    templateQuestionsAtom
+    templateQuestionsAtom,
   );
 
   const [selectedQuestionId, setSelectedQuestionId] = useState<
@@ -29,11 +30,11 @@ export default function TemplateQuestionModal({
   useEffect(() => {
     const cloneTemplateQuestions = [...templateQuestion];
     const selectedQuestion = cloneTemplateQuestions.find(
-      (val) => val.questionId === linkDetails?.questionId
+      val => val.questionId === linkDetails?.questionId,
     );
     const options = selectedQuestion?.optionsJson?.options;
     const currentSelectedOption = options?.find(
-      (val) => val.id === linkDetails?.optionId
+      val => val.id === linkDetails?.optionId,
     );
     if (selectedQuestion) {
       setSelectedQuestionId(currentSelectedOption?.linkedTo || undefined);
@@ -44,19 +45,19 @@ export default function TemplateQuestionModal({
     (unlink = false) => {
       const cloneTemplateQuestions = [...templateQuestion];
       const questionId = cloneTemplateQuestions.findIndex(
-        (val) => val.questionId === linkDetails?.questionId
+        val => val.questionId === linkDetails?.questionId,
       );
       const selectedQuestionOptions = [
         ...(cloneTemplateQuestions[questionId].optionsJson
           ?.options as IOptions[]),
       ];
       const selectedOptionIndex = selectedQuestionOptions.findIndex(
-        (val) => val.id === linkDetails?.optionId
+        val => val.id === linkDetails?.optionId,
       );
       selectedQuestionOptions[selectedOptionIndex].linkedTo = unlink
-        ? ""
+        ? ''
         : selectedQuestionId;
-      cloneTemplateQuestions.map((val) => {
+      cloneTemplateQuestions.map(val => {
         if (val.questionId === linkDetails?.questionId) {
           return {
             ...val,
@@ -78,7 +79,7 @@ export default function TemplateQuestionModal({
       setShowModal,
       setTemplateQuestion,
       templateQuestion,
-    ]
+    ],
   );
 
   return (
@@ -91,49 +92,55 @@ export default function TemplateQuestionModal({
       }}
       popup
     >
-      <Modal.Body className="p-0 overflow-y-scroll scrollbar-hide">
-        <Modal.Header className="border-b border-b-modalBorder relative">
+      <Modal.Body className="overflow-y-scroll p-0 scrollbar-hide">
+        <Modal.Header className="relative border-b border-b-modalBorder">
           <span className="absolute left-[calc(50%-96px)]">
             Link a question
           </span>
         </Modal.Header>
 
-        <div className="flex flex-col gap-4 pl-5 py-8">
+        <div className="flex flex-col gap-4 py-8 pl-5">
           <Radio
             options={
               questions
-                .filter((val) => val.title)
+                .filter(val => val.title)
                 .map(({ questionId, title }) => ({
-                  id: "q-" + questionId,
+                  id: 'q-' + questionId,
                   name: title,
                 })) as IOptions[]
             }
-            idText={"linked"}
+            idText={'linked'}
             checkedId={
-              selectedQuestionId ? "q-" + selectedQuestionId : undefined
+              selectedQuestionId ? 'q-' + selectedQuestionId : undefined
             }
-            onChange={(e) => setSelectedQuestionId(+e.toString().split("-")[1])}
+            onChange={e => setSelectedQuestionId(+e.toString().split('-')[1])}
           />
         </div>
       </Modal.Body>
-      <Modal.Footer className="border-t h-16 flex justify-between items-center border-t-modalBorder relative">
+      <Modal.Footer className="relative flex h-16 items-center justify-between border-t border-t-modalBorder">
         {selectedQuestionId ? (
           <Button
             className="ml-auto"
-            disabled={!Boolean(selectedQuestionId)}
+            disabled={!selectedQuestionId}
             onClick={() => handleLinking(true)}
           >
             Unlink
-            <Unlink size={16} className="ml-1" />
+            <Unlink
+              size={16}
+              className="ml-1"
+            />
           </Button>
         ) : null}
         <Button
           className="ml-auto"
-          disabled={!Boolean(selectedQuestionId)}
+          disabled={!selectedQuestionId}
           onClick={() => handleLinking()}
         >
           Link
-          <Link size={16} className="ml-1" />
+          <Link
+            size={16}
+            className="ml-1"
+          />
         </Button>
       </Modal.Footer>
     </Modal>

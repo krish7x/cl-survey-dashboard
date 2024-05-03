@@ -1,12 +1,13 @@
-import { tabsAtom, userAtom } from "@/store/atom";
-import { Button, Modal, Spinner } from "flowbite-react";
-import { useAtomValue } from "jotai";
-import { AlertOctagon, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
-import { ISurvey, ITemplate } from "@/types";
-import Surveys from "./surveys";
-import Templates from "./templates";
-import MainPanelSkeleton from "./main-panel-skeleton";
+import { tabsAtom, userAtom } from '@/store/atom';
+import { ISurvey, ITemplate } from '@/types';
+import { Button, Modal } from 'flowbite-react';
+import { useAtomValue } from 'jotai';
+import { AlertOctagon, Plus } from 'lucide-react';
+import { useMemo, useState } from 'react';
+
+import MainPanelSkeleton from './main-panel-skeleton';
+import Surveys from './surveys';
+import Templates from './templates';
 
 export default function MainPanel({
   surveys,
@@ -32,7 +33,7 @@ export default function MainPanel({
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
   onClickSendSurvey: (id: number) => void;
-  onClickShowCharts: (id: number, surveyName: any) => void;
+  onClickShowCharts: (id: number, surveyName: string) => void;
   onClickViewSurvey: (id: number) => void;
   onClickEditTemplate: (id: number) => void;
   onClickDeleteSurvey: (id: number) => void;
@@ -43,14 +44,14 @@ export default function MainPanel({
 }) {
   const user = useAtomValue(userAtom);
   const tab = useAtomValue(tabsAtom);
-  const isAdmin = useMemo(() => user && user.role === "admin", [user]);
+  const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
   const [openModal, setOpenModal] = useState(false);
   const [surveyId, setSurveyId] = useState<number>(0);
   const [templateId, setTemplateId] = useState<number>(0);
 
   return (
-    <div className="px-10 bg-white flex flex-col py-6 w-full h-full overflow-y-scroll scrollbar-hide">
-      <div className="flex justify-between items-center">
+    <div className="flex h-full w-full flex-col overflow-y-scroll bg-white px-10 py-6 scrollbar-hide">
+      <div className="flex items-center justify-between">
         <div className="opacity-0">Surveys</div>
         {isAdmin && (
           <div className="flex gap-2">
@@ -61,8 +62,12 @@ export default function MainPanel({
                 setShowTemplateModal(true);
               }}
             >
-              <div className="flex gap-1 items-center">
-                Create Template <Plus size={16} color="#fff" />
+              <div className="flex items-center gap-1">
+                Create Template{' '}
+                <Plus
+                  size={16}
+                  color="#fff"
+                />
               </div>
             </Button>
             <Button
@@ -72,8 +77,12 @@ export default function MainPanel({
                 resetForCreateTemplate();
               }}
             >
-              <div className="flex gap-1 items-center">
-                Create Survey <Plus size={16} color="#fff" />
+              <div className="flex items-center gap-1">
+                Create Survey{' '}
+                <Plus
+                  size={16}
+                  color="#fff"
+                />
               </div>
             </Button>
           </div>
@@ -120,8 +129,8 @@ export default function MainPanel({
           <div className="text-center">
             <AlertOctagon className="mx-auto mb-4 h-14 w-14 text-gray-400" />
             <h3 className="mb-5 text-lg font-normal text-gray-500">
-              Are you sure you want to delete this{" "}
-              {tab.id === 1 ? "survey" : "template"}?
+              Are you sure you want to delete this{' '}
+              {tab.id === 1 ? 'survey' : 'template'}?
             </h3>
             <div className="flex justify-center gap-4">
               <Button
@@ -137,7 +146,10 @@ export default function MainPanel({
               >
                 {"Yes, I'm sure"}
               </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
+              <Button
+                color="gray"
+                onClick={() => setOpenModal(false)}
+              >
                 No, cancel
               </Button>
             </div>

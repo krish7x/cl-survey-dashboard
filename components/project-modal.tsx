@@ -1,4 +1,4 @@
-import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
+import { Button, Label, Modal, TextInput, Textarea } from 'flowbite-react';
 
 export default function ProjectModal({
   showModal,
@@ -24,8 +24,8 @@ export default function ProjectModal({
       onClose={() => {
         setShowModal(false);
         setProjectDetails({
-          title: "",
-          description: "",
+          title: '',
+          description: '',
         });
       }}
       popup
@@ -36,7 +36,10 @@ export default function ProjectModal({
           <h3 className="text-lg font-medium text-gray-900"></h3>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="title" value="Project title" />
+              <Label
+                htmlFor="title"
+                value="Project title"
+              />
             </div>
             <TextInput
               id="title"
@@ -44,7 +47,7 @@ export default function ProjectModal({
               placeholder="title.."
               className="focus:border-none focus:outline-none"
               value={title}
-              onChange={(event) =>
+              onChange={event =>
                 setProjectDetails({
                   title: event.target.value,
                 })
@@ -54,13 +57,16 @@ export default function ProjectModal({
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="description" value="Description" />
+              <Label
+                htmlFor="description"
+                value="Description"
+              />
             </div>
             <Textarea
               id="description"
               placeholder="description.."
               value={description}
-              onChange={(event) =>
+              onChange={event =>
                 setProjectDetails({
                   description: event.target.value,
                 })
