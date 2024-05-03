@@ -108,8 +108,8 @@ export default function Survey() {
   return (
     <>
       {isAuthorized ? (
-        <div className="flex flex-col w-full h-full">
-          <div className="w-full flex justify-center bg-slate-50 p-3 md:p-5 fixed top-0 z-10">
+        <div className="flex h-full w-full flex-col">
+          <div className="fixed top-0 z-10 flex w-full justify-center bg-slate-50 p-3 md:p-5">
             <Image
               src={'/carat.png'}
               className="h-10 self-center"
@@ -118,7 +118,7 @@ export default function Survey() {
               alt={'caratlane-logo'}
             />
           </div>
-          <div className="flex flex-col w-full h-auto">
+          <div className="flex h-auto w-full flex-col">
             {currentPage === 'NPS' && (
               <NpsQuestionPage
                 surveyData={npsQuestion}
@@ -136,7 +136,7 @@ export default function Survey() {
           </div>
         </div>
       ) : (
-        <div className="flex w-full h-full justify-center items-center">
+        <div className="flex h-full w-full items-center justify-center">
           <Spinner size={'xl'} />
         </div>
       )}

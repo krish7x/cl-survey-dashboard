@@ -14,7 +14,7 @@ export default function OtherQuestionPage(props: {
 }) {
   const { questions, onSubmit, setOtherQuestions } = props;
   const onStarRatingChange = (val: number, id?: number) => {
-    let newObj = questions.map(item =>
+    const newObj = questions.map(item =>
       item.questionId === id ? { ...item, answer: [val] } : item,
     );
     setOtherQuestions(newObj);
@@ -67,7 +67,7 @@ export default function OtherQuestionPage(props: {
       case 'Star Rating': {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/3"
+            className="flex w-full flex-col gap-4 leading-6 md:w-1/3 md:gap-6"
             key={val}
           >
             <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
@@ -82,7 +82,7 @@ export default function OtherQuestionPage(props: {
       case 'Multiple choice - Single Select': {
         return (
           <div
-            className="flex flex-col  gap-4 md:gap-6 w-full md:w-1/3"
+            className="flex w-full  flex-col gap-4 md:w-1/3 md:gap-6"
             key={val}
           >
             <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
@@ -101,7 +101,7 @@ export default function OtherQuestionPage(props: {
       case 'Multiple choice - multi select': {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/3"
+            className="flex w-full flex-col gap-4 leading-6 md:w-1/3 md:gap-6"
             key={val}
           >
             <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
@@ -120,7 +120,7 @@ export default function OtherQuestionPage(props: {
       case 'Radio button': {
         return (
           <div
-            className="flex flex-col leading-6 gap-4 md:gap-6 w-full md:w-1/3"
+            className="flex w-full flex-col gap-4 leading-6 md:w-1/3 md:gap-6"
             key={val}
           >
             <h1 className="leading-6 md:leading-7">{`${val}) ${item.title}`}</h1>
@@ -139,8 +139,8 @@ export default function OtherQuestionPage(props: {
   };
 
   return (
-    <div className="flex flex-col items-center pt-20 md:pt-28 pb-8 px-6 w-full h-full gap-6">
-      <div className="flex flex-col items-center w-full gap-7 md:gap-10">
+    <div className="flex h-full w-full flex-col items-center gap-6 px-6 pb-8 pt-20 md:pt-28">
+      <div className="flex w-full flex-col items-center gap-7 md:gap-10">
         {questions?.map((item: ITemplateQuestion, key) =>
           renderQuestion(item, key + 1),
         )}

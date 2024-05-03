@@ -149,7 +149,7 @@ export default function TemplateCreateModal({
           {option.id === 'template_2' && !isTemplateEdit && (
             <>
               <div>
-                <div className="block my-2">
+                <div className="my-2 block">
                   <Label
                     htmlFor="project"
                     value="Select Project"
@@ -157,7 +157,7 @@ export default function TemplateCreateModal({
                 </div>
                 <select
                   id="project"
-                  className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="mb-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pr-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   onChange={e =>
                     setTemplateDetails({
                       projectId: +e.target.value,
@@ -180,7 +180,7 @@ export default function TemplateCreateModal({
               </div>
 
               <div>
-                <div className="block my-2">
+                <div className="my-2 block">
                   <Label
                     htmlFor="template"
                     value="Select Template"
@@ -188,7 +188,7 @@ export default function TemplateCreateModal({
                 </div>
                 <select
                   id="template"
-                  className="block w-full pr-2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="mb-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pr-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   onChange={e =>
                     setTemplateDetails({
                       templateId: +e.target.value,

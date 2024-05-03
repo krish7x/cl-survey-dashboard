@@ -24,19 +24,19 @@ export default function Surveys({
   onClickShowCharts: (id: number, surveyName: string) => void;
 }) {
   return (
-    <div className="flex flex-col pt-5 h-full">
+    <div className="flex h-full flex-col pt-5">
       {surveys.length ? (
         surveys.map(
           ({ id, surveyName, project: { projectName }, lastModifiedDate }) => (
             <div
               key={'survey-' + id}
-              className="flex w-full  justify-between border-b border-b-navBorder py-4 cursor-pointer hover:bg-green-100"
+              className="flex w-full  cursor-pointer justify-between border-b border-b-navBorder py-4 hover:bg-green-100"
             >
-              <div className="flex w-full justify-between px-2 items-center">
-                <div className="flex gap-4 group">
+              <div className="flex w-full items-center justify-between px-2">
+                <div className="group flex gap-4">
                   <SurevyIcon />
                   <div className="flex flex-col gap-1 py-2">
-                    <h3 className="text-txtBlack text-sm font-medium">
+                    <h3 className="text-sm font-medium text-txtBlack">
                       {surveyName}
                     </h3>
                     <p className="text-xs text-txtPurple">
@@ -45,34 +45,34 @@ export default function Surveys({
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-3 items-center">
+                <div className="flex items-center gap-3">
                   <Tooltip content="View Survey Analytics">
                     <BarChart3
-                      className="mt-4 mx-2 stroke-txtPurple"
+                      className="mx-2 mt-4 stroke-txtPurple"
                       onClick={() => onClickShowCharts(id, surveyName)}
                     />
                   </Tooltip>
                   <Tooltip content="View Survey Contacts">
                     <Users
-                      className="mt-4 mx-2 stroke-txtPurple"
+                      className="mx-2 mt-4 stroke-txtPurple"
                       onClick={() => onClickShowSurveyContacts(id)}
                     />
                   </Tooltip>
                   <Tooltip content="Trigger Survey">
                     <Send
-                      className="mt-4 mx-2 stroke-txtPurple"
+                      className="mx-2 mt-4 stroke-txtPurple"
                       onClick={() => onClickSendSurvey(id)}
                     />
                   </Tooltip>
                   <Tooltip content="Survey Details">
                     <Eye
-                      className="mt-4 mx-2 stroke-txtPurple"
+                      className="mx-2 mt-4 stroke-txtPurple"
                       onClick={() => onClickViewSurvey(id)}
                     />
                   </Tooltip>
                   <Tooltip content="Delete Survey">
                     <Trash
-                      className="mt-4 mx-2 stroke-txtPurple"
+                      className="mx-2 mt-4 stroke-txtPurple"
                       onClick={() => {
                         setOpenModal(true);
                         setSurveyId(id);
@@ -85,7 +85,7 @@ export default function Surveys({
           ),
         )
       ) : (
-        <div className="flex flex-col justify-center items-center flex-1 gap-2 mb-20">
+        <div className="mb-20 flex flex-1 flex-col items-center justify-center gap-2">
           <Image
             src={src}
             alt="survey"
@@ -93,7 +93,7 @@ export default function Surveys({
             height={72}
             className="mb-1 stroke-sidebarText opacity-60"
           />
-          <h1 className="text-sidebarText font-medium text-2xl">
+          <h1 className="text-2xl font-medium text-sidebarText">
             No Surveys found for this project!
           </h1>
         </div>

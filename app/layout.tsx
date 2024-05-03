@@ -23,10 +23,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} bg-lightBlue-50 border-b border-border h-screen w-full`}
+        className={`${inter.className} h-screen w-full border-b border-border bg-lightBlue-50`}
       >
         <Provider>
-          <div className="p-0 m-0 flex flex-col w-full h-full">
+          <div className="m-0 flex h-full w-full flex-col p-0">
             <GoogleUserSetup user={user} />
             {children}
           </div>

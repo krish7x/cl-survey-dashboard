@@ -494,7 +494,7 @@ export default function Dashboard() {
   }, [setTemplate]);
 
   return (
-    <div className="flex w-full h-full overflow-hidden">
+    <div className="flex h-full w-full overflow-hidden">
       <Sidebar
         setShowModal={setShowProjectModal}
         projects={projects}

@@ -220,7 +220,7 @@ export default memo(function TemplateModal({
       },
     };
     if (isAdded && selectedQuestionIndex) {
-      let arr = [...templateQuestion];
+      const arr = [...templateQuestion];
       arr[selectedQuestionIndex - 1] = tempQuestion;
       setTemplateQuestion(arr);
     } else {
@@ -251,7 +251,7 @@ export default memo(function TemplateModal({
 
   const onLinkUpdateOptions = useCallback(() => {
     if (selectedQuestionIndex) {
-      let arr = [...templateQuestion];
+      const arr = [...templateQuestion];
       arr[selectedQuestionIndex - 1] = {
         ...arr[selectedQuestionIndex - 1],
         optionsJson: {
@@ -429,19 +429,19 @@ export default memo(function TemplateModal({
       }}
       popup
     >
-      <Modal.Body className="p-0 overflow-hidden">
-        <Modal.Header className="border-b border-b-modalBorder relative">
+      <Modal.Body className="overflow-hidden p-0">
+        <Modal.Header className="relative border-b border-b-modalBorder">
           <span className="absolute left-[calc(50%-96px)]">
             {isTemplateEdit ? 'Update' : 'Build'}
             {' template'}
           </span>
         </Modal.Header>
-        <div className="p-0 flex h-templateModal w-full ">
-          <div className="flex gap-4 flex-col w-modalLeftPanel border-r border-modalBorder p-6 overflow-y-scroll scrollbar-hide pb-16">
+        <div className="flex h-templateModal w-full p-0 ">
+          <div className="flex w-modalLeftPanel flex-col gap-4 overflow-y-scroll border-r border-modalBorder p-6 pb-16 scrollbar-hide">
             {templateQuestion?.map(({ title }, inx) => {
               return (
                 <div
-                  className="flex flex-col cursor-grab"
+                  className="flex cursor-grab flex-col"
                   key={'question-' + inx}
                   draggable
                   onClick={() => handleSelectQuestion(inx)}
@@ -451,7 +451,7 @@ export default memo(function TemplateModal({
                   onDragOver={e => e.preventDefault()}
                 >
                   <div
-                    className={`flex w-full border px-3 py-2 rounded-md cursor-pointer border-l-4 hover:bg-green-100 border-l-navLeftBorder
+                    className={`flex w-full cursor-pointer rounded-md border border-l-4 border-l-navLeftBorder px-3 py-2 hover:bg-green-100
                   ${
                     (selectedQuestionIndex as number) - 1 === inx
                       ? 'bg-navBg'
@@ -460,16 +460,16 @@ export default memo(function TemplateModal({
                   >
                     <div className="flex w-full justify-between">
                       <div className="flex">
-                        <p className="text-sm font-normal text-radio select-none">
+                        <p className="select-none text-sm font-normal text-radio">
                           {inx + 1}.{' '}
                           {truncate(title ? title : 'Draft', {
                             length: 40,
                           })}
                         </p>
-                        {!title && <File className="stroke-gray-300 ml-2" />}
+                        {!title && <File className="ml-2 stroke-gray-300" />}
                       </div>
                       <Trash2
-                        className="stroke-txtPurple ml-2 opacity-80"
+                        className="ml-2 stroke-txtPurple opacity-80"
                         onClick={e => {
                           e.stopPropagation();
                           onClickDeleteTemplateQuestion(inx);
@@ -485,7 +485,7 @@ export default memo(function TemplateModal({
               onClick={addEmptyQuestion}
               disabled={!addQuestionValidation}
             >
-              <div className="flex gap-1 items-center">
+              <div className="flex items-center gap-1">
                 Add a question{' '}
                 <Plus
                   size={20}
@@ -495,15 +495,15 @@ export default memo(function TemplateModal({
             </Button>
           </div>
           {showQuestion ? (
-            <div className="flex flex-col pt-8 pb-16 px-6 gap-6 w-modalRightPanel overflow-y-scroll scrollbar-hide">
-              <div className="flex gap-2 w-full ">
-                <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2 w-full">
+            <div className="flex w-modalRightPanel flex-col gap-6 overflow-y-scroll px-6 pb-16 pt-8 scrollbar-hide">
+              <div className="flex w-full gap-2 ">
+                <h1 className="text-md w-full border-b border-b-navBorder pb-2 font-semibold text-sidebarText">
                   Type question title & description
                 </h1>
               </div>
               <div className="flex flex-col gap-2">
-                <div className="flex w-full gap-4 items-center">
-                  <h1 className="text-txtBlack text-lg font-semibold">
+                <div className="flex w-full items-center gap-4">
+                  <h1 className="text-lg font-semibold text-txtBlack">
                     {selectedQuestionIndex
                       ? selectedQuestionIndex
                       : templateQuestion.length || 1}
@@ -517,8 +517,8 @@ export default memo(function TemplateModal({
                     value={questionTitle}
                   />
                 </div>
-                <div className="w-full flex gap-4 items-center">
-                  <h1 className="text-txtBlack text-lg font-semibold opacity-0 cursor-default">
+                <div className="flex w-full items-center gap-4">
+                  <h1 className="cursor-default text-lg font-semibold text-txtBlack opacity-0">
                     1.
                   </h1>
                   <FloatingLabel
@@ -532,7 +532,7 @@ export default memo(function TemplateModal({
               </div>
               {selectedQuestionIndex ? (
                 <div className="flex flex-col gap-4 pl-8">
-                  <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
+                  <h1 className="text-md border-b border-b-navBorder pb-2 font-semibold text-sidebarText">
                     Select question type
                   </h1>
                   <Radio
@@ -552,7 +552,7 @@ export default memo(function TemplateModal({
               templateQuestion.length > 1 ? (
                 <div className="flex flex-col gap-4 pl-8">
                   <div className="flex justify-between border-b border-b-navBorder pb-2">
-                    <h1 className="text-sidebarText text-md font-semibold">
+                    <h1 className="text-md font-semibold text-sidebarText">
                       Link Question
                     </h1>
                   </div>
@@ -560,7 +560,7 @@ export default memo(function TemplateModal({
                   {(selectQuestionType as number) === 2 &&
                   selectedQuestionIndex ? (
                     <div className="flex flex-col gap-2">
-                      <p className="text-sm font-normal text-radio select-none">
+                      <p className="select-none text-sm font-normal text-radio">
                         Select your range
                       </p>
                       <Radio
@@ -595,7 +595,7 @@ export default memo(function TemplateModal({
                       >
                         {+id}
                         {linkedTo ? (
-                          <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                          <div className="absolute -end-0 -top-2 inline-flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900">
                             {linkedTo}
                           </div>
                         ) : null}
@@ -608,12 +608,12 @@ export default memo(function TemplateModal({
               {(selectQuestionType as number) > 2 &&
               (selectQuestionType as number) !== 6 ? (
                 <div className="flex flex-col gap-6 pl-8">
-                  <h1 className="text-sidebarText text-md font-semibold border-b border-b-navBorder pb-2">
+                  <h1 className="text-md border-b border-b-navBorder pb-2 font-semibold text-sidebarText">
                     Add Options
                   </h1>
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-4 items-center">
-                      <p className="text-md font-normal text-radio select-none">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <p className="text-md select-none font-normal text-radio">
                         Select option position
                       </p>
                       <Button.Group>
@@ -661,7 +661,7 @@ export default memo(function TemplateModal({
                       >
                         <input
                           id={`options-${id}` + inx}
-                          className="block w-full px-2 py-4 ps-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 outline-starStroke"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-4 ps-4 text-sm text-gray-900 outline-starStroke focus:border-blue-500 focus:ring-blue-500"
                           placeholder={`Type option ${inx + 1}`}
                           value={name ? name : ''}
                           required
@@ -669,14 +669,14 @@ export default memo(function TemplateModal({
                         />
 
                         {linkedTo ? (
-                          <div className="absolute right-[calc(12%)] bottom-4 z-10 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900">
+                          <div className="absolute bottom-4 right-[calc(12%)] z-10 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900">
                             {linkedTo}
                           </div>
                         ) : null}
 
                         {name.length > 1 ? (
                           <Link
-                            className={`absolute right-10 bottom-4 z-10 ${
+                            className={`absolute bottom-4 right-10 z-10 ${
                               options.length > 1
                                 ? 'cursor-pointer'
                                 : 'cursor-not-allowed'
@@ -692,7 +692,7 @@ export default memo(function TemplateModal({
                         ) : null}
 
                         <Trash2
-                          className={`absolute end-2.5 bottom-4 z-10 ${
+                          className={`absolute bottom-4 end-2.5 z-10 ${
                             options.length > 1
                               ? 'cursor-pointer'
                               : 'cursor-not-allowed'
@@ -728,8 +728,8 @@ export default memo(function TemplateModal({
               ) : null}
             </div>
           ) : (
-            <div className="flex flex-col justify-center m-auto">
-              <h1 className="text-sidebarText font-medium text-xl">
+            <div className="m-auto flex flex-col justify-center">
+              <h1 className="text-xl font-medium text-sidebarText">
                 Click on add a question to continue...
               </h1>
             </div>
@@ -745,7 +745,7 @@ export default memo(function TemplateModal({
           )}
         />
       </Modal.Body>
-      <Modal.Footer className="border-t h-footer flex justify-between items-center border-t-modalBorder relative">
+      <Modal.Footer className="relative flex h-footer items-center justify-between border-t border-t-modalBorder">
         <Button
           className="ml-auto"
           disabled={Boolean(validateCreateTemplate)}

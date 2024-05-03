@@ -25,7 +25,7 @@ export default function Radio({
     >
       {options.map(({ id, name }, inx) => (
         <div
-          className="flex items-center mb-4"
+          className="mb-4 flex items-center"
           key={'radio-button-' + inx + '-' + id}
         >
           <input
@@ -34,13 +34,13 @@ export default function Radio({
             type="radio"
             value={name}
             checked={id === checkedId}
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+            className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500"
             onChange={() => onChange(id)}
             disabled={disabled && disabledId ? id === disabledId : false}
           />
           <label
             htmlFor={`radio-button-option-${inx}-${id}`}
-            className="ms-2 text-sm font-normal text-radioText select-none"
+            className="ms-2 select-none text-sm font-normal text-radioText"
           >
             {name}
           </label>

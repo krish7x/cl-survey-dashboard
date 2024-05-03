@@ -11,7 +11,7 @@ export default function TemplateIcon() {
   }, []);
   return (
     <div
-      className={`${iconBg} w-14 h-14 rounded-lg flex justify-center items-center`}
+      className={`${iconBg} flex h-14 w-14 items-center justify-center rounded-lg`}
     >
       <BookDashed
         stroke="#fff"

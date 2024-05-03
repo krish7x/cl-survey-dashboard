@@ -15,7 +15,7 @@ export default function Select({
   onChange: (id: string | number, maxSelect: number) => void;
 }) {
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex w-full flex-col gap-3">
       {options.map(({ id, name }, inx) => (
         <Button
           key={'button-' + inx}

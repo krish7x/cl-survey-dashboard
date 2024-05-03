@@ -20,10 +20,10 @@ export default function StarRating({
           cursor="pointer"
           stroke="#7E3AF2"
           strokeWidth={1.2}
-          className={`opacity-60 hover:stroke-starStroke hover:opacity-100 hover:ease-in hover:scale-125
+          className={`opacity-60 hover:scale-125 hover:stroke-starStroke hover:opacity-100 hover:ease-in
           ${
             rating && inx < rating
-              ? 'stroke-starStroke fill-starStroke animate-pulse opacity-100 scale-105'
+              ? 'scale-105 animate-pulse fill-starStroke stroke-starStroke opacity-100'
               : 'fill-none'
           }
 

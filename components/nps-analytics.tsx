@@ -184,33 +184,33 @@ export default function NPSAnalytics(props: {
       onClose={() => onClose(false)}
     >
       <Modal.Header>
-        <h3 className="text-lg font-medium text-gray-900 p-6 px-10">
+        <h3 className="p-6 px-10 text-lg font-medium text-gray-900">
           {`Trend - ${surveyName}`}
         </h3>
       </Modal.Header>
       <Modal.Body>
-        <div className="flex flex-col overflow-x-aut h-auto">
+        <div className="overflow-x-aut flex h-auto flex-col">
           <div
             className="inline-flex rounded-md shadow-sm"
             role="group"
           >
             <button
               type="button"
-              className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+              className="rounded-s-lg border border-gray-900 bg-transparent px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:bg-gray-900 focus:text-white focus:ring-2 focus:ring-gray-500 dark:border-white dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700"
               onClick={() => handleButtonClick('PERCENTAGE')}
             >
               Percentage Bar Chart
             </button>
             <button
               type="button"
-              className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+              className="border-b border-t border-gray-900 bg-transparent px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:bg-gray-900 focus:text-white focus:ring-2 focus:ring-gray-500 dark:border-white dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700"
               onClick={() => handleButtonClick('ABSOLUTE')}
             >
               Absolute Bar Chart
             </button>
             <button
               type="button"
-              className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+              className="rounded-e-lg border border-gray-900 bg-transparent px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:bg-gray-900 focus:text-white focus:ring-2 focus:ring-gray-500 dark:border-white dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700"
               onClick={() => handleButtonClick('NPS_LINE_CHART')}
             >
               NPS Score Line Chart

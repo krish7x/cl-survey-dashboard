@@ -38,10 +38,10 @@ export default function SidebarComponent({
   return (
     <Sidebar
       aria-label="Default sidebar example"
-      className="overflow-y-scroll scrollbar-hide w-72"
+      className="w-72 overflow-y-scroll scrollbar-hide"
     >
-      <div className="flex justify-between items-center pl-5 pr-2 mb-4 scrollbar-hide">
-        <h1 className="text-txtPurple text-md font-medium">Projects</h1>
+      <div className="mb-4 flex items-center justify-between pl-5 pr-2 scrollbar-hide">
+        <h1 className="text-md font-medium text-txtPurple">Projects</h1>
         <Tooltip
           content="Create Project"
           placement="top"
@@ -66,9 +66,9 @@ export default function SidebarComponent({
             >
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
-                  className={`text-sidebarText text-sm py-3 flex cursor-pointer font-medium -mr-3 rounded-none ${
+                  className={`-mr-3 flex cursor-pointer rounded-none py-3 text-sm font-medium text-sidebarText ${
                     currentProject?.id === data.id
-                      ? "bg-navBg before:content-[''] before:absolute before:top-0 before:-left-2 before:w-1 before:h-full before:bg-navLeftBorder hover:bg-navBg"
+                      ? "bg-navBg before:absolute before:-left-2 before:top-0 before:h-full before:w-1 before:bg-navLeftBorder before:content-[''] hover:bg-navBg"
                       : ''
                   }`}
                   onClick={() => {
@@ -81,7 +81,7 @@ export default function SidebarComponent({
                   })}
                   <Trash2
                     size={20}
-                    className="absolute right-2 bottom-3 opacity-70 z-20"
+                    className="absolute bottom-3 right-2 z-20 opacity-70"
                     onClick={() => {
                       setDeleteProjectId(data.id);
                       setOpenDeleteModal(true);

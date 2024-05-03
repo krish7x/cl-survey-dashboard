@@ -30,34 +30,34 @@ export default function NpsQuestionPage(props: {
     return (
       <div
         key={rating}
-        className="flex flex-col cursor-pointer"
+        className="flex cursor-pointer flex-col"
         onClick={() => handleEmojiClick(rating)}
       >
         <Image
           src={src}
           className={`px-4 py-2 md:w-24 ${
             color === 'text-surveyRed' ? 'w-20 md:w-24' : 'w-24 md:w-28'
-          }  transform scale-115 hover:scale-110 focus:scale-110 transition-transform ${
-            rating === currentRating ? 'bg-gray-300 rounded-lg' : ''
+          }  scale-115 transform transition-transform hover:scale-110 focus:scale-110 ${
+            rating === currentRating ? 'rounded-lg bg-gray-300' : ''
           } sm:px-1`}
           alt={`Emoji ${rating}`}
           width={72}
           height={72}
         />
-        <h5 className={`${color} text-center py-2 md:py-5`}>{rating}</h5>
+        <h5 className={`${color} py-2 text-center md:py-5`}>{rating}</h5>
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col w-full h-full items-center pt-16 md:pt-24 pb-10">
-      <h1 className="px-4 sm:px-8 md:px-16 sm:leading-2 lg:px-24 my-4 sm:my-4 md:my-8 lg:my-10 text-txtBlack font-semibold text-md md:text-3xl text-center">
+    <div className="flex h-full w-full flex-col items-center pb-10 pt-16 md:pt-24">
+      <h1 className="sm:leading-2 text-md my-4 px-4 text-center font-semibold text-txtBlack sm:my-4 sm:px-8 md:my-8 md:px-16 md:text-3xl lg:my-10 lg:px-24">
         {surveyData?.title}
       </h1>
-      <div className="flex flex-col md:gap-4 md:flex-row justify-center items-center">
+      <div className="flex flex-col items-center justify-center md:flex-row md:gap-4">
         {/* Group 1 */}
         <div className="flex flex-col md:mr-4">
-          <h5 className="text-surveyGreen font text-center mb-2 md:mb-4">
+          <h5 className="font mb-2 text-center text-surveyGreen md:mb-4">
             Definitely
           </h5>
           <div className="flex gap-2 md:gap-3">
@@ -74,7 +74,7 @@ export default function NpsQuestionPage(props: {
 
         {/* Group 2 */}
         <div className="flex flex-col md:mx-4">
-          <h5 className="text-surveyYellow font text-center mb-2 md:mb-4">
+          <h5 className="font mb-2 text-center text-surveyYellow md:mb-4">
             Maybe
           </h5>
           <div className="flex gap-2 md:gap-3">
@@ -91,10 +91,10 @@ export default function NpsQuestionPage(props: {
 
         {/* Group 3 */}
         <div className="flex flex-col md:ml-4">
-          <h5 className="text-surveyRed font text-center mb-2 md:mb-4">
+          <h5 className="font mb-2 text-center text-surveyRed md:mb-4">
             Not at all
           </h5>
-          <div className="flex gap-1 md:gap-3 justify-center flex-wrap md:flex-nowrap">
+          <div className="flex flex-wrap justify-center gap-1 md:flex-nowrap md:gap-3">
             {[6, 5, 4, 3, 2, 1].map(val => (
               <RenderEmoji
                 key={'emoji' + val}
@@ -109,7 +109,7 @@ export default function NpsQuestionPage(props: {
       <Button
         color="blue"
         pill
-        className="w-40 mt-2"
+        className="mt-2 w-40"
         disabled={submitDisabled}
         onClick={() => onSubmit(currentRating)}
       >

@@ -17,7 +17,7 @@ export default function SurveyDataTable(props: {
       onClose={() => onClose(false)}
     >
       <Modal.Header>
-        <h3 className="text-lg font-medium text-gray-900 p-6 px-10">
+        <h3 className="p-6 px-10 text-lg font-medium text-gray-900">
           Survey Contacts Details
         </h3>
       </Modal.Header>

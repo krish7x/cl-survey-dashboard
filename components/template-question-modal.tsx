@@ -92,14 +92,14 @@ export default function TemplateQuestionModal({
       }}
       popup
     >
-      <Modal.Body className="p-0 overflow-y-scroll scrollbar-hide">
-        <Modal.Header className="border-b border-b-modalBorder relative">
+      <Modal.Body className="overflow-y-scroll p-0 scrollbar-hide">
+        <Modal.Header className="relative border-b border-b-modalBorder">
           <span className="absolute left-[calc(50%-96px)]">
             Link a question
           </span>
         </Modal.Header>
 
-        <div className="flex flex-col gap-4 pl-5 py-8">
+        <div className="flex flex-col gap-4 py-8 pl-5">
           <Radio
             options={
               questions
@@ -117,11 +117,11 @@ export default function TemplateQuestionModal({
           />
         </div>
       </Modal.Body>
-      <Modal.Footer className="border-t h-16 flex justify-between items-center border-t-modalBorder relative">
+      <Modal.Footer className="relative flex h-16 items-center justify-between border-t border-t-modalBorder">
         {selectedQuestionId ? (
           <Button
             className="ml-auto"
-            disabled={!Boolean(selectedQuestionId)}
+            disabled={!selectedQuestionId}
             onClick={() => handleLinking(true)}
           >
             Unlink
@@ -133,7 +133,7 @@ export default function TemplateQuestionModal({
         ) : null}
         <Button
           className="ml-auto"
-          disabled={!Boolean(selectedQuestionId)}
+          disabled={!selectedQuestionId}
           onClick={() => handleLinking()}
         >
           Link

@@ -37,27 +37,27 @@ export default function Header() {
   }, [get, setTabs, tabsOption]);
 
   return (
-    <div className="px-4 md:pl-6 md:pr-10 pt-3 border-b border-b-navBorder flex items-center justify-between w-full ">
+    <div className="flex w-full items-center justify-between border-b border-b-navBorder px-4 pt-3 md:pl-6 md:pr-10 ">
       {user?.googleUserEmail ? (
-        <div className="flex gap-1 items-center">
-          <div className="flex relative gap-1 justify-center items-center">
-            <h1 className="text-txtBlack font-semibold ml-2">
+        <div className="flex items-center gap-1">
+          <div className="relative flex items-center justify-center gap-1">
+            <h1 className="ml-2 font-semibold text-txtBlack">
               Hi, {user?.googleUserName}{' '}
             </h1>
             <div className="animate-wave">👋</div>
 
-            <div className="text-sm ml-10 font-medium text-center text-gray-500 border-b border-gray-200">
-              <ul className="flex flex-wrap -mb-px">
+            <div className="ml-10 border-b border-gray-200 text-center text-sm font-medium text-gray-500">
+              <ul className="-mb-px flex flex-wrap">
                 {tabsOption.map((val, inx) => (
                   <li
                     className="me-2"
                     key={'tabs-' + inx}
                   >
                     <button
-                      className={`inline-block p-4 border-b-2 border-transparent ${
+                      className={`inline-block border-b-2 border-transparent p-4 ${
                         tabs.id === val.id
                           ? ' border-b-blue-600'
-                          : 'hover:text-gray-600 active hover:border-gray-300'
+                          : 'active hover:border-gray-300 hover:text-gray-600'
                       } rounded-t-lg `}
                       onClick={() => {
                         router.push(

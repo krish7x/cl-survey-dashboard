@@ -50,8 +50,8 @@ export default function MainPanel({
   const [templateId, setTemplateId] = useState<number>(0);
 
   return (
-    <div className="px-10 bg-white flex flex-col py-6 w-full h-full overflow-y-scroll scrollbar-hide">
-      <div className="flex justify-between items-center">
+    <div className="flex h-full w-full flex-col overflow-y-scroll bg-white px-10 py-6 scrollbar-hide">
+      <div className="flex items-center justify-between">
         <div className="opacity-0">Surveys</div>
         {isAdmin && (
           <div className="flex gap-2">
@@ -62,7 +62,7 @@ export default function MainPanel({
                 setShowTemplateModal(true);
               }}
             >
-              <div className="flex gap-1 items-center">
+              <div className="flex items-center gap-1">
                 Create Template{' '}
                 <Plus
                   size={16}
@@ -77,7 +77,7 @@ export default function MainPanel({
                 resetForCreateTemplate();
               }}
             >
-              <div className="flex gap-1 items-center">
+              <div className="flex items-center gap-1">
                 Create Survey{' '}
                 <Plus
                   size={16}
