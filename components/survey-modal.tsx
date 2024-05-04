@@ -6,27 +6,27 @@ import { useEffect, useMemo } from 'react';
 
 export default function SurveyModal({
   showSurveyModal,
-  setshowSurveyModal,
   createSurveyLoading,
   disableCreateButton,
   surveyDetails,
   projects,
   currentProject,
   currentTemplates,
-  onClickCreate,
+  setshowSurveyModal,
   setSurveyDetails,
+  onClickCreate,
   resetForCreateSurvey,
 }: {
   showSurveyModal: boolean;
   createSurveyLoading: boolean;
   disableCreateButton: boolean;
-  setshowSurveyModal: (value: boolean) => void;
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
   currentProject?: IProject;
   currentTemplates?: ITemplate[];
-  onClickCreate: () => void;
   setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
+  setshowSurveyModal: (value: boolean) => void;
+  onClickCreate: () => void;
   resetForCreateSurvey: () => void;
 }) {
   const validation = useMemo(() => {
@@ -122,7 +122,7 @@ export default function SurveyModal({
               className="mb-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pr-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               onChange={e =>
                 setSurveyDetails({
-                  projectId: +e.target.value,
+                  projectId: e.target.value,
                 })
               }
             >
@@ -152,7 +152,7 @@ export default function SurveyModal({
               className="mb-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pr-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               onChange={e =>
                 setSurveyDetails({
-                  templateId: +e.target.value,
+                  templateId: e.target.value,
                 })
               }
             >

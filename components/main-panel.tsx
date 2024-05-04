@@ -32,13 +32,13 @@ export default function MainPanel({
   isTemplateLoaded: boolean;
   setShowTemplateModal: (value: boolean) => void;
   setShowSurveyModal: (value: boolean) => void;
-  onClickSendSurvey: (id: number) => void;
-  onClickShowCharts: (id: number, surveyName: string) => void;
-  onClickViewSurvey: (id: number) => void;
-  onClickEditTemplate: (id: number) => void;
-  onClickDeleteSurvey: (id: number) => void;
-  onClickDeleteTemplate: (id: number) => void;
-  onClickShowSurveyContacts: (id: number) => void;
+  onClickSendSurvey: (id: string) => void;
+  onClickShowCharts: (id: string, surveyName: string) => void;
+  onClickViewSurvey: (id: string) => void;
+  onClickEditTemplate: (id: string) => void;
+  onClickDeleteSurvey: (id: string) => void;
+  onClickDeleteTemplate: (id: string) => void;
+  onClickShowSurveyContacts: (id: string) => void;
   resetForCreateSurvey: () => void;
   resetForCreateTemplate: () => void;
 }) {
@@ -46,8 +46,8 @@ export default function MainPanel({
   const tab = useAtomValue(tabsAtom);
   const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
   const [openModal, setOpenModal] = useState(false);
-  const [surveyId, setSurveyId] = useState<number>(0);
-  const [templateId, setTemplateId] = useState<number>(0);
+  const [surveyId, setSurveyId] = useState<string>('');
+  const [templateId, setTemplateId] = useState<string>('');
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-scroll bg-white px-10 py-6 scrollbar-hide">

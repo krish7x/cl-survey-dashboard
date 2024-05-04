@@ -18,7 +18,7 @@ export interface IGoogleUser {
 }
 
 export interface IProject {
-  id: number;
+  id: string;
   projectName: string;
   userId: number;
   templates: ITemplate[];
@@ -34,8 +34,8 @@ export interface IOptions {
 }
 
 export interface ISurvey {
-  id: number;
-  projectId: number;
+  id: string;
+  projectId: string;
   surveyName: string;
   description: string;
   userId: number;
@@ -45,14 +45,14 @@ export interface ISurvey {
   updatedAt: string;
   project: Project;
   template?: null;
-  lastModifiedDate: string;
+  updatedAt: string;
   lastModifiedHours: string;
 }
 export interface SurveyJsonData {
   [key: string]: string | number | object;
 }
 export interface Project {
-  id: number;
+  id: string;
   projectName: string;
   userId: number;
   description: string;
@@ -61,7 +61,7 @@ export interface Project {
 }
 
 export interface ITemplate {
-  id: number;
+  id: string;
   projectId: number;
   templateName: string;
   description: string;
@@ -70,7 +70,7 @@ export interface ITemplate {
   updatedAt: string;
   surveys?: ISurvey[];
   project?: IProject;
-  lastModifiedDate: string;
+  updatedAt: string;
   lastModifiedHours: string;
 }
 
@@ -92,10 +92,7 @@ export interface ITemplateQuestion {
 }
 
 export interface ITemplateRequest {
-  project: {
-    id?: number;
-  };
-  id?: number;
+  projectId?: string;
   templateName?: string;
   description?: string;
   templateJsonData?: ITemplateQuestion[];
@@ -105,28 +102,22 @@ export interface ICreateModalDetails {
   title: string;
   description: string;
   option: IOptions;
-  projectId: number | null;
-  templateId?: number;
+  projectId: string;
+  templateId?: string;
 }
 
 export interface ISurveyModalDetails {
   title: string;
   description: string;
-  projectId: number | null;
-  templateId?: number;
+  projectId: string;
+  templateId?: string;
 }
 
 export interface ISurveyRequest {
-  project: {
-    id?: number;
-  };
+  projectId?: string;
   surveyName: string;
   description: string;
-  userId?: number;
-  template: {
-    id?: number;
-  };
-  surveyJsonData: SurveyJsonData;
+  templateId?: string;
 }
 
 export interface ISurveyPage {
@@ -172,9 +163,7 @@ export interface ISendSurveyDetails {
   contactName: string;
   contactEmailId: string;
   phone?: number;
-  survey: {
-    id: number;
-  };
+  surveyId: string;
   metaData: string;
 }
 
@@ -184,7 +173,7 @@ export interface ILinkDetails {
 }
 
 export interface IActiveSurveyCharts {
-  id: number;
+  id: string;
   surveyName: string;
 }
 
