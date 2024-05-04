@@ -40,13 +40,15 @@ export default function Header() {
     <div className="flex w-full items-center justify-between border-b border-b-navBorder px-4 pt-3 md:pl-6 md:pr-10 ">
       {user?.googleUserEmail ? (
         <div className="flex items-center gap-1">
-          <div className="relative flex items-center justify-center gap-1">
-            <h1 className="ml-2 font-semibold text-txtBlack">
-              Hi, {user?.googleUserName}{' '}
-            </h1>
-            <div className="animate-wave">👋</div>
+          <div className="relative flex items-center justify-center">
+            <div className="flex w-[calc(222px)] gap-2">
+              <h1 className="ml-2 font-semibold text-txtBlack">
+                Hi, {user?.googleUserName}{' '}
+              </h1>
+              <div className="animate-wave">👋</div>
+            </div>
 
-            <div className="ml-10 border-b border-gray-200 text-center text-sm font-medium text-gray-500">
+            <div className="border-b border-gray-200 text-center text-sm font-medium text-gray-500">
               <ul className="-mb-px flex flex-wrap">
                 {tabsOption.map((val, inx) => (
                   <li
