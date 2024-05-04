@@ -2,7 +2,7 @@ import { IOptions, IProject, ITemplate } from '@/types';
 import { Button, Label, Modal, TextInput, Textarea } from 'flowbite-react';
 import { useEffect, useMemo } from 'react';
 
-import Radio from './radio';
+import Radio from '../micros/radio';
 
 export default function TemplateCreateModal({
   showModal,

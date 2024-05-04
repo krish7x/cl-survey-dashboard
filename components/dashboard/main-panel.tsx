@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 import { AlertOctagon, Plus } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-import MainPanelSkeleton from './main-panel-skeleton';
+import MainPanelSkeleton from '../micros/main-panel-skeleton';
 import Surveys from './surveys';
 import Templates from './templates';
 

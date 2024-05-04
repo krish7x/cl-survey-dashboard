@@ -3,9 +3,9 @@
 import { IOptions, ITemplateQuestion } from '@/types';
 import { Button } from 'flowbite-react';
 
-import Radio from './radio';
-import Select from './select';
-import StarRating from './star-rating';
+import Radio from '../micros/radio';
+import Select from '../micros/select';
+import StarRating from '../micros/star-rating';
 
 export default function OtherQuestionPage(props: {
   questions: ITemplateQuestion[];

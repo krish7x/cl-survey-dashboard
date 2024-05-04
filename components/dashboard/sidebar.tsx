@@ -7,7 +7,7 @@ import { AlertOctagon, PlusCircle, Trash2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
-import ListSkeleton from './list-skeleton';
+import ListSkeleton from '../micros/list-skeleton';
 
 export default function SidebarComponent({
   projects,

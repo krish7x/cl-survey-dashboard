@@ -1,4 +1,4 @@
-import GoogleUserSetup from '@/components/google-user';
+import GoogleUserSetup from '@/components/micros/google-user';
 import { getUserSession } from '@/lib/session';
 import { Provider } from 'jotai';
 import type { Metadata } from 'next';

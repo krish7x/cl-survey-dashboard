@@ -1,8 +1,8 @@
 'use client';
 
-import NpsQuestionPage from '@/components/nps-question-screen';
-import OtherQuestionPage from '@/components/other-question-screen';
-import ThanksScreen from '@/components/thanks-screen';
+import NpsQuestionPage from '@/components/survey/nps-question-screen';
+import OtherQuestionPage from '@/components/survey/other-question-screen';
+import ThanksScreen from '@/components/survey/thanks-screen';
 import { IFetchSurvey, ITemplateQuestion } from '@/types';
 import { axiosInstance } from '@/utils/axios';
 import { AxiosError } from 'axios';

@@ -16,15 +16,15 @@ import { AxiosError } from 'axios';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 
+import ProjectModal from '../modals/project-modal';
+import SendSurveyModal from '../modals/send-survey-modal';
+import SurveyModal from '../modals/survey-modal';
+import TemplateCreateModal from '../modals/template-create-modal';
+import TemplateModal from '../modals/template-modal';
+import NPSAnalytics from '../reports/nps-analytics';
+import SurveyDataTable from '../reports/survey-data-table';
 import MainPanel from './main-panel';
-import NPSAnalytics from './nps-analytics';
-import ProjectModal from './project-modal';
-import SendSurveyModal from './send-survey-modal';
 import Sidebar from './sidebar';
-import SurveyDataTable from './survey-data-table';
-import SurveyModal from './survey-modal';
-import TemplateCreateModal from './template-create-modal';
-import TemplateModal from './template-modal';
 
 export default function Dashboard() {
   //atoms

@@ -6,7 +6,7 @@ import truncate from 'lodash.truncate';
 import { File, Link, Plus, Trash2 } from 'lucide-react';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import Radio from './radio';
+import Radio from '../micros/radio';
 import TemplateQuestionModal from './template-question-modal';
 
 export default memo(function TemplateModal({

@@ -3,8 +3,8 @@ import { Tooltip } from 'flowbite-react';
 import { BarChart3, Eye, Send, Trash, Users } from 'lucide-react';
 import Image from 'next/image';
 
+import SurevyIcon from '../micros/survey-icon';
 import src from '../public/not-found.png';
-import SurevyIcon from './survey-icon';
 
 export default function Surveys({
   surveys,
