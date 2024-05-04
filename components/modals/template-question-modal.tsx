@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { Link, Unlink } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
-import Radio from './radio';
+import Radio from '../micros/radio';
 
 export default function TemplateQuestionModal({
   showModal,

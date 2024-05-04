@@ -6,8 +6,8 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
-import Avatar from './avatar';
-import HeaderSkeleton from './header-skeleton';
+import Avatar from '../micros/avatar';
+import HeaderSkeleton from '../micros/header-skeleton';
 
 export default function Header() {
   const router = useRouter();

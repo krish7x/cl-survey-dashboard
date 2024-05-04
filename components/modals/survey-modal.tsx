@@ -1,6 +1,7 @@
 'use client';
 
-import { IOptions, IProject, ISurveyModalDetails, ITemplate } from '@/types';
+import { IOptions } from '@/types';
+import { ISurveyModal } from '@/types/props/survey-modal';
 import { Button, Label, Modal, TextInput, Textarea } from 'flowbite-react';
 import { useEffect, useMemo } from 'react';
 
@@ -16,19 +17,7 @@ export default function SurveyModal({
   setSurveyDetails,
   onClickCreate,
   resetForCreateSurvey,
-}: {
-  showSurveyModal: boolean;
-  createSurveyLoading: boolean;
-  disableCreateButton: boolean;
-  surveyDetails: ISurveyModalDetails;
-  projects: IOptions[];
-  currentProject?: IProject;
-  currentTemplates?: ITemplate[];
-  setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
-  setshowSurveyModal: (value: boolean) => void;
-  onClickCreate: () => void;
-  resetForCreateSurvey: () => void;
-}) {
+}: ISurveyModal) {
   const validation = useMemo(() => {
     const { title, description, projectId, templateId } = surveyDetails;
     return title && description && projectId && templateId;

@@ -1,8 +1,8 @@
 'use client';
 
-import Radio from '@/components/radio';
-import Select from '@/components/select';
-import StarRating from '@/components/star-rating';
+import Radio from '@/components/micros/radio';
+import Select from '@/components/micros/select';
+import StarRating from '@/components/micros/star-rating';
 import { IOptions } from '@/types';
 import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';

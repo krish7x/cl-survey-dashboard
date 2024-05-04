@@ -1,4 +1,4 @@
-import { npsPercentageData } from '@/utils/reportsMockData';
+import { npsPercentageData } from '@/constants/reportsMockData';
 import {
   BarElement,
   CategoryScale,

@@ -1,6 +1,6 @@
 'use client';
 
-import { surveyContactsData } from '@/utils/surveyJson';
+import { surveyContactsData } from '@/constants/surveyJson';
 import { Modal, Table, Tooltip } from 'flowbite-react';
 import { Mail } from 'lucide-react';
 

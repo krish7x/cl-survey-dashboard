@@ -1,38 +1,25 @@
-import { IOptions, IProject, ITemplate } from '@/types';
+import { IOptions } from '@/types';
+import { ITemplateCreateModal } from '@/types/props/template-create-modal';
 import { Button, Label, Modal, TextInput, Textarea } from 'flowbite-react';
 import { useEffect, useMemo } from 'react';
 
-import Radio from './radio';
+import Radio from '../micros/radio';
 
 export default function TemplateCreateModal({
   showModal,
   isTemplateEdit = false,
-  setShowModal,
   title,
   description,
   option,
-  setTemplateDetails,
-  onClickCreate,
   projects,
   currentTemplates,
   currentProject,
   templateId,
+  setShowModal,
+  setTemplateDetails,
+  onClickCreate,
   resetForCreateTemplate,
-}: {
-  isTemplateEdit: boolean;
-  showModal: boolean;
-  setShowModal: (value: boolean) => void;
-  title: string;
-  description: string;
-  option: IOptions;
-  setTemplateDetails: (value: object) => void;
-  onClickCreate: () => void;
-  currentTemplates?: ITemplate[];
-  currentProject?: IProject;
-  projects: IOptions[];
-  templateId?: string;
-  resetForCreateTemplate: () => void;
-}) {
+}: ITemplateCreateModal) {
   const templates: IOptions[] | undefined = useMemo(
     () =>
       currentTemplates?.map(val => ({
