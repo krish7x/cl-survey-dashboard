@@ -181,7 +181,7 @@ export default function Dashboard() {
           }
         });
     }
-  }, [currentProject, tabs.id]);
+  }, [currentProject, tabs, tabs.id]);
 
   //to get templates for certain project id - create survey modal
   useEffect(() => {
@@ -215,7 +215,7 @@ export default function Dashboard() {
           }
         });
     }
-  }, [templateDetails, showTemplateCreateModal, currentProject]);
+  }, [templateDetails, showTemplateCreateModal, currentProject, tabs]);
 
   //creation callback
   const onClickProjectCreate = useCallback(() => {
