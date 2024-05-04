@@ -2,20 +2,20 @@ import { IOptions } from '@/types';
 
 export default function Radio({
   options,
-  onChange,
   checkedId,
   disabled,
   stacked = true,
   idText = '',
   disabledId,
+  onChange,
 }: {
   options: IOptions[];
-  onChange: (id: string | number) => void;
   checkedId?: string | number;
   stacked?: boolean;
   idText?: string;
   disabled?: boolean;
   disabledId?: number | string;
+  onChange: (id: string | number) => void;
 }) {
   return (
     <div

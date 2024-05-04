@@ -1,5 +1,5 @@
 import { tabsAtom, userAtom } from '@/store/atom';
-import { ISurvey, ITemplate } from '@/types';
+import { IMainPanel } from '@/types/props/main-panel';
 import { Button, Modal } from 'flowbite-react';
 import { useAtomValue } from 'jotai';
 import { AlertOctagon, Plus } from 'lucide-react';
@@ -25,23 +25,7 @@ export default function MainPanel({
   onClickShowSurveyContacts,
   resetForCreateSurvey,
   resetForCreateTemplate,
-}: {
-  surveys: ISurvey[];
-  templates: ITemplate[];
-  isSurveyLoaded: boolean;
-  isTemplateLoaded: boolean;
-  setShowTemplateModal: (value: boolean) => void;
-  setShowSurveyModal: (value: boolean) => void;
-  onClickSendSurvey: (id: string) => void;
-  onClickShowCharts: (id: string, surveyName: string) => void;
-  onClickViewSurvey: (id: string) => void;
-  onClickEditTemplate: (id: string) => void;
-  onClickDeleteSurvey: (id: string) => void;
-  onClickDeleteTemplate: (id: string) => void;
-  onClickShowSurveyContacts: (id: string) => void;
-  resetForCreateSurvey: () => void;
-  resetForCreateTemplate: () => void;
-}) {
+}: IMainPanel) {
   const user = useAtomValue(userAtom);
   const tab = useAtomValue(tabsAtom);
   const isAdmin = useMemo(() => user && user.role === 'admin', [user]);

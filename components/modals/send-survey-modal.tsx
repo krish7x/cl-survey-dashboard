@@ -5,18 +5,18 @@ import { Button, Label, Modal, TextInput } from 'flowbite-react';
 
 export default function SurveyModal({
   showSendSurveyModal,
-  setShowSendSurveyModal,
   sendSurveyDetails,
+  isProcessing,
+  setShowSendSurveyModal,
   setSendSurveyDetails,
   onSendSurvey,
-  isProcessing,
 }: {
   showSendSurveyModal: boolean;
-  setShowSendSurveyModal: (val: boolean) => void;
+  isProcessing: boolean;
   sendSurveyDetails: ISendSurveyDetails;
+  setShowSendSurveyModal: (val: boolean) => void;
   setSendSurveyDetails: (val: Partial<ISendSurveyDetails>) => void;
   onSendSurvey: () => void;
-  isProcessing: boolean;
 }) {
   return (
     <Modal

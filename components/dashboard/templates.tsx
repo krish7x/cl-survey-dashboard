@@ -3,8 +3,8 @@ import { Tooltip } from 'flowbite-react';
 import { Pencil, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
+import src from '../../public/not-found.png';
 import TemplateIcon from '../micros/template-icon';
-import src from '../public/not-found.png';
 
 export default function Templates({
   templates,
