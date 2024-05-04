@@ -6,27 +6,27 @@ import { useEffect, useMemo } from 'react';
 
 export default function SurveyModal({
   showSurveyModal,
-  setshowSurveyModal,
   createSurveyLoading,
   disableCreateButton,
   surveyDetails,
   projects,
   currentProject,
   currentTemplates,
-  onClickCreate,
+  setshowSurveyModal,
   setSurveyDetails,
+  onClickCreate,
   resetForCreateSurvey,
 }: {
   showSurveyModal: boolean;
   createSurveyLoading: boolean;
   disableCreateButton: boolean;
-  setshowSurveyModal: (value: boolean) => void;
   surveyDetails: ISurveyModalDetails;
   projects: IOptions[];
   currentProject?: IProject;
   currentTemplates?: ITemplate[];
-  onClickCreate: () => void;
   setSurveyDetails: (value: Partial<ISurveyModalDetails>) => void;
+  setshowSurveyModal: (value: boolean) => void;
+  onClickCreate: () => void;
   resetForCreateSurvey: () => void;
 }) {
   const validation = useMemo(() => {

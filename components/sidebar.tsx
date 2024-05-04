@@ -10,15 +10,15 @@ import { useEffect, useMemo, useState } from 'react';
 import ListSkeleton from './list-skeleton';
 
 export default function SidebarComponent({
-  setShowModal,
   projects,
   currentProject,
+  setShowModal,
   setCurrentProject,
   onDeleteProject,
 }: {
-  setShowModal: (flag: boolean) => void;
   projects: IProject[];
   currentProject?: IProject;
+  setShowModal: (flag: boolean) => void;
   setCurrentProject: (data: IProject) => void;
   onDeleteProject: (val: string) => void;
 }) {
@@ -32,7 +32,7 @@ export default function SidebarComponent({
   useEffect(() => {
     const projectId = get('projectId');
     const curProject = projects.find(val => val.id === projectId);
-    setCurrentProject(curProject as IProject);
+    setCurrentProject(curProject ? (curProject as IProject) : projects[0]);
   }, [get, projects, setCurrentProject]);
 
   const tab = useMemo(() => get('tab'), [get]);
