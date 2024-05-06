@@ -80,7 +80,7 @@ export default function ProjectModal({
             <Button
               isProcessing={createProjectLoading}
               onClick={onClickCreate}
-              disabled={!title || !description}
+              disabled={!title}
             >
               Create
             </Button>

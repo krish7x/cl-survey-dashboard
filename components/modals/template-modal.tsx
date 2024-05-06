@@ -280,7 +280,7 @@ export default memo(function TemplateModal({
 
   //memos
   const validation = useMemo(() => {
-    if (!questionTitle || !questionDescription) return false;
+    if (!questionTitle) return false;
     if (
       selectQuestionType === 1 ||
       selectQuestionType === 2 ||
@@ -294,14 +294,7 @@ export default memo(function TemplateModal({
       }
     }
     return false;
-  }, [
-    options,
-    questionDescription,
-    questionTitle,
-    selectQuestionType,
-    selectedOptionPos,
-    // templateQuestion.length,
-  ]);
+  }, [options, questionTitle, selectQuestionType, selectedOptionPos]);
 
   const hideNPS = useMemo(() => {
     if (templateQuestion.length === 1) return false;
