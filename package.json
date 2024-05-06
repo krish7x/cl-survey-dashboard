@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check": "prettier --check \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
   "dependencies": {

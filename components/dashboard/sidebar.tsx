@@ -42,7 +42,7 @@ export default function SidebarComponent({
       className="w-[calc(20%)] overflow-y-scroll scrollbar-hide"
     >
       <div className="mb-4 flex items-center justify-between pl-5 pr-2 scrollbar-hide">
-        <h1 className="text-md font-medium text-txtPurple">Projects</h1>
+        <h1 className="text-md font-medium text-custom-3">Projects</h1>
         <Tooltip
           content="Create Project"
           placement="top"
@@ -67,9 +67,9 @@ export default function SidebarComponent({
             >
               <Sidebar.ItemGroup className="relative">
                 <Sidebar.Item
-                  className={`-mr-3 flex cursor-pointer rounded-none py-3 text-sm font-medium text-sidebarText ${
+                  className={`-mr-3 flex cursor-pointer rounded-none py-3 text-sm font-medium text-custom-6 ${
                     currentProject?.id === data.id
-                      ? "bg-navBg before:absolute before:-left-2 before:top-0 before:h-full before:w-1 before:bg-navLeftBorder before:content-[''] hover:bg-navBg"
+                      ? "bg-custom-5 before:absolute before:-left-2 before:top-0 before:h-full before:w-1 before:bg-custom-7 before:content-[''] hover:bg-custom-5"
                       : ''
                   }`}
                   onClick={() => {

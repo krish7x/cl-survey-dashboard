@@ -93,7 +93,7 @@ export default function TemplateQuestionModal({
       popup
     >
       <Modal.Body className="overflow-y-scroll p-0 scrollbar-hide">
-        <Modal.Header className="relative border-b border-b-modalBorder">
+        <Modal.Header className="relative border-b border-b-custom-11">
           <span className="absolute left-[calc(50%-96px)]">
             Link a question
           </span>
@@ -117,7 +117,7 @@ export default function TemplateQuestionModal({
           />
         </div>
       </Modal.Body>
-      <Modal.Footer className="relative flex h-16 items-center justify-between border-t border-t-modalBorder">
+      <Modal.Footer className="relative flex h-16 items-center justify-between border-t border-t-custom-11">
         {selectedQuestionId ? (
           <Button
             className="ml-auto"

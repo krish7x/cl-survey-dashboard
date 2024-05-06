@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 export default function TemplateIcon() {
   const iconBg = useMemo(() => {
-    const colors = ['bg-surveyIcon1', 'bg-surveyIcon2', 'bg-navLeftBorder'];
+    const colors = ['bg-custom-8', 'bg-custom-9', 'bg-custom-7'];
     const rand = Math.floor(Math.random() * colors.length);
     return colors[rand];
   }, []);

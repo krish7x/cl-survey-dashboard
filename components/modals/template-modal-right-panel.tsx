@@ -37,15 +37,15 @@ export default memo(function TemplateModalRightPanel({
   return (
     <>
       {showQuestion ? (
-        <div className="flex w-modalRightPanel flex-col gap-6 overflow-y-scroll px-6 pb-16 pt-8 scrollbar-hide">
+        <div className="flex w-modal-right flex-col gap-6 overflow-y-scroll px-6 pb-16 pt-8 scrollbar-hide">
           <div className="flex w-full gap-2 ">
-            <h1 className="text-md w-full border-b border-b-navBorder pb-2 font-semibold text-sidebarText">
+            <h1 className="text-md w-full border-b border-b-custom-5 pb-2 font-semibold text-custom-6">
               Type question title & description
             </h1>
           </div>
           <div className="flex flex-col gap-2">
             <div className="flex w-full items-center gap-4">
-              <h1 className="text-lg font-semibold text-txtBlack">
+              <h1 className="text-lg font-semibold text-custom-4">
                 {selectedQuestionIndex
                   ? selectedQuestionIndex
                   : templateQuestion.length || 1}
@@ -60,7 +60,7 @@ export default memo(function TemplateModalRightPanel({
               />
             </div>
             <div className="flex w-full items-center gap-4">
-              <h1 className="cursor-default text-lg font-semibold text-txtBlack opacity-0">
+              <h1 className="cursor-default text-lg font-semibold text-custom-4 opacity-0">
                 1.
               </h1>
               <FloatingLabel
@@ -74,7 +74,7 @@ export default memo(function TemplateModalRightPanel({
           </div>
           {selectedQuestionIndex ? (
             <div className="flex flex-col gap-4 pl-8">
-              <h1 className="text-md border-b border-b-navBorder pb-2 font-semibold text-sidebarText">
+              <h1 className="text-md border-b border-b-custom-5 pb-2 font-semibold text-custom-6">
                 Select question type
               </h1>
               <Radio
@@ -93,15 +93,15 @@ export default memo(function TemplateModalRightPanel({
             (selectQuestionType as number) === 2) &&
           templateQuestion.length > 1 ? (
             <div className="flex flex-col gap-4 pl-8">
-              <div className="flex justify-between border-b border-b-navBorder pb-2">
-                <h1 className="text-md font-semibold text-sidebarText">
+              <div className="flex justify-between border-b border-b-custom-5 pb-2">
+                <h1 className="text-md font-semibold text-custom-6">
                   Link Question
                 </h1>
               </div>
 
               {(selectQuestionType as number) === 2 && selectedQuestionIndex ? (
                 <div className="flex flex-col gap-2">
-                  <p className="select-none text-sm font-normal text-radio">
+                  <p className="select-none text-sm font-normal text-custom-13">
                     Select your range
                   </p>
                   <Radio
@@ -146,12 +146,12 @@ export default memo(function TemplateModalRightPanel({
           {(selectQuestionType as number) > 2 &&
           (selectQuestionType as number) !== 6 ? (
             <div className="flex flex-col gap-6 pl-8">
-              <h1 className="text-md border-b border-b-navBorder pb-2 font-semibold text-sidebarText">
+              <h1 className="text-md border-b border-b-custom-5 pb-2 font-semibold text-custom-6">
                 Add Options
               </h1>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <p className="text-md select-none font-normal text-radio">
+                  <p className="text-md select-none font-normal text-custom-13">
                     Select option position
                   </p>
                   <Button.Group>
@@ -199,7 +199,7 @@ export default memo(function TemplateModalRightPanel({
                   >
                     <input
                       id={`options-${id}` + inx}
-                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-4 ps-4 text-sm text-gray-900 outline-starStroke focus:border-blue-500 focus:ring-blue-500"
+                      className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-4 ps-4 text-sm text-gray-900 outline-custom-12 focus:border-blue-500 focus:ring-blue-500"
                       placeholder={`Type option ${inx + 1}`}
                       value={name ? name : ''}
                       required
@@ -218,7 +218,7 @@ export default memo(function TemplateModalRightPanel({
                           options.length > 1
                             ? 'cursor-pointer'
                             : 'cursor-not-allowed'
-                        } stroke-txtPurple`}
+                        } stroke-custom-3`}
                         onClick={() => {
                           onLinkUpdateOptions();
                           handleLinkQuestion(
@@ -234,7 +234,7 @@ export default memo(function TemplateModalRightPanel({
                         options.length > 1
                           ? 'cursor-pointer'
                           : 'cursor-not-allowed'
-                      } stroke-txtPurple`}
+                      } stroke-custom-3`}
                       onClick={() => onClickDeleteOption(id)}
                     />
                   </div>
@@ -242,7 +242,7 @@ export default memo(function TemplateModalRightPanel({
                 {(selectQuestionType as number) > 2 && options.length > 0 ? (
                   <Button
                     color="light"
-                    className="text-sm font-semibold text-radio"
+                    className="text-sm font-semibold text-custom-13"
                     onClick={onClickAddOptions}
                   >
                     Add Option
@@ -265,7 +265,7 @@ export default memo(function TemplateModalRightPanel({
         </div>
       ) : (
         <div className="m-auto flex flex-col justify-center">
-          <h1 className="text-xl font-medium text-sidebarText">
+          <h1 className="text-xl font-medium text-custom-6">
             Click on add a question to continue...
           </h1>
         </div>

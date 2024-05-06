@@ -390,13 +390,13 @@ export default memo(function TemplateModal({
       popup
     >
       <Modal.Body className="overflow-hidden p-0">
-        <Modal.Header className="relative border-b border-b-modalBorder">
+        <Modal.Header className="relative border-b border-b-custom-11">
           <span className="absolute left-[calc(50%-96px)]">
             {isTemplateEdit ? 'Update' : 'Build'}
             {' template'}
           </span>
         </Modal.Header>
-        <div className="flex h-templateModal w-full p-0 ">
+        <div className="flex h-template-modal w-full p-0 ">
           <TemplateModalLeftPanel
             dragQuestionRef={dragQuestionRef}
             draggedOverQuestionRef={draggedOverQuestionRef}
@@ -443,7 +443,7 @@ export default memo(function TemplateModal({
           )}
         />
       </Modal.Body>
-      <Modal.Footer className="relative flex h-footer items-center justify-between border-t border-t-modalBorder">
+      <Modal.Footer className="relative flex h-footer items-center justify-between border-t border-t-custom-11">
         <Button
           className="ml-auto"
           disabled={Boolean(validateCreateTemplate)}
