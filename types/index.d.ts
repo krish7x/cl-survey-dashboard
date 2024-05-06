@@ -125,18 +125,6 @@ export interface ISurveyRequest {
   templateId?: string;
 }
 
-export interface ISurveyPage {
-  id: number;
-  contactId: number;
-  contactEmailId: string;
-  surveyUrl: string;
-  uuid: string;
-  metaData: string;
-  isEmailSent: boolean;
-  createdAt: string;
-  updatedAt: string;
-  survey: Survey;
-}
 export interface Survey {
   id: number;
   surveyName: string;
@@ -180,22 +168,6 @@ export interface ILinkDetails {
 export interface IActiveSurveyCharts {
   id: string;
   surveyName: string;
-}
-
-export interface IFetchSurvey {
-  id: number;
-  contactId: number;
-  contactEmailId: string;
-  surveyUrl: string;
-  uuid: string;
-  metaData: string;
-  isEmailSent: boolean;
-  isSurveyCompleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-  project: Project;
-  template: Template;
-  contact: Contact;
 }
 
 export interface Contact {

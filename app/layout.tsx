@@ -7,11 +7,11 @@ import { ReactNode } from 'react';
 
 import './globals.css';
 
-const inter = Source_Sans_3({ subsets: ['cyrillic'] });
+const sourceSans = Source_Sans_3({ subsets: ['cyrillic'] });
 
 export const metadata: Metadata = {
-  title: 'CL Survey',
-  description: 'Caratlane Survey Application',
+  title: 'CL Survey Dashboard',
+  description: 'Caratlane Survey Dashboard Application',
 };
 
 export default async function RootLayout({
@@ -23,7 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} h-screen w-full border-b border-custom-1 bg-custom-2`}
+        className={`${sourceSans.className} h-screen w-full border-b border-custom-1 bg-custom-2`}
       >
         <Provider>
           <div className="m-0 flex h-full w-full flex-col p-0">
