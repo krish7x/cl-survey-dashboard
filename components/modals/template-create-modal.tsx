@@ -40,9 +40,9 @@ export default function TemplateCreateModal({
   }, [showModal, currentProject?.id, showModal]);
 
   const validation = useMemo(() => {
-    if (option.id === 'template_1') return !title || !description;
-    return !title || !description || !currentProject?.id || !templateId;
-  }, [currentProject?.id, description, option.id, templateId, title]);
+    if (option.id === 'template_1') return !title;
+    return !title || !currentProject?.id || !templateId;
+  }, [currentProject?.id, option.id, templateId, title]);
 
   return (
     <Modal

@@ -19,8 +19,8 @@ export default function SurveyModal({
   resetForCreateSurvey,
 }: ISurveyModal) {
   const validation = useMemo(() => {
-    const { title, description, projectId, templateId } = surveyDetails;
-    return title && description && projectId && templateId;
+    const { title, projectId, templateId } = surveyDetails;
+    return title && projectId && templateId;
   }, [surveyDetails]);
 
   const templates: IOptions[] | undefined = useMemo(
