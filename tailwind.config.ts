@@ -33,6 +33,7 @@ const config: Config = {
           15: '#cccc00',
           16: '#ff0000',
           17: '#111827',
+          18: '#FFA788',
         },
       },
       width: {

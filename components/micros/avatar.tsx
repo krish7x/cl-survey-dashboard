@@ -1,7 +1,7 @@
 import { Avatar, Dropdown } from 'flowbite-react';
 import { signOut } from 'next-auth/react';
 
-export default function Avatarr({
+export default function AvatarComponent({
   name,
   email,
   image,

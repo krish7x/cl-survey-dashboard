@@ -1,4 +1,9 @@
-import { tabsAtom, templateQuestionsAtom, userAtom } from '@/store/atom';
+import {
+  tabsAtom,
+  templateQuestionsAtom,
+  toastAtom,
+  userAtom,
+} from '@/store/atom';
 import {
   IActiveSurveyCharts,
   ICreateModalDetails,
@@ -16,6 +21,7 @@ import { AxiosError } from 'axios';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 
+import ToastComponent from '../micros/toast';
 import ProjectModal from '../modals/project-modal';
 import SendSurveyModal from '../modals/send-survey-modal';
 import SurveyModal from '../modals/survey-modal';
@@ -31,6 +37,7 @@ export default function Dashboard() {
   const user = useAtomValue(userAtom);
   const tabs = useAtomValue(tabsAtom);
   const [template, setTemplate] = useAtom(templateQuestionsAtom);
+  const [toast, setToast] = useAtom(toastAtom);
 
   //states
   const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
@@ -226,6 +233,7 @@ export default function Dashboard() {
       userId: user?.id,
     };
     axiosInstance.post('/projects', reqBody).then(res => {
+      setToast('Project Created!');
       setShowProjectModal(false);
       setProjects([res.data, ...projects]);
       setCurrentProject(res.data);
@@ -235,7 +243,13 @@ export default function Dashboard() {
         description: '',
       });
     });
-  }, [projectDetails.description, projectDetails.title, projects, user?.id]);
+  }, [
+    projectDetails.description,
+    projectDetails.title,
+    projects,
+    setToast,
+    user?.id,
+  ]);
 
   const onClickTemplateCreateOrUpdate = useCallback(() => {
     setCreateTemplateLoading(true);
@@ -262,9 +276,11 @@ export default function Dashboard() {
       if (!showUpdateTemplate) {
         setTemplates([...templates, res.data]);
         setCurrentTemplates([...currentTemplates, res.data]);
+        setToast('Template Created!');
       } else {
         setTemplates([res.data]);
         setCurrentTemplates([res.data]);
+        setToast('Template Updated!');
       }
       setTemplate([]);
       setTemplateDetails({ title: '', description: '' });
@@ -273,7 +289,7 @@ export default function Dashboard() {
       setCreateTemplateLoading(false);
     });
   }, [
-    currentProject,
+    currentProject?.id,
     templateDetails?.title,
     templateDetails?.description,
     templateDetails?.templateId,
@@ -282,6 +298,7 @@ export default function Dashboard() {
     setTemplate,
     templates,
     currentTemplates,
+    setToast,
   ]);
 
   const onClickSurveyCreate = useCallback(() => {
@@ -300,6 +317,7 @@ export default function Dashboard() {
         templateId: '',
       });
       const arr = [...surveys];
+      setToast('Survey Created!');
       arr.unshift({
         ...res.data,
         project: {
@@ -314,6 +332,7 @@ export default function Dashboard() {
   }, [
     currentProject?.id,
     currentProject?.projectName,
+    setToast,
     surveyDetails?.description,
     surveyDetails?.templateId,
     surveyDetails?.title,
@@ -380,6 +399,7 @@ export default function Dashboard() {
   const onClickDeleteProject = useCallback(
     (id: string) => {
       axiosInstance.delete(`/projects/${id}`).then(() => {
+        setToast('Project Deleted!');
         const arr = [...projects];
         const index = arr.findIndex(val => val.id === id);
         arr.splice(index, 1);
@@ -387,12 +407,13 @@ export default function Dashboard() {
         setCurrentProject(arr[0]);
       });
     },
-    [projects],
+    [projects, setToast],
   );
 
   const onClickDeleteTemplate = useCallback(
     (id: string) => {
       axiosInstance.delete(`/templates/${id}`).then(() => {
+        setToast('Template Deleted!');
         const arr = [...templates];
         const index = arr.findIndex(val => val.id === id);
         arr.splice(index, 1);
@@ -403,19 +424,20 @@ export default function Dashboard() {
         setCurrentTemplates(arr2);
       });
     },
-    [currentTemplates, templates],
+    [currentTemplates, setToast, templates],
   );
 
   const onClickDeleteSurvey = useCallback(
     (id: string) => {
       axiosInstance.delete(`/surveys/${id}`).then(() => {
+        setToast('Survey Deleted!');
         const arr = [...surveys];
         const index = arr.findIndex(val => val.id === id);
         arr.splice(index, 1);
         setSurveys(arr);
       });
     },
-    [surveys],
+    [setToast, surveys],
   );
 
   //send callback
@@ -575,6 +597,15 @@ export default function Dashboard() {
             : 'Caratlane NPS'
         }
       />
+
+      {toast.length ? (
+        <div className="absolute bottom-10 right-6">
+          <ToastComponent
+            toast={toast}
+            setToast={setToast}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
