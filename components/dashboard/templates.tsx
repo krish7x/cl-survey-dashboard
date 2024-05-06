@@ -44,7 +44,7 @@ export default function Templates({
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Tooltip content="Template Details">
+                <Tooltip content="Update Template">
                   <Pencil
                     className="mt-4 stroke-custom-3"
                     onClick={() => onClickEditTemplate(id)}

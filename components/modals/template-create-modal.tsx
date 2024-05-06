@@ -204,7 +204,7 @@ export default function TemplateCreateModal({
               onClick={onClickCreate}
               disabled={Boolean(validation)}
             >
-              {isTemplateEdit ? 'Update' : 'Create'}
+              {isTemplateEdit ? 'Next' : 'Create'}
             </Button>
           </div>
         </div>
