@@ -33,6 +33,11 @@ export interface IOptions {
   linkedTo?: number | string;
 }
 
+export interface IToast {
+  type: 'success' | 'failure' | '';
+  message: string;
+}
+
 export interface ISurvey {
   id: string;
   projectId: string;

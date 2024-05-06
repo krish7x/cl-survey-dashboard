@@ -232,17 +232,28 @@ export default function Dashboard() {
       description: projectDetails.description,
       userId: user?.id,
     };
-    axiosInstance.post('/projects', reqBody).then(res => {
-      setToast('Project Created!');
-      setShowProjectModal(false);
-      setProjects([res.data, ...projects]);
-      setCurrentProject(res.data);
-      setCreateProjectLoading(false);
-      setProjectDetails({
-        title: '',
-        description: '',
+    axiosInstance
+      .post('/projects', reqBody)
+      .then(res => {
+        setToast({
+          type: 'success',
+          message: 'Project Created!',
+        });
+        setShowProjectModal(false);
+        setProjects([res.data, ...projects]);
+        setCurrentProject(res.data);
+        setCreateProjectLoading(false);
+        setProjectDetails({
+          title: '',
+          description: '',
+        });
+      })
+      .catch(err => {
+        setToast({
+          type: 'failure',
+          message: `Error while creating project - ${err}`,
+        });
       });
-    });
   }, [
     projectDetails.description,
     projectDetails.title,
@@ -272,22 +283,35 @@ export default function Dashboard() {
     } else {
       instance = axiosInstance.post('/templates', reqObj);
     }
-    instance.then(res => {
-      if (!showUpdateTemplate) {
-        setTemplates([...templates, res.data]);
-        setCurrentTemplates([...currentTemplates, res.data]);
-        setToast('Template Created!');
-      } else {
-        setTemplates([res.data]);
-        setCurrentTemplates([res.data]);
-        setToast('Template Updated!');
-      }
-      setTemplate([]);
-      setTemplateDetails({ title: '', description: '' });
-      setShowTemplateCreateModal(false);
-      setShowTemplateModal(false);
-      setCreateTemplateLoading(false);
-    });
+    instance
+      .then(res => {
+        if (!showUpdateTemplate) {
+          setTemplates([...templates, res.data]);
+          setCurrentTemplates([...currentTemplates, res.data]);
+          setToast({
+            type: 'success',
+            message: 'Template Created!',
+          });
+        } else {
+          setTemplates([res.data]);
+          setCurrentTemplates([res.data]);
+          setToast({
+            type: 'success',
+            message: 'Template Updated!',
+          });
+        }
+        setTemplate([]);
+        setTemplateDetails({ title: '', description: '' });
+        setShowTemplateCreateModal(false);
+        setShowTemplateModal(false);
+        setCreateTemplateLoading(false);
+      })
+      .catch(err => {
+        setToast({
+          type: 'failure',
+          message: `Error while creating template - ${err}`,
+        });
+      });
   }, [
     currentProject?.id,
     templateDetails?.title,
@@ -309,26 +333,37 @@ export default function Dashboard() {
       description: surveyDetails?.description,
       templateId: surveyDetails?.templateId,
     };
-    axiosInstance.post('/surveys', reqObj).then(res => {
-      setSurveyDetails({
-        title: '',
-        description: '',
-        projectId: '',
-        templateId: '',
+    axiosInstance
+      .post('/surveys', reqObj)
+      .then(res => {
+        setSurveyDetails({
+          title: '',
+          description: '',
+          projectId: '',
+          templateId: '',
+        });
+        const arr = [...surveys];
+        setToast({
+          type: 'success',
+          message: 'Survey Created!',
+        });
+        arr.unshift({
+          ...res.data,
+          project: {
+            id: currentProject?.id,
+            projectName: currentProject?.projectName || '',
+          },
+        });
+        setSurveys(arr);
+        setShowSurveyModal(false);
+        setCreateSurveyLoading(false);
+      })
+      .catch(err => {
+        setToast({
+          type: 'failure',
+          message: `Error while creating survey - ${err}`,
+        });
       });
-      const arr = [...surveys];
-      setToast('Survey Created!');
-      arr.unshift({
-        ...res.data,
-        project: {
-          id: currentProject?.id,
-          projectName: currentProject?.projectName || '',
-        },
-      });
-      setSurveys(arr);
-      setShowSurveyModal(false);
-      setCreateSurveyLoading(false);
-    });
   }, [
     currentProject?.id,
     currentProject?.projectName,
@@ -398,44 +433,77 @@ export default function Dashboard() {
   //delete callback
   const onClickDeleteProject = useCallback(
     (id: string) => {
-      axiosInstance.delete(`/projects/${id}`).then(() => {
-        setToast('Project Deleted!');
-        const arr = [...projects];
-        const index = arr.findIndex(val => val.id === id);
-        arr.splice(index, 1);
-        setProjects(arr);
-        setCurrentProject(arr[0]);
-      });
+      axiosInstance
+        .delete(`/projects/${id}`)
+        .then(() => {
+          setToast({
+            type: 'success',
+            message: 'Project Deleted!',
+          });
+          const arr = [...projects];
+          const index = arr.findIndex(val => val.id === id);
+          arr.splice(index, 1);
+          setProjects(arr);
+          setCurrentProject(arr[0]);
+        })
+        .catch(err => {
+          setToast({
+            type: 'failure',
+            message: `Error while deleting project - ${err}`,
+          });
+        });
     },
     [projects, setToast],
   );
 
   const onClickDeleteTemplate = useCallback(
     (id: string) => {
-      axiosInstance.delete(`/templates/${id}`).then(() => {
-        setToast('Template Deleted!');
-        const arr = [...templates];
-        const index = arr.findIndex(val => val.id === id);
-        arr.splice(index, 1);
-        setTemplates(arr);
-        const arr2 = [...currentTemplates];
-        const index2 = arr2.findIndex(val => val.id === id);
-        arr2.splice(index2, 1);
-        setCurrentTemplates(arr2);
-      });
+      axiosInstance
+        .delete(`/templates/${id}`)
+        .then(() => {
+          setToast({
+            type: 'success',
+            message: 'Template Deleted!',
+          });
+          const arr = [...templates];
+          const index = arr.findIndex(val => val.id === id);
+          arr.splice(index, 1);
+          setTemplates(arr);
+          const arr2 = [...currentTemplates];
+          const index2 = arr2.findIndex(val => val.id === id);
+          arr2.splice(index2, 1);
+          setCurrentTemplates(arr2);
+        })
+        .catch(err => {
+          setToast({
+            type: 'failure',
+            message: `Error while deleting templete - ${err}`,
+          });
+        });
     },
     [currentTemplates, setToast, templates],
   );
 
   const onClickDeleteSurvey = useCallback(
     (id: string) => {
-      axiosInstance.delete(`/surveys/${id}`).then(() => {
-        setToast('Survey Deleted!');
-        const arr = [...surveys];
-        const index = arr.findIndex(val => val.id === id);
-        arr.splice(index, 1);
-        setSurveys(arr);
-      });
+      axiosInstance
+        .delete(`/surveys/${id}`)
+        .then(() => {
+          setToast({
+            type: 'success',
+            message: 'Survey Deleted!',
+          });
+          const arr = [...surveys];
+          const index = arr.findIndex(val => val.id === id);
+          arr.splice(index, 1);
+          setSurveys(arr);
+        })
+        .catch(err => {
+          setToast({
+            type: 'failure',
+            message: `Error while deleting survey - ${err}`,
+          });
+        });
     },
     [setToast, surveys],
   );
@@ -598,7 +666,7 @@ export default function Dashboard() {
         }
       />
 
-      {toast.length ? (
+      {toast.message.length ? (
         <div className="absolute bottom-10 right-6">
           <ToastComponent
             toast={toast}
