@@ -39,7 +39,7 @@ export default function SidebarComponent({
   return (
     <Sidebar
       aria-label="Default sidebar example"
-      className="w-72 overflow-y-scroll scrollbar-hide"
+      className="w-[calc(20%)] overflow-y-scroll scrollbar-hide"
     >
       <div className="mb-4 flex items-center justify-between pl-5 pr-2 scrollbar-hide">
         <h1 className="text-md font-medium text-txtPurple">Projects</h1>

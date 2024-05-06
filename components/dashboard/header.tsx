@@ -39,43 +39,42 @@ export default function Header() {
   return (
     <div className="flex w-full items-center justify-between border-b border-b-navBorder px-4 pt-3 md:pl-6 md:pr-10 ">
       {user?.googleUserEmail ? (
-        <div className="flex items-center gap-1">
-          <div className="relative flex items-center justify-center">
-            <div className="flex w-[calc(222px)] gap-2">
-              <h1 className="ml-2 font-semibold text-txtBlack">
-                Hi, {user?.googleUserName}{' '}
-              </h1>
-              <div className="animate-wave">👋</div>
-            </div>
+        <div className="flex w-full items-center gap-1">
+          <div className="flex w-[calc(20%-64px)] gap-2">
+            {' '}
+            <h1 className="ml-2 font-semibold text-txtBlack">
+              Hi, {user?.googleUserName}{' '}
+            </h1>
+            <div className="animate-wave">👋</div>
+          </div>
 
-            <div className="border-b border-gray-200 text-center text-sm font-medium text-gray-500">
-              <ul className="-mb-px flex flex-wrap">
-                {tabsOption.map((val, inx) => (
-                  <li
-                    className="me-2"
-                    key={'tabs-' + inx}
+          <div className="border-b border-gray-200 text-center text-sm font-medium text-gray-500">
+            <ul className="-mb-px flex flex-wrap">
+              {tabsOption.map((val, inx) => (
+                <li
+                  className="me-2"
+                  key={'tabs-' + inx}
+                >
+                  <button
+                    className={`inline-block border-b-2 border-transparent p-4 ${
+                      tabs.id === val.id
+                        ? ' border-b-blue-600'
+                        : 'active hover:border-gray-300 hover:text-gray-600'
+                    } rounded-t-lg `}
+                    onClick={() => {
+                      router.push(
+                        `?${projectId ? `projectId=${projectId}&` : ''}tab=${
+                          val.id
+                        }`,
+                      );
+                      setTabs(val);
+                    }}
                   >
-                    <button
-                      className={`inline-block border-b-2 border-transparent p-4 ${
-                        tabs.id === val.id
-                          ? ' border-b-blue-600'
-                          : 'active hover:border-gray-300 hover:text-gray-600'
-                      } rounded-t-lg `}
-                      onClick={() => {
-                        router.push(
-                          `?${projectId ? `projectId=${projectId}&` : ''}tab=${
-                            val.id
-                          }`,
-                        );
-                        setTabs(val);
-                      }}
-                    >
-                      {val.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    {val.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       ) : (
