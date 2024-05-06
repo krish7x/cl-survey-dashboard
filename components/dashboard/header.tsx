@@ -37,12 +37,12 @@ export default function Header() {
   }, [get, setTabs, tabsOption]);
 
   return (
-    <div className="flex w-full items-center justify-between border-b border-b-navBorder px-4 pt-3 md:pl-6 md:pr-10 ">
+    <div className="flex w-full items-center justify-between border-b border-b-custom-5 px-4 pt-3 md:pl-6 md:pr-10 ">
       {user?.googleUserEmail ? (
         <div className="flex items-center gap-1">
           <div className="relative flex items-center justify-center">
             <div className="flex w-[calc(222px)] gap-2">
-              <h1 className="ml-2 font-semibold text-txtBlack">
+              <h1 className="ml-2 font-semibold text-custom-4">
                 Hi, {user?.googleUserName}{' '}
               </h1>
               <div className="animate-wave">👋</div>

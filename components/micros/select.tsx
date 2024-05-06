@@ -22,7 +22,7 @@ export default function Select({
           outline={!selectedOptions?.includes(id)}
           size={'lg'}
           className={`items-start hover:opacity-70 ${
-            selectedOptions?.includes(inx) ? 'bg-starStroke' : ''
+            selectedOptions?.includes(inx) ? 'bg-custom-12' : ''
           }`}
           gradientDuoTone="purpleToBlue"
           onClick={() => onChange(id, maxSelect)}

@@ -23,16 +23,16 @@ export default function Templates({
         templates.map(({ id, templateName, templateJsonData, updatedAt }) => (
           <div
             key={'survey-' + id}
-            className="flex w-full  cursor-pointer justify-between border-b border-b-navBorder py-4 hover:bg-green-100"
+            className="flex w-full  cursor-pointer justify-between border-b border-b-custom-5 py-4 hover:bg-green-100"
           >
             <div className="flex w-full items-center justify-between px-2">
               <div className="group flex gap-4">
                 <TemplateIcon />
                 <div className="flex flex-col gap-1 py-2">
-                  <h3 className="text-sm font-medium text-txtBlack">
+                  <h3 className="text-sm font-medium text-custom-4">
                     {templateName}
                   </h3>
-                  <p className="text-xs text-txtPurple">
+                  <p className="text-xs text-custom-3">
                     {(templateJsonData || [])?.length ? `No of question: ` : ''}
                     {'     '}
                     {templateJsonData?.length ? (
@@ -46,13 +46,13 @@ export default function Templates({
               <div className="flex items-center gap-3">
                 <Tooltip content="Template Details">
                   <Pencil
-                    className="mt-4 stroke-txtPurple"
+                    className="mt-4 stroke-custom-3"
                     onClick={() => onClickEditTemplate(id)}
                   />
                 </Tooltip>
                 <Tooltip content="Delete template">
                   <Trash2
-                    className="mt-4 stroke-txtPurple"
+                    className="mt-4 stroke-custom-3"
                     onClick={() => {
                       setOpenModal(true);
                       setTemplateId(id);
@@ -70,9 +70,9 @@ export default function Templates({
             alt="survey"
             width={72}
             height={72}
-            className="mb-1 stroke-sidebarText opacity-60"
+            className="mb-1 stroke-custom-6 opacity-60"
           />
-          <h1 className="text-2xl font-medium text-sidebarText">
+          <h1 className="text-2xl font-medium text-custom-6">
             No Templates found for this project!
           </h1>
         </div>
