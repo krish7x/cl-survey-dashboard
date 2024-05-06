@@ -293,8 +293,8 @@ export default function Dashboard() {
             message: 'Template Created!',
           });
         } else {
-          setTemplates([res.data]);
-          setCurrentTemplates([res.data]);
+          setTemplates([...templates, res.data?.data]);
+          setCurrentTemplates([...currentTemplates, res.data?.data]);
           setToast({
             type: 'success',
             message: 'Template Updated!',
