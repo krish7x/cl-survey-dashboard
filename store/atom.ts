@@ -9,3 +9,6 @@ templateQuestionsAtom.debugLabel = 'templateQuestionsAtom';
 
 export const tabsAtom = atom<IOptions>({ id: 1, name: 'Surveys' });
 tabsAtom.debugLabel = 'tabsAtom';
+
+export const toastAtom = atom<string>('');
+toastAtom.debugLabel = 'toastAtom';
