@@ -20,7 +20,7 @@ export default memo(
     const [templateQuestion] = useAtom(templateQuestionsAtom);
 
     return (
-      <div className="flex w-modalLeftPanel flex-col gap-4 overflow-y-scroll border-r border-modalBorder p-6 pb-16 scrollbar-hide">
+      <div className="flex w-modal-left flex-col gap-4 overflow-y-scroll border-r border-custom-11 p-6 pb-16 scrollbar-hide">
         {templateQuestion?.map(({ title }, inx) => {
           return (
             <div
@@ -34,12 +34,12 @@ export default memo(
               onDragOver={e => e.preventDefault()}
             >
               <div
-                className={`flex w-full cursor-pointer rounded-md border border-l-4 border-l-navLeftBorder px-3 py-2 hover:bg-green-100
-            ${(selectedQuestionIndex as number) - 1 === inx ? 'bg-navBg' : ''}`}
+                className={`flex w-full cursor-pointer rounded-md border border-l-4 border-l-custom-7 px-3 py-2 hover:bg-green-100
+            ${(selectedQuestionIndex as number) - 1 === inx ? 'bg-custom-5' : ''}`}
               >
                 <div className="flex w-full justify-between">
                   <div className="flex">
-                    <p className="select-none text-sm font-normal text-radio">
+                    <p className="select-none text-sm font-normal text-custom-13">
                       {inx + 1}.{' '}
                       {truncate(title ? title : 'Draft', {
                         length: 40,
@@ -48,7 +48,7 @@ export default memo(
                     {!title && <File className="ml-2 stroke-gray-300" />}
                   </div>
                   <Trash2
-                    className="ml-2 stroke-txtPurple opacity-80"
+                    className="ml-2 stroke-custom-3 opacity-80"
                     onClick={e => {
                       e.stopPropagation();
                       onClickDeleteTemplateQuestion(inx);
