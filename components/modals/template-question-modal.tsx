@@ -103,7 +103,7 @@ export default function TemplateQuestionModal({
           <Radio
             options={
               questions
-                .filter(val => val.title)
+                .filter(val => val.title && val.optionTypeId !== 1)
                 .map(({ questionId, title }) => ({
                   id: 'q-' + questionId,
                   name: title,

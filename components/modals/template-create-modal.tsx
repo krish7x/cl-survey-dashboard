@@ -68,7 +68,7 @@ export default function TemplateCreateModal({
               />
             </div>
             <TextInput
-              id="templateTitle"
+              id="txt-template-title"
               placeholder="title.."
               className="focus:border-none focus:outline-none"
               value={title}
@@ -88,7 +88,7 @@ export default function TemplateCreateModal({
               />
             </div>
             <Textarea
-              id="projectDescription"
+              id="txt-template-description"
               placeholder="description.."
               value={description}
               onChange={event =>
