@@ -42,7 +42,7 @@ export default function ProjectModal({
               />
             </div>
             <TextInput
-              id="title"
+              id="txt-project-title"
               type="text"
               placeholder="title.."
               className="focus:border-none focus:outline-none"
@@ -63,7 +63,7 @@ export default function ProjectModal({
               />
             </div>
             <Textarea
-              id="description"
+              id="txt-project-description"
               placeholder="description.."
               value={description}
               onChange={event =>
@@ -78,6 +78,7 @@ export default function ProjectModal({
 
           <div className="w-full">
             <Button
+              id="btn-create"
               isProcessing={createProjectLoading}
               onClick={onClickCreate}
               disabled={!title}

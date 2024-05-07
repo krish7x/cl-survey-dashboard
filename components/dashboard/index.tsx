@@ -248,10 +248,12 @@ export default function Dashboard() {
           description: '',
         });
       })
-      .catch(err => {
+      .catch(() => {
+        setCreateProjectLoading(false);
+        setShowProjectModal(false);
         setToast({
           type: 'failure',
-          message: `Error while creating project - ${err}`,
+          message: `Error while creating project - Project name should be unique`,
         });
       });
   }, [
@@ -306,10 +308,13 @@ export default function Dashboard() {
         setShowTemplateModal(false);
         setCreateTemplateLoading(false);
       })
-      .catch(err => {
+      .catch(() => {
+        setCreateTemplateLoading(false);
+        setShowTemplateCreateModal(false);
+        setShowTemplateModal(false);
         setToast({
           type: 'failure',
-          message: `Error while creating template - ${err}`,
+          message: `Error while creating template - Template name should be unique`,
         });
       });
   }, [
@@ -358,10 +363,12 @@ export default function Dashboard() {
         setShowSurveyModal(false);
         setCreateSurveyLoading(false);
       })
-      .catch(err => {
+      .catch(() => {
+        setCreateSurveyLoading(false);
+        setShowSurveyModal(false);
         setToast({
           type: 'failure',
-          message: `Error while creating survey - ${err}`,
+          message: `Error while creating survey - Survey name should be unique`,
         });
       });
   }, [

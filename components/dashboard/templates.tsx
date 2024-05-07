@@ -1,7 +1,10 @@
+import { userAtom } from '@/store/atom';
 import { ITemplate } from '@/types';
 import { Tooltip } from 'flowbite-react';
+import { useAtomValue } from 'jotai';
 import { Pencil, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+import { useMemo } from 'react';
 
 import src from '../../public/not-found.png';
 import TemplateIcon from '../micros/template-icon';
@@ -17,6 +20,8 @@ export default function Templates({
   setTemplateId: (value: string) => void;
   onClickEditTemplate: (id: string) => void;
 }) {
+  const user = useAtomValue(userAtom);
+  const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
   return (
     <div className="flex h-full flex-col pt-5">
       {templates.length ? (
@@ -44,21 +49,27 @@ export default function Templates({
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Tooltip content="Update Template">
-                  <Pencil
-                    className="mt-4 stroke-custom-3"
-                    onClick={() => onClickEditTemplate(id)}
-                  />
-                </Tooltip>
-                <Tooltip content="Delete template">
-                  <Trash2
-                    className="mt-4 stroke-custom-3"
-                    onClick={() => {
-                      setOpenModal(true);
-                      setTemplateId(id);
-                    }}
-                  />
-                </Tooltip>
+                {isAdmin && (
+                  <Tooltip content="Update Template">
+                    <Pencil
+                      id="btn-update-template"
+                      className="mt-4 stroke-custom-3"
+                      onClick={() => onClickEditTemplate(id)}
+                    />
+                  </Tooltip>
+                )}
+                {isAdmin && (
+                  <Tooltip content="Delete template">
+                    <Trash2
+                      id="btn-delete-template"
+                      className="mt-4 stroke-custom-3"
+                      onClick={() => {
+                        setOpenModal(true);
+                        setTemplateId(id);
+                      }}
+                    />
+                  </Tooltip>
+                )}
               </div>
             </div>
           </div>

@@ -72,6 +72,7 @@ export default function Surveys({
                   </Tooltip>
                   <Tooltip content="Delete Survey">
                     <Trash
+                      id="btn-delete-survey"
                       className="mx-2 mt-4 stroke-custom-3"
                       onClick={() => {
                         setOpenModal(true);

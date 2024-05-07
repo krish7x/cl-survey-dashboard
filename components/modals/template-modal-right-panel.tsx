@@ -52,6 +52,7 @@ export default memo(function TemplateModalRightPanel({
                 .
               </h1>
               <FloatingLabel
+                id="txt-template-title"
                 variant="standard"
                 label="Start typing your question here..."
                 size={80}
@@ -64,6 +65,7 @@ export default memo(function TemplateModalRightPanel({
                 1.
               </h1>
               <FloatingLabel
+                id="txt-template-description"
                 variant="standard"
                 size={82}
                 label="Add description to your question"
@@ -125,6 +127,7 @@ export default memo(function TemplateModalRightPanel({
               <Button.Group outline>
                 {options.map(({ id, linkedTo }, index) => (
                   <Button
+                    id={'btn-range-' + index}
                     key={'rating-button-' + index}
                     color="gray"
                     onClick={() =>
@@ -133,7 +136,10 @@ export default memo(function TemplateModalRightPanel({
                   >
                     {+id}
                     {linkedTo ? (
-                      <div className="absolute -end-0 -top-2 inline-flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900">
+                      <div
+                        id={'linked-range-' + index}
+                        className="absolute -end-0 -top-2 inline-flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900"
+                      >
                         {linkedTo}
                       </div>
                     ) : null}
@@ -156,6 +162,7 @@ export default memo(function TemplateModalRightPanel({
                   </p>
                   <Button.Group>
                     <Button
+                      id="btn-template-x"
                       gradientDuoTone={
                         selectedOptionPos === 'x' ? 'purpleToBlue' : ''
                       }
@@ -165,6 +172,7 @@ export default memo(function TemplateModalRightPanel({
                       Horizontal
                     </Button>
                     <Button
+                      id="btn-template-y"
                       gradientDuoTone={
                         selectedOptionPos === 'y' ? 'purpleToBlue' : ''
                       }
@@ -176,6 +184,7 @@ export default memo(function TemplateModalRightPanel({
                   </Button.Group>
                 </div>
                 <Button
+                  id="btn-template-reset"
                   color="failure"
                   className="opacity-80"
                   onClick={() =>
@@ -198,7 +207,7 @@ export default memo(function TemplateModalRightPanel({
                     key={`options-${id}` + inx}
                   >
                     <input
-                      id={`options-${id}` + inx}
+                      id={`txt-template-option-` + inx}
                       className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-4 ps-4 text-sm text-gray-900 outline-custom-12 focus:border-blue-500 focus:ring-blue-500"
                       placeholder={`Type option ${inx + 1}`}
                       value={name ? name : ''}
@@ -214,6 +223,7 @@ export default memo(function TemplateModalRightPanel({
 
                     {name.length > 1 ? (
                       <Link
+                        id={`btn-option-link-` + inx}
                         className={`absolute bottom-4 right-10 z-10 ${
                           options.length > 1
                             ? 'cursor-pointer'
@@ -230,6 +240,7 @@ export default memo(function TemplateModalRightPanel({
                     ) : null}
 
                     <Trash2
+                      id={`btn-option-delete-` + inx}
                       className={`absolute bottom-4 end-2.5 z-10 ${
                         options.length > 1
                           ? 'cursor-pointer'
@@ -241,6 +252,7 @@ export default memo(function TemplateModalRightPanel({
                 ))}
                 {(selectQuestionType as number) > 2 && options.length > 0 ? (
                   <Button
+                    id="btn-add-option"
                     color="light"
                     className="text-sm font-semibold text-custom-13"
                     onClick={onClickAddOptions}
@@ -254,6 +266,7 @@ export default memo(function TemplateModalRightPanel({
 
           {validation ? (
             <Button
+              id="btn-update-question"
               gradientMonochrome="success"
               pill
               className="ml-8  text-white"

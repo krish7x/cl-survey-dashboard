@@ -50,6 +50,7 @@ export default function SidebarComponent({
         >
           {isAdmin && (
             <PlusCircle
+              id="btn-create-project"
               color="#63686F"
               width={24}
               cursor="pointer"
@@ -82,14 +83,17 @@ export default function SidebarComponent({
                   {truncate(data.projectName, {
                     length: 25,
                   })}
-                  <Trash2
-                    size={20}
-                    className="absolute bottom-3 right-2 z-20 opacity-70"
-                    onClick={() => {
-                      setDeleteProjectId(data.id);
-                      setOpenDeleteModal(true);
-                    }}
-                  />
+                  {isAdmin && (
+                    <Trash2
+                      id="btn-delete-project"
+                      size={20}
+                      className="absolute bottom-3 right-2 z-20 opacity-70"
+                      onClick={() => {
+                        setDeleteProjectId(data.id);
+                        setOpenDeleteModal(true);
+                      }}
+                    />
+                  )}
                 </Sidebar.Item>
               </Sidebar.ItemGroup>
             </Sidebar.Items>

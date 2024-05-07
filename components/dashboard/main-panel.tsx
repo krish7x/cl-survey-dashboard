@@ -40,6 +40,7 @@ export default function MainPanel({
         {isAdmin && (
           <div className="flex gap-2">
             <Button
+              id="btn-create-template"
               gradientDuoTone="purpleToBlue"
               onClick={() => {
                 resetForCreateSurvey();
@@ -55,6 +56,7 @@ export default function MainPanel({
               </div>
             </Button>
             <Button
+              id="btn-create-survey"
               gradientDuoTone="purpleToBlue"
               onClick={() => {
                 setShowSurveyModal(true);

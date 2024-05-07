@@ -11,13 +11,14 @@ export default function ToastComponent({
   setToast: (value: IToast) => void;
 }) {
   useEffect(() => {
+    const ms = toast.type === 'success' ? 5000 : 10000;
     if (toast.message.length) {
       setTimeout(() => {
         setToast({
           type: '',
           message: '',
         });
-      }, 5000);
+      }, ms);
     }
   }, [setToast, toast]);
   return (
