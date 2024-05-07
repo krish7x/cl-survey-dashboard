@@ -309,7 +309,8 @@ export default memo(function TemplateModal({
   }, [showQuestion, templateQuestion]);
 
   const validateCreateTemplate = useMemo(() => {
-    if (templateQuestion.length < 2) return true;
+    if (templateQuestion.length === 1)
+      return templateQuestion[0].optionTypeId !== 1;
     return !addQuestionValidation;
   }, [addQuestionValidation, templateQuestion]);
 
