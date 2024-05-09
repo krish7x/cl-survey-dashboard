@@ -264,17 +264,16 @@ export default memo(function TemplateModalRightPanel({
             </div>
           ) : null}
 
-          {validation ? (
-            <Button
-              id="btn-update-question"
-              gradientMonochrome="success"
-              pill
-              className="ml-8  text-white"
-              onClick={() => onClickCreateQuestion()}
-            >
-              {isAdded && selectedQuestionIndex ? 'Update' : 'Create'} question
-            </Button>
-          ) : null}
+          <Button
+            id="btn-update-question"
+            gradientMonochrome="success"
+            pill
+            className="ml-8  text-white"
+            disabled={!validation}
+            onClick={() => onClickCreateQuestion()}
+          >
+            {isAdded && selectedQuestionIndex ? 'Update' : 'Create'} question
+          </Button>
         </div>
       ) : (
         <div className="m-auto flex flex-col justify-center">

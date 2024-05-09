@@ -1,4 +1,10 @@
-import { IOptions, ITemplateQuestion, IToast, IUser } from '@/types';
+import {
+  IConfirmation,
+  IOptions,
+  ITemplateQuestion,
+  IToast,
+  IUser,
+} from '@/types';
 import { atom } from 'jotai';
 
 export const userAtom = atom<IUser | null>(null);
@@ -12,3 +18,13 @@ tabsAtom.debugLabel = 'tabsAtom';
 
 export const toastAtom = atom<IToast>({ type: '', message: '' });
 toastAtom.debugLabel = 'toastAtom';
+
+export const confirmationAtom = atom<IConfirmation>({
+  show: false,
+  alertText: '',
+  acceptCtaText: '',
+  rejectCtaText: '',
+  onAccept: () => null,
+  params: [],
+});
+confirmationAtom.debugLabel = 'confirmationAtom';
