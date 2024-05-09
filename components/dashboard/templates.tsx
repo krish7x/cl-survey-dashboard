@@ -1,27 +1,40 @@
-import { userAtom } from '@/store/atom';
+import { confirmationAtom, userAtom } from '@/store/atom';
 import { ITemplate } from '@/types';
 import { Tooltip } from 'flowbite-react';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { Pencil, Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import src from '../../public/not-found.png';
 import TemplateIcon from '../micros/template-icon';
 
 export default function Templates({
   templates,
-  setOpenModal,
-  setTemplateId,
+  onClickDeleteTemplate,
   onClickEditTemplate,
 }: {
   templates: ITemplate[];
-  setOpenModal: (value: boolean) => void;
-  setTemplateId: (value: string) => void;
+  onClickDeleteTemplate: (id: string) => void;
   onClickEditTemplate: (id: string) => void;
 }) {
   const user = useAtomValue(userAtom);
+  const setAtom = useSetAtom(confirmationAtom);
   const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
+
+  const onClickDelete = useCallback(
+    (id: string) => {
+      setAtom({
+        show: true,
+        alertText: 'Are you sure you want to delete this template?',
+        acceptCtaText: "Yes, I'm sure",
+        rejectCtaText: 'No, cancel',
+        onAccept: (id: string) => onClickDeleteTemplate(id),
+        params: [id],
+      });
+    },
+    [onClickDeleteTemplate, setAtom],
+  );
   return (
     <div className="flex h-full flex-col pt-5">
       {templates.length ? (
@@ -64,8 +77,7 @@ export default function Templates({
                       id="btn-delete-template"
                       className="mt-4 stroke-custom-3"
                       onClick={() => {
-                        setOpenModal(true);
-                        setTemplateId(id);
+                        onClickDelete(id);
                       }}
                     />
                   </Tooltip>

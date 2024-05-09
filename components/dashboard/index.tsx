@@ -22,6 +22,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import ToastComponent from '../micros/toast';
+import ConfirmationModal from '../modals/confirmation-modal';
 import ProjectModal from '../modals/project-modal';
 import SendSurveyModal from '../modals/send-survey-modal';
 import SurveyModal from '../modals/survey-modal';
@@ -681,6 +682,8 @@ export default function Dashboard() {
           />
         </div>
       ) : null}
+
+      <ConfirmationModal />
     </div>
   );
 }

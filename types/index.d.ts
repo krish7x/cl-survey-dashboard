@@ -38,6 +38,17 @@ export interface IToast {
   message: string;
 }
 
+export interface IConfirmation {
+  show: boolean;
+  alertText: string;
+  acceptCtaText: string;
+  rejectCtaText: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onAccept: (...value: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: Array<any>;
+}
+
 export interface ISurvey {
   id: string;
   projectId: string;

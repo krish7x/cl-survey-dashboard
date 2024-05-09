@@ -1,28 +1,44 @@
+import { confirmationAtom } from '@/store/atom';
 import { ISurvey } from '@/types';
 import { Tooltip } from 'flowbite-react';
+import { useSetAtom } from 'jotai';
 import { BarChart3, Eye, Send, Trash, Users } from 'lucide-react';
 import Image from 'next/image';
+import { useCallback } from 'react';
 
 import src from '../../public/not-found.png';
 import SurevyIcon from '../micros/survey-icon';
 
 export default function Surveys({
   surveys,
-  setOpenModal,
-  setSurveyId,
   onClickViewSurvey,
   onClickSendSurvey,
   onClickShowSurveyContacts,
   onClickShowCharts,
+  onClickDeleteSurvey,
 }: {
   surveys: ISurvey[];
-  setOpenModal: (value: boolean) => void;
-  setSurveyId: (value: string) => void;
   onClickViewSurvey: (id: string) => void;
   onClickSendSurvey: (id: string) => void;
   onClickShowSurveyContacts: (id: string) => void;
+  onClickDeleteSurvey: (id: string) => void;
   onClickShowCharts: (id: string, surveyName: string) => void;
 }) {
+  const setAtom = useSetAtom(confirmationAtom);
+
+  const onClickDelete = useCallback(
+    (id: string) => {
+      setAtom({
+        show: true,
+        alertText: 'Are you sure you want to delete this survey?',
+        acceptCtaText: "Yes, I'm sure",
+        rejectCtaText: 'No, cancel',
+        onAccept: (id: string) => onClickDeleteSurvey(id),
+        params: [id],
+      });
+    },
+    [onClickDeleteSurvey, setAtom],
+  );
   return (
     <div className="flex h-full flex-col pt-5">
       {surveys.length ? (
@@ -75,8 +91,7 @@ export default function Surveys({
                       id="btn-delete-survey"
                       className="mx-2 mt-4 stroke-custom-3"
                       onClick={() => {
-                        setOpenModal(true);
-                        setSurveyId(id);
+                        onClickDelete(id);
                       }}
                     />
                   </Tooltip>

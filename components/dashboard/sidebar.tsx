@@ -1,11 +1,11 @@
-import { userAtom } from '@/store/atom';
+import { confirmationAtom, userAtom } from '@/store/atom';
 import { IProject } from '@/types';
-import { Button, Modal, Sidebar, Tooltip } from 'flowbite-react';
-import { useAtomValue } from 'jotai';
+import { Sidebar, Tooltip } from 'flowbite-react';
+import { useAtomValue, useSetAtom } from 'jotai';
 import truncate from 'lodash.truncate';
-import { AlertOctagon, PlusCircle, Trash2 } from 'lucide-react';
+import { PlusCircle, Trash2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import ListSkeleton from '../micros/list-skeleton';
 
@@ -25,9 +25,22 @@ export default function SidebarComponent({
   const router = useRouter();
   const { get } = useSearchParams();
   const user = useAtomValue(userAtom);
+  const setAtom = useSetAtom(confirmationAtom);
   const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [deleteProjectId, setDeleteProjectId] = useState('');
+
+  const onClickDelete = useCallback(
+    (id: string) => {
+      setAtom({
+        show: true,
+        alertText: 'Are you sure you want to delete this project?',
+        acceptCtaText: "Yes, I'm sure",
+        rejectCtaText: 'No, cancel',
+        onAccept: (id: string) => onDeleteProject(id),
+        params: [id],
+      });
+    },
+    [onDeleteProject, setAtom],
+  );
 
   useEffect(() => {
     const projectId = get('projectId');
@@ -89,8 +102,7 @@ export default function SidebarComponent({
                       size={20}
                       className="absolute bottom-3 right-2 z-20 opacity-70"
                       onClick={() => {
-                        setDeleteProjectId(data.id);
-                        setOpenDeleteModal(true);
+                        onClickDelete(data.id);
                       }}
                     />
                   )}
@@ -102,40 +114,6 @@ export default function SidebarComponent({
           <ListSkeleton />
         )}
       </div>
-
-      <Modal
-        show={openDeleteModal}
-        size="md"
-        onClose={() => setOpenDeleteModal(false)}
-        popup
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <div className="text-center">
-            <AlertOctagon className="mx-auto mb-4 h-14 w-14 text-gray-400" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500">
-              Are you sure you want to delete this project
-            </h3>
-            <div className="flex justify-center gap-4">
-              <Button
-                color="failure"
-                onClick={() => {
-                  onDeleteProject(deleteProjectId);
-                  setOpenDeleteModal(false);
-                }}
-              >
-                {"Yes, I'm sure"}
-              </Button>
-              <Button
-                color="gray"
-                onClick={() => setOpenDeleteModal(false)}
-              >
-                No, cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
     </Sidebar>
   );
 }

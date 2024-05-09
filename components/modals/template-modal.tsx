@@ -1,9 +1,10 @@
 import { questionTypeOptions } from '@/constants/questionTypes';
-import { templateQuestionsAtom } from '@/store/atom';
+import { confirmationAtom, templateQuestionsAtom } from '@/store/atom';
 import { ILinkDetails, IOptions, ITemplateQuestion } from '@/types';
 import { ITemplateModal } from '@/types/props/template-modal';
 import { Button, Modal } from 'flowbite-react';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
+import isEqual from 'lodash.isequal';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import TemplateModalLeftPanel from './template-modal-left-panel';
@@ -38,11 +39,15 @@ export default memo(function TemplateModal({
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [linkDetails, setLinkDetails] = useState<ILinkDetails>();
   const [isAddQuestion, setIsAddQuestion] = useState(false);
+  const [templateQuestionClone, setTemplateQuestionClone] = useState<
+    ITemplateQuestion[]
+  >([]);
 
   //atom
   const [templateQuestion, setTemplateQuestion] = useAtom(
     templateQuestionsAtom,
   );
+  const setAtom = useSetAtom(confirmationAtom);
 
   //callbacks
   const onClickAddOptions = useCallback(() => {
@@ -278,6 +283,30 @@ export default memo(function TemplateModal({
     [resetAll, setTemplateQuestion],
   );
 
+  const onClose = useCallback(() => {
+    resetAll();
+    resetForCreateTemplate();
+    setShowModal(false);
+    setShowTemplateCreateModal(false);
+    setShowQuestion(false);
+  }, [
+    resetAll,
+    resetForCreateTemplate,
+    setShowModal,
+    setShowTemplateCreateModal,
+  ]);
+
+  const showConfirmationModal = useCallback(() => {
+    setAtom({
+      show: true,
+      alertText: 'Are you sure you want to end the template updation progress?',
+      acceptCtaText: "Yes, I'm sure",
+      rejectCtaText: 'No, cancel',
+      onAccept: onClose,
+      params: [],
+    });
+  }, [onClose, setAtom]);
+
   //memos
   const validation = useMemo(() => {
     if (!questionTitle) return false;
@@ -314,10 +343,20 @@ export default memo(function TemplateModal({
     return !addQuestionValidation;
   }, [addQuestionValidation, templateQuestion]);
 
+  const deepCompare = useMemo(
+    () => isEqual(templateQuestionClone, templateQuestion),
+    [templateQuestion, templateQuestionClone],
+  );
+
   const dragQuestionRef = useRef<number>(0);
   const draggedOverQuestionRef = useRef<number>(0);
 
   //side effects
+  useEffect(() => {
+    setTemplateQuestionClone(templateQuestion);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showModal]);
+
   useEffect(() => {
     if (selectQuestionType === 1) {
       setRatingRange('range_10');
@@ -381,13 +420,7 @@ export default memo(function TemplateModal({
     <Modal
       show={showModal}
       size="5xl"
-      onClose={() => {
-        resetAll();
-        resetForCreateTemplate();
-        setShowModal(false);
-        setShowTemplateCreateModal(false);
-        setShowQuestion(false);
-      }}
+      onClose={() => (deepCompare ? onClose() : showConfirmationModal())}
       popup
     >
       <Modal.Body className="overflow-hidden p-0">

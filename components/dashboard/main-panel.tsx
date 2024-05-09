@@ -1,9 +1,9 @@
 import { tabsAtom, userAtom } from '@/store/atom';
 import { IMainPanel } from '@/types/props/main-panel';
-import { Button, Modal } from 'flowbite-react';
+import { Button } from 'flowbite-react';
 import { useAtomValue } from 'jotai';
-import { AlertOctagon, Plus } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Plus } from 'lucide-react';
+import { useMemo } from 'react';
 
 import MainPanelSkeleton from '../micros/main-panel-skeleton';
 import Surveys from './surveys';
@@ -29,9 +29,6 @@ export default function MainPanel({
   const user = useAtomValue(userAtom);
   const tab = useAtomValue(tabsAtom);
   const isAdmin = useMemo(() => user && user.role === 'admin', [user]);
-  const [openModal, setOpenModal] = useState(false);
-  const [surveyId, setSurveyId] = useState<string>('');
-  const [templateId, setTemplateId] = useState<string>('');
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-scroll bg-white px-10 py-6 scrollbar-hide">
@@ -79,12 +76,11 @@ export default function MainPanel({
         isSurveyLoaded ? (
           <Surveys
             surveys={surveys}
-            setOpenModal={setOpenModal}
-            setSurveyId={setSurveyId}
             onClickViewSurvey={onClickViewSurvey}
             onClickSendSurvey={onClickSendSurvey}
             onClickShowSurveyContacts={onClickShowSurveyContacts}
             onClickShowCharts={onClickShowCharts}
+            onClickDeleteSurvey={onClickDeleteSurvey}
           />
         ) : (
           <MainPanelSkeleton />
@@ -96,52 +92,12 @@ export default function MainPanel({
           <Templates
             onClickEditTemplate={onClickEditTemplate}
             templates={templates}
-            setOpenModal={setOpenModal}
-            setTemplateId={setTemplateId}
+            onClickDeleteTemplate={onClickDeleteTemplate}
           />
         ) : (
           <MainPanelSkeleton />
         )
       ) : null}
-
-      <Modal
-        show={openModal}
-        size="md"
-        onClose={() => setOpenModal(false)}
-        popup
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <div className="text-center">
-            <AlertOctagon className="mx-auto mb-4 h-14 w-14 text-gray-400" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500">
-              Are you sure you want to delete this{' '}
-              {tab.id === 1 ? 'survey' : 'template'}?
-            </h3>
-            <div className="flex justify-center gap-4">
-              <Button
-                color="failure"
-                onClick={() => {
-                  if (tab.id === 1) {
-                    onClickDeleteSurvey(surveyId);
-                  } else {
-                    onClickDeleteTemplate(templateId);
-                  }
-                  setOpenModal(false);
-                }}
-              >
-                {"Yes, I'm sure"}
-              </Button>
-              <Button
-                color="gray"
-                onClick={() => setOpenModal(false)}
-              >
-                No, cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
     </div>
   );
 }
