@@ -52,23 +52,22 @@ export default function MainPanel({
                 />
               </div>
             </Button>
-            <Button
+            <button
               id="btn-create-survey"
-              outline
-              className="bg-custom-19 focus:ring-0 enabled:hover:border enabled:hover:border-custom-19 enabled:hover:bg-white"
+              className="rounded-lg border border-custom-19 px-4 py-2"
               onClick={() => {
                 setShowSurveyModal(true);
                 resetForCreateTemplate();
               }}
             >
-              <div className="flex  items-center gap-1 text-custom-19 group-enabled:group-hover:text-custom-19">
+              <div className="flex items-center  gap-1 text-sm font-medium text-custom-19 group-enabled:group-hover:text-custom-19">
                 Create Survey{' '}
                 <Plus
                   className="stroke-custom-19 group-enabled:group-hover:stroke-custom-19"
                   size={16}
                 />
               </div>
-            </Button>
+            </button>
           </div>
         )}
       </div>
