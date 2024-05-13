@@ -231,7 +231,12 @@ export default memo(function TemplateModalRightPanel({
                       }}
                     >
                       {linkedTo ? (
-                        <p className="text-base text-custom-19">{linkedTo}</p>
+                        <p className="text-custom-19">
+                          {linkedTo}
+                          {+linkedTo < 10 ? (
+                            <span className="invisible text-custom-19">0</span>
+                          ) : null}
+                        </p>
                       ) : null}
                       <Link
                         className={`h-5 w-5 ${linkedTo ? 'stroke-custom-19' : 'stroke-white'}`}
