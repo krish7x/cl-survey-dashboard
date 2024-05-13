@@ -38,7 +38,7 @@ export default function MainPanel({
           <div className="flex gap-2">
             <Button
               id="btn-create-template"
-              gradientDuoTone="purpleToBlue"
+              className="bg-custom-19 focus:ring-0 enabled:hover:bg-custom-19"
               onClick={() => {
                 resetForCreateSurvey();
                 setShowTemplateModal(true);
@@ -47,24 +47,25 @@ export default function MainPanel({
               <div className="flex items-center gap-1">
                 Create Template{' '}
                 <Plus
+                  className="stroke-white"
                   size={16}
-                  color="#fff"
                 />
               </div>
             </Button>
             <Button
               id="btn-create-survey"
-              gradientDuoTone="purpleToBlue"
+              outline
+              className="bg-custom-19 focus:ring-0 enabled:hover:border enabled:hover:border-custom-19 enabled:hover:bg-white"
               onClick={() => {
                 setShowSurveyModal(true);
                 resetForCreateTemplate();
               }}
             >
-              <div className="flex items-center gap-1">
+              <div className="flex  items-center gap-1 text-custom-19 group-enabled:group-hover:text-custom-19">
                 Create Survey{' '}
                 <Plus
+                  className="stroke-custom-19 group-enabled:group-hover:stroke-custom-19"
                   size={16}
-                  color="#fff"
                 />
               </div>
             </Button>
