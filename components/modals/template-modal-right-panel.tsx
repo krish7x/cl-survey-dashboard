@@ -215,29 +215,28 @@ export default memo(function TemplateModalRightPanel({
                       onChange={e => onChangeOptions(id, e.target.value)}
                     />
 
-                    {linkedTo ? (
-                      <div className="absolute bottom-4 right-[calc(12%)] z-10 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900">
-                        {linkedTo}
-                      </div>
-                    ) : null}
-
-                    {name.length > 1 ? (
+                    <div
+                      id={`btn-option-link-` + inx}
+                      className={`flex ${linkedTo ? 'bottom-2 bg-custom-21' : 'bottom-[calc(10px)] bg-custom-19'} absolute right-12  z-10 items-center gap-2 rounded-lg border border-custom-20 p-[calc(6px)] ${
+                        options.length > 1
+                          ? 'cursor-pointer'
+                          : 'cursor-not-allowed'
+                      }`}
+                      onClick={() => {
+                        onLinkUpdateOptions();
+                        handleLinkQuestion(
+                          selectedQuestionIndex as number,
+                          +id,
+                        );
+                      }}
+                    >
+                      {linkedTo ? (
+                        <p className="text-base text-custom-19">{linkedTo}</p>
+                      ) : null}
                       <Link
-                        id={`btn-option-link-` + inx}
-                        className={`absolute bottom-4 right-10 z-10 ${
-                          options.length > 1
-                            ? 'cursor-pointer'
-                            : 'cursor-not-allowed'
-                        } stroke-custom-3`}
-                        onClick={() => {
-                          onLinkUpdateOptions();
-                          handleLinkQuestion(
-                            selectedQuestionIndex as number,
-                            +id,
-                          );
-                        }}
+                        className={`h-5 w-5 ${linkedTo ? 'stroke-custom-19' : 'stroke-white'}`}
                       />
-                    ) : null}
+                    </div>
 
                     <Trash2
                       id={`btn-option-delete-` + inx}
